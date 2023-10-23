@@ -17,17 +17,14 @@
 }
 
 body {
+  font-family: 'Roboto', sans-serif;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #f7f9fc; /* fallback for older browsers without gradient support */
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
+  );
+  margin: 0;
+  padding: 0;
 }
- body {
-   font-family: 'Roboto', sans-serif;
-   background-color: #f7f9fc;
-   margin: 0;
-   padding: 0;
- }
