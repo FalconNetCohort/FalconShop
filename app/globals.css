@@ -25,3 +25,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+ body {
+   font-family: 'Roboto', sans-serif;
+   background-color: #f7f9fc;
+   margin: 0;
+   padding: 0;
+ }
