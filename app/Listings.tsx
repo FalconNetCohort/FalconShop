@@ -1,23 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import db from '../firebase';  // Make sure to have set up firebase.js or wherever you're exporting your db instance from.
+'use client';
 
-export default function ClientComponent() {
-    const [items, setItems] = useState([]);
+import React, { useState, useEffect } from 'react';
+import { ref, onValue } from 'firebase/database';
+import db from '../firebase';
+
+interface CadetItem {
+    id: string;
+    title: string;
+    description: string;
+    price: string;
+    cadetName: string;
+    cadetContact: string;
+}
+
+export default function ListingsClient() {
+
+    const [items, setItems] = useState<CadetItem[]>([]);
 
     useEffect(() => {
-        const unsubscribe = db.ref('cadetItems').on('value', snapshot => {
-            const fetchedItems = [];
+        const cadetItemsRef = ref(db, 'cadetItems');
+        const unsubscribe = onValue(cadetItemsRef, snapshot => {
+            const fetchedItems: CadetItem[] = [];
+
             snapshot.forEach(childSnapshot => {
                 fetchedItems.push({
-                    id: childSnapshot.key,
+                    id: childSnapshot.key as string,
                     ...childSnapshot.val()
                 });
             });
+            console.log("Fetched items from Firebase:", fetchedItems);
             setItems(fetchedItems);
         });
 
         // Cleanup
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+        };
     }, []);
 
     return (
@@ -29,6 +47,8 @@ export default function ClientComponent() {
                         {item.description}
                     </p>
                     <span className="block mt-2 font-bold text-blue-700">${item.price}</span>
+                    <p className="mt-3 text-gray-600">Cadet: {item.cadetName}</p>
+                    <p className="mt-1 text-gray-600">Contact: {item.cadetContact}</p>
                 </div>
             ))}
         </section>
