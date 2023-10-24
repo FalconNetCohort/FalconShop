@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { addCadetItem } from '@/firebaseUtils';
-import {getDownloadURL, ref as storageRef, uploadBytesResumable} from "firebase/storage";
+import { getDownloadURL, ref as storageRef, uploadBytesResumable } from "firebase/storage";
+import storage from '../firebase';  // Assuming your Firebase initialization exports storage
 
 export default function AddCadetItem() {
     const [item, setItem] = useState({
@@ -23,28 +24,34 @@ export default function AddCadetItem() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let imageUrl = null;
+
         if (image) {
             const storageReference = storageRef(storage, 'cadetImages/' + image.name);
             const uploadTask = uploadBytesResumable(storageReference, image);
 
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    // You can handle progress here if needed
-                },
-                (error) => {
-                    console.error(error);
-                },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        setItem({...item, imageUrl: downloadURL});
-                        addCadetItem({...item, imageUrl: downloadURL});
-                    });
-                }
-            );
-        } else {
-            addCadetItem(item);
+            await new Promise((resolve, reject) => {
+                uploadTask.on('state_changed',
+
+                    (error) => {
+                        console.error(error);
+                        reject(error);
+                    },
+                    async () => {
+                        imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                        resolve(imageUrl);
+                    }
+                );
+            });
         }
+
+        addCadetItem({
+            ...item,
+            imageUrl: imageUrl
+        });
     };
+
     return (
         <div className="flex items-center justify-center">
             <form
@@ -56,35 +63,35 @@ export default function AddCadetItem() {
                     type="text"
                     placeholder="Title"
                     value={item.title}
-                    onChange={e => setItem({...item, title: e.target.value})}
+                    onChange={e => setItem({ ...item, title: e.target.value })}
                     className="p-2 border border-gray-300 rounded-md w-full text-black"
                 />
                 <input
                     type="text"
                     placeholder="Description"
                     value={item.description}
-                    onChange={e => setItem({...item, description: e.target.value})}
+                    onChange={e => setItem({ ...item, description: e.target.value })}
                     className="p-2 border border-gray-300 rounded-md w-full text-black"
                 />
                 <input
                     type="text"
                     placeholder="Price"
                     value={item.price}
-                    onChange={e => setItem({...item, price: e.target.value})}
+                    onChange={e => setItem({ ...item, price: e.target.value })}
                     className="p-2 border border-gray-300 rounded-md w-full text-black"
                 />
                 <input
                     type="text"
                     placeholder="Cadet Name"
                     value={item.cadetName}
-                    onChange={e => setItem({...item, cadetName: e.target.value})}
+                    onChange={e => setItem({ ...item, cadetName: e.target.value })}
                     className="p-2 border border-gray-300 rounded-md w-full text-black"
                 />
                 <input
                     type="text"
                     placeholder="Cadet Contact"
                     value={item.cadetContact}
-                    onChange={e => setItem({...item, cadetContact: e.target.value})}
+                    onChange={e => setItem({ ...item, cadetContact: e.target.value })}
                     className="p-2 border border-gray-300 rounded-md w-full text-black"
                 />
                 <input
