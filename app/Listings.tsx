@@ -1,8 +1,10 @@
+//listings.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
 import db from '../firebase';
+import './firebaseInit'; // adjust the path accordingly
 
 interface CadetItem {
     id: string;
