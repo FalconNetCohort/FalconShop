@@ -1,5 +1,5 @@
 
-# 🛍️ Falcon Buy
+# 🛍️ FalconShop
 
 Welcome to the e-commerce platform specially designed for the USAFA Cadet Wing! Built with Next.js, our platform aims to offer a seamless shopping experience for cadets looking for their essential gear.
 
