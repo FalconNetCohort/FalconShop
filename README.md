@@ -11,13 +11,7 @@ Welcome to the e-commerce platform specially designed for the USAFA Cadet Wing! 
 
 ## 🚀 Getting Started
 
-### Prerequisites
 
-Ensure you have `pnpm` installed. If not, you can install it using:
-
-```bash
-npm install -g pnpm
-```
 
 ### Installation
 
@@ -32,6 +26,9 @@ cd [repository_directory]
 
 ```bash
 pnpm install
+yarn install 
+npm  install
+
 ```
 
 ### Running the Application
@@ -40,6 +37,8 @@ Start the development server:
 
 ```bash
 pnpm dev
+yarn dev 
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.

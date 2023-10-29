@@ -32,4 +32,4 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+styles/next/next-env.d.ts

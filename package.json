@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "../node_modules/.bin/next dev",
-    "build": "../node_modules/.bin/next build",
-    "start": "../node_modules/.bin/next start",
-    "lint": "../node_modules/.bin/next lint"
+    "dev": "npx next dev",
+    "build": "firebase deploy",
+    "start": "npx next start",
+    "lint": "npx next lint"
   },
   "dependencies": {
     "@firebase/auth": "^1.3.2",
@@ -17,6 +17,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
+
   "devDependencies": {
     "@types/node": "^20.8.9",
     "@types/react": "^18.2.33",

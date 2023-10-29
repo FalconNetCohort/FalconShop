@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getAuth, User } from 'firebase/auth';
-import '../../firebase/firebase.js'; // adjust the path accordingly
+import '../firebase.js'; // adjust the path accordingly
 
 export default function Navbar() {
     const [user, setUser] = useState<User | null>(null);
@@ -19,12 +19,12 @@ export default function Navbar() {
             <div className="space-x-4">
                 {!user ? (
                     <>
-                        <Link href="/app/pages/profile">Login</Link>
-                        <Link href="/app/components/auth">Sign Up</Link>
+                        <Link href="/pages/profile">Login</Link>
+                        <Link href="/pages/auth">Sign Up</Link>
                     </>
                 ) : (
                     <>
-                        <Link href="/app/pages/profile">Profile</Link>
+                        <Link href="/pages/profile">Profile</Link>
                         <button onClick={() => getAuth().signOut()}>Logout</button>
                     </>
                 )}
