@@ -19,12 +19,12 @@ export default function Navbar() {
             <div className="space-x-4">
                 {!user ? (
                     <>
-                        <Link href="/pages/profile">Login</Link>
-                        <Link href="/pages/auth">Sign Up</Link>
+                        <Link href="/profile">Login</Link>
+                        <Link href="/auth">Sign Up</Link>
                     </>
                 ) : (
                     <>
-                        <Link href="/pages/profile">Profile</Link>
+                        <Link href="/profile">Profile</Link>
                         <button onClick={() => getAuth().signOut()}>Logout</button>
                     </>
                 )}
