@@ -3,8 +3,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
-import db from '../firebase';
-import './firebaseInit'; // adjust the path accordingly
+import db from '../../firebase/firebase';
+import '../../firebase/firebase'; // adjust the path accordingly
 
 interface CadetItem {
     id: string;

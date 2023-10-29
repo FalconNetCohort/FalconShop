@@ -1,7 +1,7 @@
 // metadata.ts
 
 import type { Metadata } from 'next'
-import './firebaseInit'; // adjust the path accordingly
+import '../firebase/firebase'; // adjust the path accordingly
 
 export const metadata: Metadata = {
   title: 'FalconShop',

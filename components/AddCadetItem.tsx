@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { addCadetItem } from '@/firebaseUtils';
+import { addCadetItem } from '@/firebase/firebaseUtils';
 import { getDownloadURL, ref as storageRef, uploadBytesResumable } from "firebase/storage";
-import storage from '../firebase';  // Assuming your Firebase initialization exports storage
+import storage from '../../firebase/firebase';  // Assuming your Firebase initialization exports storage
 
 export default function AddCadetItem() {
     const [item, setItem] = useState({
