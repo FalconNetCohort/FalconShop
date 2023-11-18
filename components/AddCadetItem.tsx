@@ -81,7 +81,7 @@ export default function AddCadetItem() {
                     className="p-2 border border-gray-300 rounded-md w-full"
                 />
                 <input
-                    type="text"
+                    type="number"
                     placeholder="Price"
                     value={item.price}
                     onChange={e => setItem({ ...item, price: e.target.value })}
