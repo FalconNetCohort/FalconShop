@@ -19,8 +19,7 @@ export default function Navbar() {
             <div className="space-x-4">
                 {!user ? (
                     <>
-                        <Link href="/">Login</Link>
-                        <Link href="/auth">Sign Up</Link>
+                        <Link href="/auth">Login</Link>
                     </>
                 ) : (
                     <>

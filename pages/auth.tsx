@@ -13,8 +13,11 @@ export default function Auth() {
         try {
             if (isSignUp) {
                 await createUserWithEmailAndPassword(auth, email, password);
+                // After successful sign-up, switch back to login view
+                setIsSignUp(false);
             } else {
                 await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = '/';
             }
         } catch (error: any) {
             console.error("Error during authentication:", error.message);
