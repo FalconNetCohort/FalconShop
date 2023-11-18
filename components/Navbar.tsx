@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+
 import { getAuth, User } from 'firebase/auth';
 import '../firebase.js'; // adjust the path accordingly
 
@@ -15,7 +16,7 @@ export default function Navbar() {
 
 
     return (
-        <nav className="flex justify-between items-center p-4 text-white theme">
+        <nav className="flex justify-between items-center bg-indigo-800 p-4 text-yellow-50">
             <Link href="/" className="text-2xl font-bold">FalconShop</Link>
             <div className="space-x-4">
                 {!user ? (
