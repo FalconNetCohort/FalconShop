@@ -13,8 +13,9 @@ export default function Navbar() {
         setUser(auth.currentUser);
     }, []);
 
+
     return (
-        <nav className="flex justify-between items-center bg-blue-500 p-4 text-white">
+        <nav className="flex justify-between items-center p-4 text-white theme">
             <Link href="/" className="text-2xl font-bold">FalconShop</Link>
             <div className="space-x-4">
                 {!user ? (

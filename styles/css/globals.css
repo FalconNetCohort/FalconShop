@@ -6,6 +6,9 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --theme_main_color: #4B0082;
+  --theme_trim_color: #E6E6FA;
+  --theme_accent_color:#ADD8E86;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,3 +31,12 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.theme {
+  font-family: 'Roboto', sans-serif;
+  color: #ffffff;
+  background-color: var(--theme_main_color);
+
+}
+
+
