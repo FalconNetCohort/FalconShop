@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { addCadetItem } from '@/firebaseUtils';
 import { getDownloadURL, ref as storageRef, uploadBytesResumable } from "firebase/storage";
 import { storage } from '@/firebase';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function AddCadetItem() {
     const [item, setItem] = useState({
@@ -11,10 +12,23 @@ export default function AddCadetItem() {
         cadetName: '',
         cadetContact: '',
         imageUrl: null,
-        quantity: ''
+        quantity: '',
+        createdBy: ''
     });
     const [image, setImage] = useState<File | null>(null);
     const [uploadStatus, setUploadStatus] = useState<string>('');
+    const [currentUser, setCurrentUser] = useState<any>(null); // Store current user
+
+    useEffect(() => {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user);
+            if (user) {
+                // If user is logged in, set the createdBy field
+                setItem((prevItem) => ({ ...prevItem, createdBy: user.uid }));
+            }
+        });
+    }, []);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
