@@ -20,6 +20,7 @@ export default function Navbar() {
             <div className="space-x-4">
                 {!user ? (
                     <>
+                        <Link href="/profile">Post</Link>
                         <Link href="/auth">Login</Link>
                     </>
                 ) : (
