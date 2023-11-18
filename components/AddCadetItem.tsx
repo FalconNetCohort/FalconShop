@@ -67,6 +67,7 @@ export default function AddCadetItem() {
             );
         } else {
             addCadetItem(item);
+            window.location.href = '/';
         }
     };
 
