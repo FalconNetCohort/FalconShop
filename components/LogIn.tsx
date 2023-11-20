@@ -30,7 +30,7 @@ export default function LogIn() {
 
     
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-black">
+        <div className="flex flex-col items-center justify-center text-black">
             <h1 className="text-2xl mb-4">Log In</h1>
             <form onSubmit={handleAuth} className="w-64">
                 <input

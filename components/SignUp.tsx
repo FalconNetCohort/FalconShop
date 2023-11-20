@@ -15,39 +15,34 @@ export default function SignUp() {
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            if (isSignUp) {
                 await createUserWithEmailAndPassword(auth, email, password);
                 // After successful sign-up, switch back to login view
                 setIsSignUp(false);
-            } else {
-                await signInWithEmailAndPassword(auth, email, password);
-                window.location.href = '/';
-            }
         } catch (error: any) {
             console.error("Error during authentication:", error.message);
         }
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-black">
-            <h1 className="text-2xl mb-4">Sign Up</h1>
+        <div className="flex flex-col items-center justify-center text-black">
+            <h1 className="text-2xl mb-4">Sign up for FalconShop</h1>
             <form onSubmit={handleAuth} className="w-64">
                 <input
                     type="email"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="mb-2 p-2 border rounded"
+                    className="mb-3 p-2 ml-7 border rounded shadow-lg"
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="mb-2 p-2 border rounded"
+                    className="mb-3 p-2 ml-7 border rounded shadow-lg"
                 />
-                <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
-                    {isSignUp ? 'Sign Up' : 'Log In'}
+                <button type="submit" className="w-full mt-4 p-2 bg-indigo-600 text-white text-md rounded shadow-lg hover:animate-pulse">
+                    Create FalconShop account
                 </button>
             </form>
         </div>
