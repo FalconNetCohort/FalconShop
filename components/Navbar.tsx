@@ -5,15 +5,31 @@ import Link from 'next/link';
 
 import { getAuth, User } from 'firebase/auth';
 import '../firebase.js'; // adjust the path accordingly
+import router from 'next/router.js';
 
 export default function Navbar() {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         const auth = getAuth();
-        setUser(auth.currentUser);
+        const unsubscribe = auth.onAuthStateChanged((loggedInUser) => {
+            if (loggedInUser) {
+                setUser(loggedInUser);
+            } else {
+                setUser(null);
+            }
+        });
+        
+        return () => {
+            unsubscribe();
+        };
     }, []);
 
+    const handleLogout = async () => {
+        const auth = getAuth();
+        await auth.signOut();
+        router.push('/auth'); // Redirect to '/auth' after logout
+    };
 
     return (
         <nav className="flex justify-between items-center bg-indigo-800 p-4 text-yellow-50">
@@ -27,7 +43,7 @@ export default function Navbar() {
                 ) : (
                     <>
                         <Link href="/profile">Profile</Link>
-                        <button onClick={() => getAuth().signOut()}>Logout</button>
+                        <button onClick={handleLogout}>Logout</button>
                     </>
                 )}
             </div>
