@@ -13,6 +13,7 @@ interface CadetItem {
     price: string;
     cadetName: string;
     cadetContact: string;
+    imageUrl: string;
 }
 
 export default function Listings() {
@@ -51,8 +52,10 @@ export default function Listings() {
                     <span className="block mt-2 font-bold text-blue-700">${item.price}</span>
                     <p className="mt-3 text-gray-600">Cadet: {item.cadetName}</p>
                     <p className="mt-1 text-gray-600">Contact: {item.cadetContact}</p>
+                    <img src={item.imageUrl} alt = "No Image" width ="600" height = "400"/>
                 </div>
             ))}
+
         </section>
     );
 }
