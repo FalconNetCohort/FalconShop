@@ -71,6 +71,7 @@ export default function AddCadetItem() {
                 ...item,
                 imageUrl: "gs://falconshop-303c4.appspot.com/cadetImages/Screenshot 2023-11-13 144137.png"
         });
+            window.location.href = '/';
         }
     };
 

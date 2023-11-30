@@ -1,0 +1,26 @@
+[debug] [2023-11-18T19:23:17.466Z] ----------------------------------------------------------------------
+[debug] [2023-11-18T19:23:17.467Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2023-11-18T19:23:17.467Z] CLI Version:   12.9.1
+[debug] [2023-11-18T19:23:17.467Z] Platform:      darwin
+[debug] [2023-11-18T19:23:17.467Z] Node Version:  v18.17.1
+[debug] [2023-11-18T19:23:17.468Z] Time:          Sat Nov 18 2023 12:23:17 GMT-0700 (Mountain Standard Time)
+[debug] [2023-11-18T19:23:17.469Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-11-18T19:23:17.513Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-11-18T19:23:17.513Z] > authorizing via signed-in user (rajraghulan@havocdev.com)
+[debug] [2023-11-18T19:23:17.514Z] [iam] checking project falconshop-303c4 for permissions ["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2023-11-18T19:23:17.515Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/falconshop-303c4:testIamPermissions [none]
+[debug] [2023-11-18T19:23:17.515Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/falconshop-303c4:testIamPermissions x-goog-quota-user=projects/falconshop-303c4
+[debug] [2023-11-18T19:23:17.515Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/falconshop-303c4:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2023-11-18T19:23:17.691Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/falconshop-303c4:testIamPermissions 200
+[debug] [2023-11-18T19:23:17.692Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/falconshop-303c4:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2023-11-18T19:23:17.693Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/falconshop-303c4 [none]
+[debug] [2023-11-18T19:23:17.812Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/falconshop-303c4 200
+[debug] [2023-11-18T19:23:17.812Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/falconshop-303c4 {"projectId":"falconshop-303c4","projectNumber":"415270323891","displayName":"FalconShop","name":"projects/falconshop-303c4","resources":{"hostingSite":"falconshop-303c4","realtimeDatabaseInstance":"falconshop-303c4-default-rtdb","storageBucket":"falconshop-303c4.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_38cd7881-65d6-41ed-bd13-86c0cedb7888"}
+[debug] [2023-11-18T19:23:17.813Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/falconshop-303c4 [none]
+[debug] [2023-11-18T19:23:18.000Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/falconshop-303c4 200
+[debug] [2023-11-18T19:23:18.000Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/falconshop-303c4 {"projectId":"falconshop-303c4","projectNumber":"415270323891","displayName":"FalconShop","name":"projects/falconshop-303c4","resources":{"hostingSite":"falconshop-303c4","realtimeDatabaseInstance":"falconshop-303c4-default-rtdb","storageBucket":"falconshop-303c4.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_38cd7881-65d6-41ed-bd13-86c0cedb7888"}
+[debug] [2023-11-18T19:23:19.097Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/falconshop-303c4/sites pageToken=&pageSize=10
+[debug] [2023-11-18T19:23:19.650Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/falconshop-303c4/sites 200
+[debug] [2023-11-18T19:23:19.651Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/falconshop-303c4/sites {"sites":[{"name":"projects/falconshop-303c4/sites/falconshop-303c4","defaultUrl":"https://falconshop-303c4.web.app","appId":"1:415270323891:web:f44f363a7743ee1f2b92c6","type":"DEFAULT_SITE"}]}
+[debug] [2023-11-18T19:23:19.652Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:415270323891:web:f44f363a7743ee1f2b92c6/config [none]
