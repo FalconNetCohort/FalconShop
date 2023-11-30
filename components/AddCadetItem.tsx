@@ -69,7 +69,7 @@ export default function AddCadetItem() {
         } else {
             addCadetItem({
                 ...item,
-                imageUrl: "gs://falconshop-303c4.appspot.com/cadetImages/Screenshot 2023-11-13 144137.png"
+                imageUrl: "https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/cadetImages%2FPlaceHolder.jpg?alt=media&token=40f48230-5a31-4811-89f1-b8d952612240"
         });
             window.location.href = '/';
         }
