@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
-import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, User} from 'firebase/auth';
+import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
 import '../firebase.js'; // adjust the path accordingly
 
 
 export default function SignUp() {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isSignUp, setIsSignUp] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const auth = getAuth();
+    const router = useRouter();
 
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         try {
-                await createUserWithEmailAndPassword(auth, email, password);
-                // After successful sign-up, switch back to login view
-                setIsSignUp(false);
-        } catch (error: any) {
-            console.error("Error during authentication:", error.message);
+            await createUserWithEmailAndPassword(auth, email, password);
+            await router.push('/');
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error("Error during authentication:", error.message);
+                setError(error.message);
+            }
         }
     }
 
     return (
         <div className="flex flex-col items-center justify-center text-black">
             <h1 className="text-2xl mb-4">Sign up for FalconShop</h1>
+            {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleAuth} className="w-64">
                 <input
                     type="email"
