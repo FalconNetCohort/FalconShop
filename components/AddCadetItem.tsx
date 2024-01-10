@@ -11,8 +11,8 @@ export default function AddCadetItem() {
         price: '',
         cadetName: '',
         cadetContact: '',
-        imageUrl: null,
-        quantity: '',
+        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/cadetImages%2FPlaceHolder.jpg?alt=media&token=40f48230-5a31-4811-89f1-b8d952612240',
+        quantity:   '',
         createdBy: ''
     });
     const [image, setImage] = useState<File | null>(null);
@@ -66,10 +66,9 @@ export default function AddCadetItem() {
                     setUploadStatus('Upload successful!');
                 }
             );
-        } else {
+        }  else {
             addCadetItem({
-                ...item,
-                imageUrl: "https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/cadetImages%2FPlaceHolder.jpg?alt=media&token=40f48230-5a31-4811-89f1-b8d952612240"
+                ...item
         });
             window.location.href = '/';
         }
