@@ -12,7 +12,7 @@ export default function Profile() {
     if(user != null && user.email != null){
         umail = user.email
     }
-    
+
     return (
         <RootLayout>
             <main className="flex min-h-screen flex-col items-center p-24 bg-gray-100">
@@ -21,7 +21,6 @@ export default function Profile() {
                     <section className="mb-8">
                         <h2 className="text-2xl font-bold mb-4">User Information</h2>
                         <div className="flex items-center">
-                            <img src="/path-to-profile-image.jpg" alt="User profile" className="w-24 h-24 rounded-full mr-4"/>
                             <div>
                                 <p><strong>Email:</strong> {umail} </p>
                             </div>
