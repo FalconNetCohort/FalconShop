@@ -12,13 +12,23 @@ export default function SignUp() {
     const auth = getAuth();
     const router = useRouter();
 
+
+
+
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            await router.push('/');
-        } catch (error: unknown) {
+            if(hasAFAcademy(email)){
+                await createUserWithEmailAndPassword(auth, email, password);
+                await router.push('/');
+            }
+            if(!hasAFAcademy(email)){
+                console.error("Chinese Spy Detected: Use AF Academy Email");
+                setError("Chinese Spy Detected: Use AF Academy Email");
+            }
+        } catch (error) {
+
             if (error instanceof Error) {
                 console.error("Error during authentication:", error.message);
                 setError(error.message);
@@ -51,4 +61,7 @@ export default function SignUp() {
             </form>
         </div>
     );
+}
+function hasAFAcademy(inputString: String) {
+    return inputString.endsWith("@afacademy.af.edu");
 }
