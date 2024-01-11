@@ -12,10 +12,14 @@ export default function SignUp() {
     const auth = getAuth();
     const router = useRouter();
 
+
+
+
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
+            hasAFAcademy(email);
             await createUserWithEmailAndPassword(auth, email, password);
             await router.push('/');
         } catch (error: unknown) {
@@ -51,4 +55,7 @@ export default function SignUp() {
             </form>
         </div>
     );
+}
+function hasAFAcademy(inputString: String) {
+    return inputString.endsWith("@afacademy.af.edu");
 }
