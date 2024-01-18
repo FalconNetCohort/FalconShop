@@ -55,7 +55,7 @@ export default function Listings() {
         <section>
             <div className="flex flex-col align-middle items-center pb-4">
                 <form className="border-4 rounded border-indigo-500">
-                    <input className="text-black" type="text" placeholder="Search for a title..." name="search" onChange={(e) => setSearch(e.target.value)}/>
+                    <input className="text-black" type="text" placeholder="Search for a product" name="search" onChange={(e) => setSearch(e.target.value)}/>
                 </form>
             </div>
             <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
