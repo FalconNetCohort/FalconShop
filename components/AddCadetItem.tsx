@@ -8,11 +8,12 @@ export default function AddCadetItem() {
     const [item, setItem] = useState({
         title: '',
         description: '',
+        category: '',
         price: '',
         cadetName: '',
         cadetContact: '',
-        imageUrl: null,
-        quantity: '',
+        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/cadetImages%2FPlaceHolder.jpg?alt=media&token=40f48230-5a31-4811-89f1-b8d952612240',
+        quantity:   '',
         createdBy: ''
     });
     const [image, setImage] = useState<File | null>(null);
@@ -39,6 +40,25 @@ export default function AddCadetItem() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        // Check if the price is a positive number
+        if (!/^\d*\.?\d+$/.test(item.price) || parseFloat(item.price) <= 0) {
+            setUploadStatus('Please enter a valid positive number for the price.');
+            return;
+        }
+
+        // Check if the quantity is a positive number
+        if (!/^\d+$/.test(item.quantity) || parseInt(item.quantity, 10) <= 0) {
+            setUploadStatus('Please enter a valid positive integer for the quantity.');
+            return;
+        }
+
+        // Check if a category is selected
+        if (!item.category) {
+            setUploadStatus('Please select a category.');
+            return;
+        }
+
         setUploadStatus('Uploading...');
 
         let imageUrl = null;
@@ -66,10 +86,9 @@ export default function AddCadetItem() {
                     setUploadStatus('Upload successful!');
                 }
             );
-        } else {
+        }  else {
             addCadetItem({
-                ...item,
-                imageUrl: "https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/cadetImages%2FPlaceHolder.jpg?alt=media&token=40f48230-5a31-4811-89f1-b8d952612240"
+                ...item
         });
             window.location.href = '/';
         }
@@ -99,6 +118,22 @@ export default function AddCadetItem() {
                     onChange={e => setItem({ ...item, description: e.target.value })}
                     className="p-2 border border-gray-300 rounded-md w-full"
                 />
+                <select
+                    id="category"
+                    value={item.category}
+                    onChange={(e) => setItem({ ...item, category: e.target.value })}
+                    className="p-2 border border-gray-300 rounded-md w-full"
+                >
+                    <option value="">Select a category</option>
+                    <option value="Category1">Books/Study</option>
+                    <option value="Category2">Clothing/Shoes</option>
+                    <option value="Category2">Electronics</option>
+                    <option value="Category2">Uniform</option>
+                    <option value="Category2">Vehicles</option>
+                    <option value="Category2">Cooking</option>
+                    <option value="Category2">Appliances</option>
+                    {/* Add more options as needed */}
+                </select>
                 <input
                     type="number"
                     placeholder="Price"
@@ -124,12 +159,12 @@ export default function AddCadetItem() {
                     required
                 />
                 <input
-                    type="text"
+                    type="number"
                     placeholder="Quantity"
                     value={item.quantity}
                     onChange={e => setItem({ ...item, quantity: e.target.value })}
                     className="p-2 border border-gray-300 rounded-md w-full"
-
+                    required
                 />
                 <input
                     type="file"
