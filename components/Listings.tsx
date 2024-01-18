@@ -41,7 +41,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ data }) => {
 
     return (
         <div>
-            <input type="text" value={query} onChange={handleSearch} />
+            <input className="text-black" type="text" value={query} onChange={handleSearch} />
             <ul>
                 {results.map((item, index) => (
                     <li key={index}>{item}</li>
@@ -78,7 +78,7 @@ export default function Listings() {
     const data = items.map(item => item.title);
     return (
         <section>
-            <div className="flex justify-center py-6">
+            <div className="flex justify-center py-6 text-black">
                 <SearchComponent data={data} />
             </div>
             <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
