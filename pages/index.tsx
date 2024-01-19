@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import React, {useState} from 'react';
 import Listings from '../components/Listings';
 import RootLayout from '../components/RootLayout';
