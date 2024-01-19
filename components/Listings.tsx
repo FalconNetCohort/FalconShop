@@ -10,36 +10,49 @@ interface CadetItem {
     id: string;
     title: string;
     description: string;
+    category: string;
     price: string;
     cadetName: string;
     cadetContact: string;
     imageUrl: string;
 }
 
-export default function Listings() {
+interface ListingsProps {
+    selectedCategories: string[];
+}
+
+export default function Listings({ selectedCategories }: ListingsProps) {
 
     const [items, setItems] = useState<CadetItem[]>([]);
 
     useEffect(() => {
         const cadetItemsRef = ref(db, 'cadetItems');
-        const unsubscribe = onValue(cadetItemsRef, snapshot => {
+        const unsubscribe = onValue(cadetItemsRef, (snapshot) => {
             const fetchedItems: CadetItem[] = [];
 
-            snapshot.forEach(childSnapshot => {
+            snapshot.forEach((childSnapshot) => {
                 fetchedItems.push({
                     id: childSnapshot.key as string,
-                    ...childSnapshot.val()
+                    ...childSnapshot.val(),
                 });
             });
-            console.log("Fetched items from Firebase:", fetchedItems);
-            setItems(fetchedItems);
+
+            // Filter items based on selected categories
+            const filteredItems = fetchedItems.filter((item: CadetItem) =>
+                !selectedCategories || selectedCategories.length === 0
+                    ? true // Show all items if no category is selected
+                    : selectedCategories.includes(item.category)
+            );
+
+            console.log("Filtered items based on categories:", filteredItems);
+            setItems(filteredItems);
         });
 
         // Cleanup
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [selectedCategories]);
 
     return (
         <section className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">

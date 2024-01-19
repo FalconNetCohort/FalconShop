@@ -125,13 +125,14 @@ export default function AddCadetItem() {
                     className="p-2 border border-gray-300 rounded-md w-full"
                 >
                     <option value="">Select a category</option>
-                    <option value="Category1">Books/Study</option>
-                    <option value="Category2">Clothing/Shoes</option>
-                    <option value="Category2">Electronics</option>
-                    <option value="Category2">Uniform</option>
-                    <option value="Category2">Vehicles</option>
-                    <option value="Category2">Cooking</option>
-                    <option value="Category2">Appliances</option>
+                    <option value="Books/Study">Books/Study</option>
+                    <option value="Clothing/Shoes">Clothing/Shoes</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Uniform">Uniform</option>
+                    <option value="Vehicles">Vehicles</option>
+                    <option value="Cooking">Cooking</option>
+                    <option value="Appliances">Appliances</option>
+                    <option value="Other">Other</option>
                     {/* Add more options as needed */}
                 </select>
                 <input
