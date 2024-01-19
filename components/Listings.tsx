@@ -4,7 +4,11 @@
 import React, { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
 import db from '../firebase';
-import '../firebase'; // adjust the path accordingly
+import '../firebase';
+import {TextField} from "@mui/material"; // adjust the path accordingly
+import SearchIcon from '@mui/icons-material/Search';
+import SvgIcon from "@mui/icons-material/Search";
+import {Search} from "@mui/icons-material";
 
 interface CadetItem {
     id: string;
@@ -53,10 +57,8 @@ export default function Listings() {
 
     return (
         <section>
-            <div className="flex flex-col align-middle items-center pb-4">
-                <form className="border-4 rounded border-indigo-500">
-                    <input className="text-black" type="text" placeholder="Search for a product" name="search" onChange={(e) => setSearch(e.target.value)}/>
-                </form>
+            <div className="flex flex-col p-2">
+                <TextField placeholder="Search for a product" name="search" onChange={(e) => setSearch(e.target.value)}/>
             </div>
             <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
                 {items.filter((item) => {
