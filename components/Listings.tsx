@@ -54,7 +54,7 @@ export default function Listings({ selectedCategories }: ListingsProps) {
 
     return (
         <section>
-            <div className="flex flex-col p-2">
+            <div className="py-2 flex flex-col">
                 <TextField placeholder="Search for a product" name="search"
                            onChange={(e) => setSearch(e.target.value)} />
             </div>

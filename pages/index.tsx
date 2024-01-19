@@ -24,8 +24,8 @@ export default function Index() {
     
     return (
         <RootLayout>
-            <main className="flex min-h-screen flex-col items-center py-1 bg-gray-100">
-                <div className="p-4">
+            <main className="flex min-h-screen flex-col py-1 bg-gray-100">
+                <div className="p-4 flex flex-col items-center">
                     {/* Use ToggleButtonGroup and ToggleButton for category filtering */}
                     <ToggleButtonGroup
                         value={selectedCategories}
