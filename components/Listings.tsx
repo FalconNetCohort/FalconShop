@@ -14,12 +14,18 @@ interface CadetItem {
     id: string;
     title: string;
     description: string;
+    category: string;
     price: string;
     cadetName: string;
     cadetContact: string;
     imageUrl: string;
 }
 
+interface ListingsProps {
+    selectedCategories: string[];
+}
+
+export default function Listings({ selectedCategories }: ListingsProps) {
 
 // Define the type for the props
 interface SearchComponentProps {
@@ -34,23 +40,33 @@ export default function Listings() {
 
     useEffect(() => {
         const cadetItemsRef = ref(db, 'cadetItems');
-        const unsubscribe = onValue(cadetItemsRef, snapshot => {
+        const unsubscribe = onValue(cadetItemsRef, (snapshot) => {
             const fetchedItems: CadetItem[] = [];
 
-            snapshot.forEach(childSnapshot => {
+            snapshot.forEach((childSnapshot) => {
                 fetchedItems.push({
                     id: childSnapshot.key as string,
-                    ...childSnapshot.val()
+                    ...childSnapshot.val(),
                 });
             });
-            console.log("Fetched items from Firebase:", fetchedItems);
-            setItems(fetchedItems);
+
+            // Filter items based on selected categories
+            const filteredItems = fetchedItems.filter((item: CadetItem) =>
+                !selectedCategories || selectedCategories.length === 0
+                    ? true // Show all items if no category is selected
+                    : selectedCategories.includes(item.category)
+            );
+
+            console.log("Filtered items based on categories:", filteredItems);
+            setItems(filteredItems);
         });
 
         // Cleanup
         return () => {
             unsubscribe();
         };
+    }, [selectedCategories]);
+
     }, []);
     const data = items.map(item => item.title);
     const [search, setSearch] = useState('');
