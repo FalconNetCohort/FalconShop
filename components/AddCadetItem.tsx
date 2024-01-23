@@ -134,7 +134,6 @@ export default function AddCadetItem() {
                     <option value="Cooking">Cooking</option>
                     <option value="Appliances">Appliances</option>
                     <option value="Other">Other</option>
-                    {/* Add more options as needed */}
                 </select>
                 <input
                     type="number"
