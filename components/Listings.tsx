@@ -1,10 +1,9 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { ref, onValue } from 'firebase/database';
 import db from '../firebase';
-import { TextField } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
+
+import {SearchBar} from "./Search";
 
 interface CadetItem {
     id: string;
@@ -23,6 +22,20 @@ interface ListingsProps {
 
 export default function Listings({ selectedCategories }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
+    const [validImageUrls, setvalidImageUrls] = useState<string[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            setvalidImageUrls(await Promise.all(items.map(async (item) => {
+                try {
+                    const response = await fetch(item.imageUrl, { method: 'HEAD' });
+                    return response.ok ? item.imageUrl : '';
+                } catch {
+                    return '';
+                }
+            })))
+        })();
+    }, [items]);
 
     useEffect(() => {
         const cadetItemsRef = ref(db, 'cadetItems');
@@ -54,9 +67,8 @@ export default function Listings({ selectedCategories }: ListingsProps) {
 
     return (
         <section>
-            <div className="py-2 flex flex-col">
-                <TextField placeholder="Search for a product" name="search"
-                           onChange={(e) => setSearch(e.target.value)} />
+            <div className="p-4">
+                <SearchBar searchValue={search} setSearchValue={setSearch} />
             </div>
             <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
                 {items.filter((item) => {
@@ -71,7 +83,7 @@ export default function Listings({ selectedCategories }: ListingsProps) {
                         <span className="block mt-2 font-bold text-blue-700">${item.price}</span>
                         <p className="mt-3 text-gray-600">Cadet: {item.cadetName}</p>
                         <p className="mt-1 text-gray-600">Contact: {item.cadetContact}</p>
-                        <img src={item.imageUrl} alt={item.title} width="600" height="400"/>
+                        {validImageUrls.includes(item.imageUrl) && <Image src={item.imageUrl} alt="" width={600} height={400} />}
                     </div>
                 ))}
             </div>

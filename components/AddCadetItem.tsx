@@ -86,10 +86,11 @@ export default function AddCadetItem() {
                     setUploadStatus('Upload successful!');
                 }
             );
-        }  else {
+        }   else {
             addCadetItem({
-                ...item
-        });
+                ...item,
+                createdBy: currentUser.uid // Set the 'createdBy' field to currentUser.uid
+            });
             window.location.href = '/';
         }
     };

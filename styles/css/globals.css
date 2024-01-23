@@ -5,20 +5,36 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  --theme_main_color: #4B0082;
-  --theme_trim_color: #E6E6FA;
-  --theme_accent_color:#ADD8E86;
+  /* Light theme colors */
+  --foreground: #000;
+  --background-start: #d6dbdc;
+  --background-end: #fff;
+  --color-main: #4B0082;
+  --color-trim: #E6E6FA;
+  --color-accent: #ADD8E6;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    /* Dark theme colors */
+    --foreground: #fff;
+    --background-start: #000;
+    --background-end: #000;
+    --color-main: YourDarkColorHere;
+    --color-trim: YourDarkColorHere;
+    --color-accent: YourDarkColorHere;
   }
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background-start); /* Add fallback color for older browsers */
+  background-image: linear-gradient(to bottom, transparent, var(--background-end));
+}
+
+.theme {
+  color: #fff;
+  background-color: var(--color-main);
 }
 
 body {
