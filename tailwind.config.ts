@@ -16,6 +16,7 @@ const config: Config = {
       },
       fontFamily: {
         lato: ['Lato', 'sans-serif'],
+        Playfair: ['Playfair Display', 'sans-serif'],
       },
     },
   },
