@@ -70,12 +70,12 @@ export default function Listings({ selectedCategories }: ListingsProps) {
             <div className="p-4">
                 <SearchBar searchValue={search} setSearchValue={setSearch} />
             </div>
-            <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
+            <div className="mb-32 grid mx-auto gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl">
                 {items.filter((item) => {
                     return search.toLowerCase() === '' ? item : item.title.toLowerCase().includes(search.toLowerCase());
                 }).map((item) => (
                     <div key={item.id}
-                         className="rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-100 dark:border-neutral-700 dark:bg-neutral-800/30 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105">
+                         className="rounded-md border border-gray-200 hover:border-blue-500 hover:bg-blue-100 dark:border-neutral-700 p-6 shadow-md hover:shadow-xl transform transition-all duration-300">
                         <h2 className="card-title-font mb-3 text-xl text-blue-600">{item.title}</h2>
                         <p className="card-body-font opacity-70 mb-3">
                             {item.description}
