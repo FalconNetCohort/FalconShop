@@ -1,7 +1,7 @@
 import React from 'react';
 import RootLayout from '../components/RootLayout';
 import '../firebase';
-import AddCadetItem from "@/components/AddCadetItem";
+import AddCadetItem from "@/components/ItemUpload";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function Profile() {
