@@ -57,13 +57,13 @@ body {
   font-family: 'Myriad Pro', "sans-serif";
   font-style: normal;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
 
 }
 
 .card-body-font {
   font-family: 'Myriad Pro', "sans-serif";
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 400;
 }
 
@@ -76,13 +76,14 @@ body {
 
 .navbar-font {
   font-family: 'Myriad Pro', "sans-serif";
+  font-size: 1.15rem;
 
 }
 
 
 @layer components {
   .auth-global {
-    @apply text-black bg-gray-100 flex flex-col items-center justify-center min-h-screen font-lato;
+    @apply text-black bg-gray-100 flex flex-col items-center justify-center min-h-screen font-MyriadPro font-semibold;
   }
 }
 
