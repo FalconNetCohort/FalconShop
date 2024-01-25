@@ -76,8 +76,8 @@ export default function Listings({ selectedCategories }: ListingsProps) {
                 }).map((item) => (
                     <div key={item.id}
                          className="rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-100 dark:border-neutral-700 dark:bg-neutral-800/30 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105">
-                        <h2 className="mb-3 text-xl font-semibold text-blue-600">{item.title}</h2>
-                        <p className="text-sm opacity-70 mb-3">
+                        <h2 className="card-title-font mb-3 text-xl text-blue-600">{item.title}</h2>
+                        <p className="card-body-font opacity-70 mb-3">
                             {item.description}
                         </p>
                         <span className="block mt-2 font-bold text-blue-700">${item.price}</span>
