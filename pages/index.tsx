@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import Listings from '../components/Listings';
 import RootLayout from '../components/RootLayout';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import '../firebase';
 import CategorySelection from '../components/CategorySelection';
 
