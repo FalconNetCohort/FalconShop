@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ref, onValue } from 'firebase/database';
-import db from '../firebase';
+import {db} from '@/firebase';
 
 import {SearchBar} from "./Search";
+import {getDocs} from "@firebase/firestore";
+import {collection} from "firebase/firestore";
 
 interface CadetItem {
     id: string;
@@ -36,15 +37,14 @@ export default function Listings({ selectedCategories }: ListingsProps) {
             })))
         })();
     }, [items]);
-
     useEffect(() => {
-        const cadetItemsRef = ref(db, 'cadetItems');
-        const unsubscribe = onValue(cadetItemsRef, (snapshot) => {
+        const getItems = async () => {
             const fetchedItems: CadetItem[] = [];
-            snapshot.forEach((childSnapshot) => {
+
+            const querySnapshot = await getDocs(collection(db, 'cadetItems'));
+            querySnapshot.forEach((docSnapshot) => {
                 fetchedItems.push({
-                    id: childSnapshot.key as string,
-                    ...childSnapshot.val(),
+                    ...docSnapshot.data() as CadetItem,
                 });
             });
 
@@ -56,12 +56,11 @@ export default function Listings({ selectedCategories }: ListingsProps) {
 
             console.log("Filtered items based on categories:", filteredItems);
             setItems(filteredItems);
-        });
+        }
 
-        return () => {
-            unsubscribe();
-        };
+        getItems();
     }, [selectedCategories]);
+
 
     const [search, setSearch] = useState('');
 
