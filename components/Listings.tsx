@@ -5,8 +5,10 @@ import React, { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
 import db from '../firebase';
 import '../firebase'; // adjust the path accordingly
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 interface CadetItem {
+    createdBy: any;
     id: string;
     title: string;
     description: string;
@@ -14,14 +16,21 @@ interface CadetItem {
     cadetName: string;
     cadetContact: string;
     imageUrl: string;
+    isOwned: boolean;
 }
 
 export default function Listings() {
+    
+    const auth = getAuth();
+    const user = auth.currentUser;
+    let uid = user?.uid;
 
     const [items, setItems] = useState<CadetItem[]>([]);
 
     useEffect(() => {
+    
         const cadetItemsRef = ref(db, 'cadetItems');
+
         const unsubscribe = onValue(cadetItemsRef, snapshot => {
             const fetchedItems: CadetItem[] = [];
 
@@ -31,8 +40,18 @@ export default function Listings() {
                     ...childSnapshot.val()
                 });
             });
-            console.log("Fetched items from Firebase:", fetchedItems);
+
+            
+            for(let i = 0; i < fetchedItems.length;i++){        
+                fetchedItems[i].isOwned = fetchedItems[i].createdBy == uid
+            }
+            fetchedItems.sort(function(a,b){
+                return(a.isOwned === b.isOwned)? 0: b? -1: 1;
+            });
+
             setItems(fetchedItems);
+            console.log("Fetched items from Firebase:", fetchedItems);
+
         });
 
         // Cleanup
@@ -44,7 +63,12 @@ export default function Listings() {
     return (
         <section className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
             {items.map((item) => (
-                <div key={item.id} className="rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-100 dark:border-neutral-700 dark:bg-neutral-800/30 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105">
+                <div key={item.createdBy} className="rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-100 dark:border-neutral-700 dark:bg-neutral-800/30 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105">
+                    {item.createdBy == uid?(
+                        <h2 className = "mb-3 text-xl font-semibold text-red-600"> Your Listing </h2>
+                    ) : (
+                        <></>
+                        )}
                     <h2 className="mb-3 text-xl font-semibold text-blue-600">{item.title}</h2>
                     <p className="text-sm opacity-70 mb-3">
                         {item.description}
