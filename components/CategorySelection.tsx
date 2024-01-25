@@ -19,6 +19,12 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
             <ToggleButton value="Clothing/Shoes">Clothing/Shoes</ToggleButton>
             <ToggleButton value="Electronics">Electronics</ToggleButton>
             <ToggleButton value="Uniform">Uniform</ToggleButton>
+            <ToggleButton value="Vehicles">Vehicles</ToggleButton>
+            <ToggleButton value="Cooking">Cooking</ToggleButton>
+            <ToggleButton value="Appliances">Appliances</ToggleButton>
+            <ToggleButton value="Other">Other</ToggleButton>
+
+
 
         </ToggleButtonGroup>
     </div>
