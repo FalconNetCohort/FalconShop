@@ -1,8 +1,8 @@
 import React from 'react';
-import RootLayout from '../components/RootLayout';
+import RootLayout from '@/components/RootLayout';
 import '../firebase';
-import AddCadetItem from "@/components/AddCadetItem";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import ItemUpload from "@/components/ItemUpload";
+import { getAuth } from "firebase/auth";
 
 export default function Profile() {
     const auth = getAuth();
@@ -29,7 +29,7 @@ export default function Profile() {
 
                     <section>
                         <h2 className="text-2xl font-bold mb-4">Upload a Product</h2>
-                        <AddCadetItem/>
+                        <ItemUpload/>
                     </section>
                 </div>
             </main>

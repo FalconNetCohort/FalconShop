@@ -32,15 +32,8 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="flex justify-between items-center bg-indigo-800 p-4 text-yellow-50">
-            <Link rel="icon" href="/" className="">
-                <img
-                    src="/assets/images/FalconShop_Logo.png"
-                    alt="FalconShop"
-                    style={{ width: '250px', height: 'auto' }} // Adjust the width as needed
-
-                />
-            </Link>
+        <nav className="navbar-font flex justify-between items-center bg-indigo-800 p-4 text-yellow-50">
+            <Link href="/" className="text-2xl font-bold">FalconShop</Link>
             <div className="space-x-4">
                 {!user ? (
                     <>
