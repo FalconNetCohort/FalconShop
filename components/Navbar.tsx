@@ -33,8 +33,8 @@ export default function Navbar() {
 
     return (
         <nav className="flex justify-between items-center bg-indigo-800 p-4 text-yellow-50">
-            <Link href="/">
-                <img src="../assets/images/FalconShop_Logo.png" alt="FlaconShop Logo" className="h-10"/>
+            <Link rel="icon" href="/">
+            <img src="/assets/images/FalconShop_Logo.png" alt="FalconShop" className=""/>
             </Link>
             <div className="space-x-4">
                 {!user ? (
