@@ -1,7 +1,7 @@
 import React from 'react';
-import RootLayout from '../components/RootLayout';
+import RootLayout from '@/components/RootLayout';
 import '../firebase';
-import ItemUpload from "../components/ItemUpload";
+import ItemUpload from "@/components/ItemUpload";
 import { getAuth } from "firebase/auth";
 
 export default function Profile() {
