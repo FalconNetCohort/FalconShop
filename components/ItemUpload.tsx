@@ -3,8 +3,9 @@ import { addCadetItem } from '@/firebaseUtils';
 import { getDownloadURL, ref as storageRef, uploadBytesResumable } from "firebase/storage";
 import { storage } from '@/firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import router from "next/router.js";
 
-export default function AddCadetItem() {
+export default function ItemUpload() {
     const [item, setItem] = useState({
         title: '',
         description: '',
@@ -78,20 +79,21 @@ export default function AddCadetItem() {
                 },
                 async () => {
                     imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                    addCadetItem({
+                    await addCadetItem({
                         ...item,
                         imageUrl: imageUrl
-
                     });
                     setUploadStatus('Upload successful!');
+                    await router.push('/'); // Direct the user to the home page.
                 }
             );
         }   else {
-            addCadetItem({
+            await addCadetItem({
                 ...item,
                 createdBy: currentUser.uid // Set the 'createdBy' field to currentUser.uid
             });
-            window.location.href = '/';
+
+            await router.push('/'); // Direct the user to the home page.
         }
     };
 
