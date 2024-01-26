@@ -76,7 +76,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
 
     return (
         <section>
-            <div className="mb-32 grid mx-auto gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
+            <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
 
                 {items.map((item) => (
                         <div key={item.id}

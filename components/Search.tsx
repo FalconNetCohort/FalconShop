@@ -15,7 +15,12 @@ const Search = styled('div')(({ theme }) => ({
     },
     border: '1px solid #000',
     width: '100%',
-    maxWidth: '50%',
+    [theme.breakpoints.down('lg')]: {
+        maxWidth: '80%', // Adjust for small devices
+    },
+    [theme.breakpoints.up('lg')]: {
+        maxWidth: '50%',
+    },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
