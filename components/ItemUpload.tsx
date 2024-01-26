@@ -13,7 +13,7 @@ export default function ItemUpload() {
         price: '',
         cadetName: '',
         cadetContact: '',
-        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/cadetImages%2FPlaceHolder.jpg?alt=media&token=40f48230-5a31-4811-89f1-b8d952612240',
+        imageUrl: '',
         quantity:   '',
         createdBy: ''
     });
@@ -81,19 +81,27 @@ export default function ItemUpload() {
                     imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
                     await addCadetItem({
                         ...item,
-                        imageUrl: imageUrl
+                        imageUrl: imageUrl,
+                        createdBy: currentUser.uid
                     });
                     setUploadStatus('Upload successful!');
-                    await router.push('/'); // Direct the user to the home page.
                 }
+
             );
-        }   else {
+            await router.push('/'); // Direct the user to the home page.
+
+        } else {
+            // if no image has been uploaded, use a default image
+            imageUrl = 'https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/FalconShop_noImage.png?alt=media&token=a9d51293-08c9-4dd3-8d60-aad660f99323';
+
             await addCadetItem({
                 ...item,
+                imageUrl: imageUrl, // Set the imageUrl to your default imageUrl
                 createdBy: currentUser.uid // Set the 'createdBy' field to currentUser.uid
             });
-
             await router.push('/'); // Direct the user to the home page.
+
+
         }
     };
 

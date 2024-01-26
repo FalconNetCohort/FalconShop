@@ -65,11 +65,11 @@ export default function Listings({ selectedCategories }: ListingsProps) {
     const [search, setSearch] = useState('');
 
     return (
-        <section>
+        <section className="container mx-auto px-2 sm:px-0">
             <div className="p-4">
                 <SearchBar searchValue={search} setSearchValue={setSearch} />
             </div>
-            <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
+            <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                 {items.filter((item) => {
                     return search.toLowerCase() === '' ? item : item.title.toLowerCase().includes(search.toLowerCase());
                 }).map((item) => (
