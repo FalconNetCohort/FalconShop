@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
-                <link rel="icon" href="../public/favicon.ico" />
+                <link rel="icon" href="/assets/images/FalconShop_Icon.ico" />
             </Head>
             <Navbar/>
             <Component {...pageProps} />
