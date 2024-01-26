@@ -19,10 +19,9 @@ interface CadetItem {
 
 interface ListingsProps {
     selectedCategories: string[];
-    searchValue: string;
 }
 
-export default function Listings({ selectedCategories, searchValue = '' }: ListingsProps) {
+export default function Listings({ selectedCategories }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [validImageUrls, setvalidImageUrls] = useState<string[]>([]);
 
@@ -38,7 +37,6 @@ export default function Listings({ selectedCategories, searchValue = '' }: Listi
             })))
         })();
     }, [items]);
-
     useEffect(() => {
         const getItems = async () => {
             const fetchedItems: CadetItem[] = [];
@@ -51,8 +49,9 @@ export default function Listings({ selectedCategories, searchValue = '' }: Listi
             });
 
             const filteredItems = fetchedItems.filter((item: CadetItem) =>
-                (!selectedCategories || selectedCategories.length === 0 || selectedCategories.includes(item.category)) &&
-                (searchValue === '' || item.title.toLowerCase().includes(searchValue.toLowerCase()))
+                !selectedCategories || selectedCategories.length === 0
+                    ? true
+                    : selectedCategories.includes(item.category)
             );
 
             console.log("Filtered items based on categories:", filteredItems);
@@ -60,14 +59,20 @@ export default function Listings({ selectedCategories, searchValue = '' }: Listi
         }
 
         getItems();
-    }, [selectedCategories, searchValue]);
+    }, [selectedCategories]);
 
 
+    const [search, setSearch] = useState('');
 
     return (
-        <section>
-            <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
-                {items.map((item) => (
+        <section className="container mx-auto px-2 sm:px-0">
+            <div className="p-4">
+                <SearchBar searchValue={search} setSearchValue={setSearch} />
+            </div>
+            <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+                {items.filter((item) => {
+                    return search.toLowerCase() === '' ? item : item.title.toLowerCase().includes(search.toLowerCase());
+                }).map((item) => (
                     <div key={item.id}
                          className="rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-100 dark:border-neutral-700 dark:bg-neutral-800/30 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105">
                         <h2 className="card-title-font mb-3 text-xl text-blue-600">{item.title}</h2>
