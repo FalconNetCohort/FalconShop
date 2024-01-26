@@ -1,19 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Listings from '../components/Listings';
 import RootLayout from '../components/RootLayout';
 import '../firebase';
+import CategorySelection from '../components/CategorySelection';
+
 
 export default function Index() {
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+
+    const handleCategoryToggle = (category: string) => {
+        const currentIndex = selectedCategories.indexOf(category);
+        const newSelected = [...selectedCategories];
+
+        if (currentIndex === -1) {
+            newSelected.push(category);
+        } else {
+            newSelected.splice(currentIndex, 1);
+        }
+
+        setSelectedCategories(newSelected);
+    };
+
     return (
         <RootLayout>
-            <main className="flex min-h-screen flex-col items-center py-1 bg-gray-100">
-                <div className="z-10 w-full items-center justify-between font-bold text-lg lg:center">
-                    <p className="mb-8 text-center border-b border-gray-300 text-gray-200 py-4 backdrop-blur-md bg-indigo-600">
-                        FalconShop
-                    </p>
+            <main className="flex min-h-screen flex-col py-1 bg-gray-100">
+                <div className="p-4 flex flex-col items-center">
+                    <CategorySelection selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}/>
                 </div>
                 <div className="p-4">
-                    <Listings />
+                    <Listings selectedCategories={selectedCategories} />
                 </div>
             </main>
         </RootLayout>
