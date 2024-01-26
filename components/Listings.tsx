@@ -7,7 +7,7 @@ import {getDocs} from "@firebase/firestore";
 import {collection} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-interface CadetItem {
+export interface CadetItem {
     createdBy: any;
     id: string;
     title: string;
@@ -82,7 +82,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                         <div key={item.id}
                              className="rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-100 dark:border-neutral-700 dark:bg-neutral-800/30 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105">
                             {currentUserId === item.createdBy && (
-                            <p className ="block mt-2 font-bold text-red-700 mt-0 mb-0">  Your Listing </p>
+                            <p className ="block mt-2 font-bold text-red-700 mb-0">  Your Listing </p>
                             )}
                             <h2 className="card-title-font mb-3 text-xl text-blue-600">{item.title}</h2>
                             <p className="card-body-font opacity-70 mb-3">
