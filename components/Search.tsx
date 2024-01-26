@@ -37,7 +37,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('md')]: {
-            width: '20ch',
+            width: '100ch',
         },
     },
 }));
@@ -58,6 +58,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ searchValue, setSearchValu
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 inputProps={{ 'aria-label': 'search' }}
+                className="max-h-fit align-middle"
             />
         </Search>
     </SearchContainer>
