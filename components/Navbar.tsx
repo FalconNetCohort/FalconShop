@@ -33,7 +33,13 @@ export default function Navbar() {
 
     return (
         <nav className="navbar-font flex justify-between items-center bg-indigo-800 p-4 text-yellow-50">
-            <Link href="/" className="text-2xl font-bold">FalconShop</Link>
+            <Link href="/" className="text-2xl font-bold">
+                <img
+                    src="/assets/images/FalconShop_Logo.png"
+                    alt="FalconShop"
+                    style={{width: '150px', height: 'auto'}}
+                />
+            </Link>
             <div className="space-x-4">
                 {!user ? (
                     <>
