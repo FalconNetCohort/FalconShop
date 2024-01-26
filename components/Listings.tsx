@@ -65,8 +65,8 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     const [search, setSearch] = useState('');
 
     return (
-        <section className="container mx-auto px-2 sm:px-0">
-            <div className="mb-32 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+        <section className="scale-global container mx-auto px-2 sm:px-0">
+            <div className="mb-32 grid gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                 {items.map((item) => (
                     <div key={item.id}
                          className="rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-100 dark:border-neutral-700 dark:bg-neutral-800/30 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105">
