@@ -15,8 +15,8 @@ export default function Profile() {
 
     return (
         <RootLayout>
-            <main className="flex min-h-screen flex-col items-center p-24 bg-gray-100">
-                <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-lg lg:center text-black">
+            <main className="flex min-h-screen flex-col items-center md:p-24 p-8 bg-gray-100">
+                <div className="z-10 items-center justify-between text-lg lg:center">
 
                     <section className="mb-8">
                         <h2 className="text-2xl font-bold mb-4">User Information</h2>
@@ -27,7 +27,7 @@ export default function Profile() {
                         </div>
                     </section>
 
-                    <section>
+                    <section className="w-full">
                         <h2 className="text-2xl font-bold mb-4">Upload a Product</h2>
                         <ItemUpload/>
                     </section>

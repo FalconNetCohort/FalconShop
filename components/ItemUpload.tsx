@@ -106,10 +106,10 @@ export default function ItemUpload() {
     };
 
     return (
-        <div className="flex items-center justify-center text-black">
+        <div className="flex justify-center max-w-screen md:px-16">
             <form
                 onSubmit={handleSubmit}
-                className="px-8 py-4 space-y-4 bg-white shadow-md rounded-md w-3/4"
+                className="px-4 py-4 space-y-4 bg-white shadow-md rounded-md w-full"
             >
                 <h1 className="text-2xl font-bold text-center">Add Cadet Item</h1>
 
