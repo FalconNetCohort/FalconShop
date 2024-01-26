@@ -21,9 +21,10 @@ interface CadetItem {
 
 interface ListingsProps {
     selectedCategories: string[];
+    searchValue: string;
 }
 
-export default function Listings({ selectedCategories }: ListingsProps) {
+export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [myItems, setMyItems] = useState<CadetItem[]>([]);
     const [validImageUrls, setValidImageUrls] = useState<string[]>([]);
