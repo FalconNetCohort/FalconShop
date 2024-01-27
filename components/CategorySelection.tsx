@@ -15,16 +15,16 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
             onChange={(_, newCategories) => setSelectedCategories(newCategories)}
             aria-label="Category Selection"
         >
-            <ToggleButton value="Books/Study">Books/Study</ToggleButton>
-            <ToggleButton value="Clothing/Shoes">Clothing/Shoes</ToggleButton>
-            <ToggleButton value="Electronics">Electronics</ToggleButton>
-            <ToggleButton value="Uniform">Uniform</ToggleButton>
-            <ToggleButton value="Vehicles">Vehicles</ToggleButton>
-            <ToggleButton value="Cooking">Cooking</ToggleButton>
-            <ToggleButton value="Appliances">Appliances</ToggleButton>
-            <ToggleButton value="Other">Other</ToggleButton>
-
-
+            <div className="flex flex-wrap justify-center">
+                <ToggleButton value="Books/Study">Books/Study</ToggleButton>
+                <ToggleButton value="Clothing/Shoes">Clothing/Shoes</ToggleButton>
+                <ToggleButton value="Electronics">Electronics</ToggleButton>
+                <ToggleButton value="Uniform">Uniform</ToggleButton>
+                <ToggleButton value="Vehicles">Vehicles</ToggleButton>
+                <ToggleButton value="Cooking">Cooking</ToggleButton>
+                <ToggleButton value="Appliances">Appliances</ToggleButton>
+                <ToggleButton value="Other">Other</ToggleButton>
+            </div>
 
         </ToggleButtonGroup>
     </div>
