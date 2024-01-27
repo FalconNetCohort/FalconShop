@@ -3,12 +3,13 @@ import RootLayout from '@/components/RootLayout';
 import '../firebase';
 import ItemUpload from "@/components/ItemUpload";
 import {getAuth, onAuthStateChanged} from "firebase/auth";
-import Listings from "@/components/Listings";
 import Image from "next/image";
 import {getDocs} from "@firebase/firestore";
 import {collection} from "firebase/firestore";
 import {db} from "@/firebase";
 import {CadetItem} from "@/components/Listings";
+import { deleteDoc, doc } from "@firebase/firestore";
+
 
 
 export default function Profile() {
@@ -23,6 +24,19 @@ export default function Profile() {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [validImageUrls, setvalidImageUrls] = useState<string[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+    const deleteItem = async (documentId: string) => {
+        if (!currentUserId) return; // Ensure there is a logged-in user
+
+        try {
+            await deleteDoc(doc(db, 'cadetItems', documentId)); // Delete the item
+            setItems(items.filter(item => item.id !== documentId)); // Update state
+        } catch (error) {
+            console.error("Error deleting item: ", error);
+
+        }
+    };
+
 
     useEffect(() => {
         (async () => {
@@ -53,6 +67,7 @@ export default function Profile() {
             querySnapshot.forEach((docSnapshot) => {
                 fetchedItems.push({
                     ...docSnapshot.data() as CadetItem,
+                    id: docSnapshot.id,
                 });
             });
 
@@ -65,7 +80,7 @@ export default function Profile() {
 
         // Fetch items only if there is a logged-in user
         if (currentUserId) {
-            getItems();
+            getItems().then(r => console.log("Items fetched"));
         }
     }, [currentUserId]);
 
@@ -111,6 +126,14 @@ export default function Profile() {
                                         height={400}
                                         loader={({src}) => src}
                                     />
+                                    <>
+                                        <button
+                                            onClick={() => deleteItem(item.id)}
+                                            className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                        >
+                                            Delete
+                                        </button>
+                                    </>
                                 </div>
                             ))}
                         </div>
