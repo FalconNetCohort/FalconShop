@@ -85,5 +85,8 @@ body {
   .auth-global {
     @apply text-black bg-gray-100 flex flex-col items-center justify-center min-h-screen font-MyriadPro font-semibold;
   }
+  .scale-global {
+    @apply text-black bg-gray-100 flex flex-col items-center justify-center min-h-screen font-MyriadPro font-semibold;
+  }
 }
 

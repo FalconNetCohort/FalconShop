@@ -3,10 +3,12 @@ import Listings from '../components/Listings';
 import RootLayout from '../components/RootLayout';
 import '../firebase';
 import CategorySelection from '../components/CategorySelection';
+import {SearchBar} from "@/components/Search";
 
 
 export default function Index() {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [search, setSearch] = useState('');
 
 
     const handleCategoryToggle = (category: string) => {
@@ -24,14 +26,19 @@ export default function Index() {
 
     return (
         <RootLayout>
-            <main className="flex min-h-screen flex-col py-1 bg-gray-100">
-                <div className="p-4 flex flex-col items-center">
-                    <CategorySelection selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}/>
-                </div>
-                <div className="p-4">
-                    <Listings selectedCategories={selectedCategories} />
-                </div>
-            </main>
-        </RootLayout>
-    );
+            <main className="flex min-h-screen flex-col pt-6 bg-gray-100">
+            <div className="px-4">
+                <CategorySelection selectedCategories={selectedCategories}
+                                   setSelectedCategories={setSelectedCategories}/>
+            </div>
+            <div className="py-1 w-full mx-auto">
+                <SearchBar searchValue={search} setSearchValue={setSearch}/>
+            </div>
+            <div className="p-4">
+                <Listings selectedCategories={selectedCategories} searchValue={search}/>
+            </div>
+        </main>
+</RootLayout>
+)
+    ;
 }

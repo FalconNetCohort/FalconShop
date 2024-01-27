@@ -15,7 +15,12 @@ const Search = styled('div')(({ theme }) => ({
     },
     border: '1px solid #000',
     width: '100%',
-    maxWidth: '50%',
+    [theme.breakpoints.down('lg')]: {
+        maxWidth: '80%', // Adjust for small devices
+    },
+    [theme.breakpoints.up('lg')]: {
+        maxWidth: '50%',
+    },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -37,7 +42,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('md')]: {
-            width: '20ch',
+            width: '100ch',
         },
     },
 }));
@@ -58,6 +63,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ searchValue, setSearchValu
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 inputProps={{ 'aria-label': 'search' }}
+                className="max-h-fit align-middle"
             />
         </Search>
     </SearchContainer>

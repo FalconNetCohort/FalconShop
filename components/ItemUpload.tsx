@@ -3,8 +3,9 @@ import { addCadetItem } from '@/firebaseUtils';
 import { getDownloadURL, ref as storageRef, uploadBytesResumable } from "firebase/storage";
 import { storage } from '@/firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import router from "next/router.js";
 
-export default function AddCadetItem() {
+export default function ItemUpload() {
     const [item, setItem] = useState({
         title: '',
         description: '',
@@ -12,7 +13,7 @@ export default function AddCadetItem() {
         price: '',
         cadetName: '',
         cadetContact: '',
-        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/cadetImages%2FPlaceHolder.jpg?alt=media&token=40f48230-5a31-4811-89f1-b8d952612240',
+        imageUrl: '',
         quantity:   '',
         createdBy: ''
     });
@@ -78,28 +79,37 @@ export default function AddCadetItem() {
                 },
                 async () => {
                     imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                    addCadetItem({
+                    await addCadetItem({
                         ...item,
-                        imageUrl: imageUrl
-
+                        imageUrl: imageUrl,
+                        createdBy: currentUser.uid
                     });
                     setUploadStatus('Upload successful!');
                 }
+
             );
-        }   else {
-            addCadetItem({
+            await router.push('/'); // Direct the user to the home page.
+
+        } else {
+            // if no image has been uploaded, use a default image
+            imageUrl = 'https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/FalconShop_noImage.png?alt=media&token=a9d51293-08c9-4dd3-8d60-aad660f99323';
+
+            await addCadetItem({
                 ...item,
+                imageUrl: imageUrl, // Set the imageUrl to your default imageUrl
                 createdBy: currentUser.uid // Set the 'createdBy' field to currentUser.uid
             });
-            window.location.href = '/';
+            await router.push('/'); // Direct the user to the home page.
+
+
         }
     };
 
     return (
-        <div className="flex items-center justify-center text-black">
+        <div className="flex justify-center max-w-screen md:px-16">
             <form
                 onSubmit={handleSubmit}
-                className="px-8 py-4 space-y-4 bg-white shadow-md rounded-md w-3/4"
+                className="px-4 py-4 space-y-4 bg-white shadow-md rounded-md w-full"
             >
                 <h1 className="text-2xl font-bold text-center">Add Cadet Item</h1>
 
