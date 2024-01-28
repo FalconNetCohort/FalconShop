@@ -6,6 +6,7 @@ import {SearchBar} from "./Search";
 import {getDocs} from "@firebase/firestore";
 import {collection} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { Button } from '@mui/material';
 
 export interface CadetItem {
     createdBy: any;
@@ -58,6 +59,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             querySnapshot.forEach((docSnapshot) => {
                 fetchedItems.push({
                     ...docSnapshot.data() as CadetItem,
+                    id: docSnapshot.id,
                 });
             });
 
@@ -70,8 +72,15 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             setItems(filteredItems);
         }
 
+
         getItems();
     }, [selectedCategories, searchValue]);
+
+    const notifySeller = (item: CadetItem) => {
+        // The actual notification function
+        // It could make a request to a backend API or directly update a database
+        console.log(`Buyer is interested in item ID: ${item.id}`);
+    };
 
 
     return (
@@ -85,6 +94,13 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                             <p className="block font-bold text-red-700 mb-0"> Your Listing </p>
                         )}
                         <h2 className="card-title-font mb-3 text-xl text-blue-600">{item.title}</h2>
+                        {currentUserId !== item.createdBy && (
+                            <Button
+                                variant="contained"
+                                onClick={() => notifySeller(item)}>
+                                I&apos;m Interested
+                            </Button>
+                        )}
 
                         <span className="block mt-2 font-bold text-blue-700">Price: ${item.price}</span>
                         <p className="card-body-font mt-3">Cadet: {item.cadetName}</p>
