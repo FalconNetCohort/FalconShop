@@ -7,6 +7,7 @@ import {getDocs} from "@firebase/firestore";
 import {collection} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Button } from "@mui/material";
+import {any} from "prop-types";
 
 export interface CadetItem {
     createdBy: any;
@@ -24,6 +25,10 @@ interface ListingsProps {
     selectedCategories: string[];
     searchValue: string;
 }
+
+type InterestedButtonProps = {
+    item: CadetItem,
+};
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
@@ -71,6 +76,21 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
         console.log(`Buyer is interested in item ID: ${item.id}`);
     };
 
+    const InterestedButton: React.FC<InterestedButtonProps> = ({ item }) => {
+        const [hover, setHover] = useState(false);
+        return (
+            <Button
+                className={`text-white ${hover ? "bg-blue-600" : "bg-blue-500"} align-middle w-full`}
+                variant="contained"
+                onClick={() => notifySeller(item)}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+            >
+                {hover ? 'Interested!' : 'Interested?'}
+            </Button>
+        )
+    }
+
     return (
         <section className="flex flex-col items-center justify-center">
             <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
@@ -83,12 +103,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                         )}
                         <h2 className="card-title-font mb-3 text-xl text-blue-600 w-full">{item.title}</h2>
                         {currentUserId !== item.createdBy && (
-                            <Button
-                                className="text-white bg-blue-500 hover:bg-blue-600 align-middle w-full"
-                                variant="contained"
-                                onClick={() => notifySeller(item)}>
-                                Interested
-                            </Button>
+                            <InterestedButton item={item} />
                         )}
 
                         <span className="block mt-2 font-bold text-blue-700">${item.price}</span>

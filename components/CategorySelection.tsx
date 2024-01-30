@@ -14,7 +14,7 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
             value={selectedCategories}
             onChange={(_, newCategories) => setSelectedCategories(newCategories)}
             aria-label="Category Selection"
-            className="flex flex-col sm:flex-row flex-wrap justify-around p-3 w-fit sm:w-3/4 md:w-fit lg:w-fit"
+            className="flex flex-wrap justify-center p-3 w-full"
         >
             <ToggleButton value="Books/Study" className="category">Books/Study</ToggleButton>
             <ToggleButton value="Clothing/Shoes" className="category">Clothing/Shoes</ToggleButton>
