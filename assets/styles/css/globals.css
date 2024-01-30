@@ -26,12 +26,6 @@
   }
 }
 
-body {
-  color: var(--foreground);
-  background-color: var(--background-start); /* Add fallback color for older browsers */
-  background-image: linear-gradient(to bottom, transparent, var(--background-end));
-}
-
 .theme {
   color: #fff;
   background-color: var(--color-main);
@@ -84,6 +78,27 @@ body {
   font-family: 'Myriad Pro', "sans-serif";
   font-size: 1.15rem;
 
+}
+
+.button {
+
+  /* Default font size for large screens */
+  font-size: 16px;
+}
+
+/* For screens smaller than 600px wide */
+@media (max-width: 600px) {
+  .button {
+    font-size: 10px;
+  }
+
+}
+
+/* For screens smaller than 400px wide */
+@media (max-width: 400px) {
+  .button {
+    font-size: 8px;
+  }
 }
 
 
