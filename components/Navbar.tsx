@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { getAuth, User } from 'firebase/auth';
@@ -19,7 +20,7 @@ export default function Navbar() {
                 setUser(null);
             }
         });
-        
+
         return () => {
             unsubscribe();
         };
@@ -28,28 +29,32 @@ export default function Navbar() {
     const handleLogout = async () => {
         const auth = getAuth();
         await auth.signOut();
-        router.push('/auth'); // Redirect to '/auth' after logout
+        await router.push('/auth'); // Redirect to '/auth' after logout
     };
 
     return (
-        <nav className="navbar-font flex justify-between items-center bg-indigo-800 p-4 text-yellow-50">
-            <Link href="/" className="text-2xl font-bold">
-                <img
-                    src="/assets/images/FalconShop_Logo.png"
-                    alt="FalconShop"
-                    style={{width: '150px', height: 'auto'}}
-                />
+        <nav className="rounded-b-lg shadow-lg bg-gradient-to-r from-indigo-600 to-blue-500 p-4 font-semibold flex items-center justify-between text-white">
+            <Link href="/">
+                <div className="flex items-center space-x-3">
+                    <Image
+                        src="/assets/images/FalconShop_Logo.png"
+                        alt="FalconShop"
+                        width={200}
+                        height={200}
+                        layout="fixed"
+                    />
+                </div>
             </Link>
-            <div className="space-x-4">
+            <div className="space-x-8">
                 {!user ? (
                     <>
-                        <Link href="/profile">Post</Link>
-                        <Link href="/auth">Login</Link>
+                        <Link href="/profile" className="hover:text-yellow-300 transition-colors duration-200">Posts</Link>
+                        <Link href="/auth" className="hover:text-yellow-300 transition-colors duration-200">Login</Link>
                     </>
                 ) : (
                     <>
-                        <Link href="/profile">Profile</Link>
-                        <button onClick={handleLogout}>Logout</button>
+                        <Link href="/profile" className="hover:text-yellow-300 transition-colors duration-200">Profile</Link>
+                        <button onClick={handleLogout} className="rounded-lg bg-red-500 hover:bg-red-600 text-white py-1 px-4 transition-colors duration-200">Logout</button>
                     </>
                 )}
             </div>

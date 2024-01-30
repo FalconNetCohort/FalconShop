@@ -2,13 +2,14 @@ import React, {useEffect, useState} from 'react';
 import RootLayout from '@/components/RootLayout';
 import '../firebase';
 import ItemUpload from "@/components/ItemUpload";
-import {getAuth, onAuthStateChanged} from "firebase/auth";
+import {getAuth, onAuthStateChanged, sendPasswordResetEmail} from "firebase/auth";
 import Image from "next/image";
 import {getDocs} from "@firebase/firestore";
 import {collection} from "firebase/firestore";
 import {db} from "@/firebase";
 import {CadetItem} from "@/components/Listings";
 import { deleteDoc, doc } from "@firebase/firestore";
+import Button from "@mui/material/Button";
 
 
 
@@ -20,6 +21,23 @@ export default function Profile() {
     if(user != null && user.email != null){
         umail = user.email
     }
+
+    const handleResetPassword = () => {
+        if(user != null && user.email != null){
+            sendPasswordResetEmail(auth, user.email)
+                .then(() => {
+                    // Password reset email sent!
+                    // Prompt user to check email
+                    console.log('Password reset email sent to', user.email);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log('Error code:', errorCode);
+                    console.log('Error Message:', errorMessage);
+                });
+        }
+    };
 
     const [items, setItems] = useState<CadetItem[]>([]);
     const [validImageUrls, setvalidImageUrls] = useState<string[]>([]);
@@ -95,6 +113,13 @@ export default function Profile() {
                                 <p><strong>Email:</strong> {umail} </p>
                             </div>
                         </div>
+                        <Button
+                            className={"bg-black hover:bg-primary-dark text-white font-bold py-2 px-4 rounded"}
+                            variant="contained"
+                            onClick={handleResetPassword}
+                        >
+                            Reset Password
+                        </Button>
                     </section>
 
                     <section className="w-full">
