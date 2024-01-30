@@ -82,10 +82,10 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                         {currentUserId === item.createdBy && (
                             <p className="block mt-2 font-bold text-red-700 mb-0">Your Listing</p>
                         )}
-                        <h2 className="card-title-font mb-3 text-xl text-blue-600">{item.title}</h2>
+                        <h2 className="card-title-font mb-3 text-xl text-blue-600 w-full">{item.title}</h2>
                         {currentUserId !== item.createdBy && (
                             <Button
-                                className="text-white bg-blue-500 hover:bg-blue-600 mx-auto px-3"
+                                className="text-white bg-blue-500 hover:bg-blue-600 align-middle w-full"
                                 variant="contained"
                                 onClick={() => notifySeller(item)}>
                                 Interested
