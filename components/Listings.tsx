@@ -71,7 +71,6 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
         console.log(`Buyer is interested in item ID: ${item.id}`);
     };
 
-
     return (
         <section className="flex flex-col items-center justify-center">
             <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">

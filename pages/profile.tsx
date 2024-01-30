@@ -114,7 +114,7 @@ export default function Profile() {
                             </div>
                         </div>
                         <Button
-                            className={"bg-black hover:bg-primary-dark text-white font-bold py-2 px-4 rounded"}
+                            className={"text-white bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded"}
                             variant="contained"
                             onClick={handleResetPassword}
                         >

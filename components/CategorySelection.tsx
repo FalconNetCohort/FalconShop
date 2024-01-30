@@ -16,14 +16,14 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
             aria-label="Category Selection"
             className="flex flex-wrap justify-around"
         >
-            <ToggleButton value="Books/Study" className="my-2 rounded-lg font-bold border-2 border-blue-500">Books/Study</ToggleButton>
-            <ToggleButton value="Clothing/Shoes" className="my-2 rounded-lg font-bold border-2 border-blue-500">Clothing/Shoes</ToggleButton>
-            <ToggleButton value="Electronics" className="my-2 rounded-lg font-bold border-2 border-blue-500">Electronics</ToggleButton>
-            <ToggleButton value="Uniform" className="my-2 rounded-lg font-bold border-2 border-blue-500">Uniform</ToggleButton>
-            <ToggleButton value="Vehicles"  className="my-2 rounded-lg font-bold border-2 border-blue-500">Vehicles</ToggleButton>
-            <ToggleButton value="Cooking"  className="my-2 rounded-lg font-bold border-2 border-blue-500">Cooking</ToggleButton>
-            <ToggleButton value="Appliances"  className="my-2 rounded-lg font-bold border-2 border-blue-500">Appliances</ToggleButton>
-            <ToggleButton value="Other"  className="my-2 rounded-lg font-bold border-2 border-blue-500">Other</ToggleButton>
+            <ToggleButton value="Books/Study" className="category">Books/Study</ToggleButton>
+            <ToggleButton value="Clothing/Shoes" className="category">Clothing/Shoes</ToggleButton>
+            <ToggleButton value="Electronics" className="category">Electronics</ToggleButton>
+            <ToggleButton value="Uniform" className="category">Uniform</ToggleButton>
+            <ToggleButton value="Vehicles"  className="category">Vehicles</ToggleButton>
+            <ToggleButton value="Cooking"  className="category">Cooking</ToggleButton>
+            <ToggleButton value="Appliances"  className="category">Appliances</ToggleButton>
+            <ToggleButton value="Other"  className="category">Other</ToggleButton>
         </ToggleButtonGroup>
     </div>
 );
