@@ -35,15 +35,11 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
+    width: '100%', // Make sure this takes the full width of parent div
     '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        padding: theme.spacing(1),
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`, // Adjust for search icon
         transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '100ch',
-        },
     },
 }));
 
