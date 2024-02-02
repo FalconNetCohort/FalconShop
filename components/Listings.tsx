@@ -70,23 +70,30 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
         getItems();
     }, [selectedCategories, searchValue, currentUserId]);
 
+    // Add state to keep count of interested items
+    const [interestedInItems, setInterestedInItems] = useState<string[]>([]);
     const notifySeller = (item: CadetItem) => {
         // The actual notification function
         // It could make a request to a backend API or directly update a database
         console.log(`Buyer is interested in item ID: ${item.id}`);
+        // Add the interested item id to the array
+        setInterestedInItems(oldArray => [...oldArray, item.id]);
     };
 
     const InterestedButton: React.FC<InterestedButtonProps> = ({ item }) => {
         const [hover, setHover] = useState(false);
         return (
             <Button
-                className={`text-white ${hover ? "bg-blue-600" : "bg-blue-500"} align-middle w-full`}
+                className={`text-white ${interestedInItems.includes(item.id) ? 'bg-gray-500' : hover ? 'bg-blue-600' : 'bg-blue-500'} align-middle w-full`}
                 variant="contained"
-                onClick={() => notifySeller(item)}
+                onClick={() => {
+                    notifySeller(item);
+                }}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
+                disabled={interestedInItems.includes(item.id) || interestedInItems.length >= 5} // Check whether item is in the array or array size is 3
             >
-                {hover ? 'Interested!' : 'Interested?'}
+                {hover ? 'Interested!' : 'Interested!'}
             </Button>
         )
     }
