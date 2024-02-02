@@ -91,7 +91,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                 }}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
-                disabled={interestedInItems.includes(item.id) || interestedInItems.length >= 5} // Check whether item is in the array or array size is 3
+                disabled={interestedInItems.includes(item.id) || interestedInItems.length >= 5}
             >
                 {hover ? 'Interested!' : 'Interested!'}
             </Button>
