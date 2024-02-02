@@ -26,12 +26,6 @@
   }
 }
 
-body {
-  color: var(--foreground);
-  background-color: var(--background-start); /* Add fallback color for older browsers */
-  background-image: linear-gradient(to bottom, transparent, var(--background-end));
-}
-
 .theme {
   color: #fff;
   background-color: var(--color-main);
@@ -67,6 +61,12 @@ body {
   font-weight: 400;
 }
 
+.card-desc-font {
+  font-family: 'Myriad Pro', "sans-serif";
+  font-size: 1rem;
+  font-weight: 350;
+}
+
 .theme {
   font-family: 'Myriad Pro', "sans-serif";
   color: #ffffff;
@@ -80,6 +80,32 @@ body {
 
 }
 
+.button {
+  /* Default font size for large screens */
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  /* rules for mobile view */
+  .category {
+    overflow-x: auto;
+  }
+}
+
+/* For screens smaller than 600px wide */
+@media (max-width: 600px) {
+  .card-title-font {
+    font-size: 1.5rem;
+  }
+}
+
+/* For screens smaller than 400px wide */
+@media (max-width: 400px) {
+    .card-title-font {
+        font-size: 1.25em;
+    }
+}
+
 
 @layer components {
   .auth-global {
@@ -87,6 +113,14 @@ body {
   }
   .scale-global {
     @apply text-black bg-gray-100 flex flex-col items-center justify-center min-h-screen font-MyriadPro font-semibold;
+  }
+  .card {
+    @apply border rounded-lg bg-neutral-800/30 border-gray-400 hover:border-blue-500 hover:bg-blue-200 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105;
+  }
+  .category {
+    @apply flex-grow;
+    @apply my-2 mx-1 font-bold duration-300 hover:bg-blue-500 hover:text-white;
+    box-shadow: 0 0 0 2px #3b82f6;
   }
 }
 
