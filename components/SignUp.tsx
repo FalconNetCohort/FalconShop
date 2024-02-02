@@ -37,7 +37,7 @@ export default function SignUp() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center text-black">
+        <div className="auth-form">
             <h1 className="text-2xl mb-4">Sign up for FalconShop</h1>
             {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleAuth} className="w-64">
@@ -46,16 +46,16 @@ export default function SignUp() {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="mb-3 p-2 ml-7 border rounded shadow-lg"
+                    className="w-full mb-3 p-2 border rounded shadow-lg"
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="mb-3 p-2 ml-7 border rounded shadow-lg"
+                    className="w-full mb-3 p-2 border rounded shadow-lg"
                 />
-                <button type="submit" className="w-full mt-4 p-2 bg-indigo-600 text-white text-md rounded shadow-lg hover:animate-pulse">
+                <button type="submit" className="auth-btn">
                     Create FalconShop account
                 </button>
             </form>

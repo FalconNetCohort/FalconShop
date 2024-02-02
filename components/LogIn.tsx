@@ -24,7 +24,7 @@ export default function LogIn() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center text-black">
+        <div className="auth-form">
             <h1 className="text-3xl mb-4">Log In</h1>
             {errorMessage && <div className="alert alert-danger text-red-500">{errorMessage}</div>}
             <form onSubmit={handleAuth} className="w-64">
@@ -42,7 +42,7 @@ export default function LogIn() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="mb-2 p-2 border rounded w-64"
                 />
-                <button type="submit" className="w-full p-2 bg-indigo-500 text-white rounded mb-4">
+                <button type="submit" className="auth-btn">
                     Log In
                 </button>
             </form>
