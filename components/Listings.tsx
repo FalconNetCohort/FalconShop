@@ -93,7 +93,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                 onMouseLeave={() => setHover(false)}
                 disabled={interestedInItems.includes(item.id) || interestedInItems.length >= 5}
             >
-                {hover ? 'Interested!' : 'Interested!'}
+                {hover ? 'Interested?' : 'Interested!'}
             </Button>
         )
     }
