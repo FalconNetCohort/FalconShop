@@ -1,10 +1,19 @@
 import { ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { styled } from '@mui/system';
 
 interface CategorySelectionProps {
     selectedCategories: string[];
     setSelectedCategories: (newCategories: string[]) => void;
 }
-
+const CustomToggleButton = styled(ToggleButton)({
+    '&.Mui-selected': {
+        backgroundColor: 'lightblue',
+        '&:hover': {
+            backgroundColor: 'blue',
+        },
+        color: 'white',
+    },
+});
 const CategorySelection: React.FC<CategorySelectionProps> = ({
                                                                  selectedCategories,
                                                                  setSelectedCategories,
@@ -16,14 +25,14 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
             aria-label="Category Selection"
             className="flex flex-wrap justify-center p-3 w-full"
         >
-            <ToggleButton value="Books/Study" className="category">Books/Study</ToggleButton>
-            <ToggleButton value="Clothing/Shoes" className="category">Clothing/Shoes</ToggleButton>
-            <ToggleButton value="Electronics" className="category">Electronics</ToggleButton>
-            <ToggleButton value="Uniform" className="category">Uniform</ToggleButton>
-            <ToggleButton value="Vehicles"  className="category">Vehicles</ToggleButton>
-            <ToggleButton value="Cooking"  className="category">Cooking</ToggleButton>
-            <ToggleButton value="Appliances"  className="category">Appliances</ToggleButton>
-            <ToggleButton value="Other"  className="category">Other</ToggleButton>
+            <CustomToggleButton value="Books/Study" className="category">Books/Study</CustomToggleButton>
+            <CustomToggleButton value="Clothing/Shoes" className="category">Clothing/Shoes</CustomToggleButton>
+            <CustomToggleButton value="Electronics" className="category">Electronics</CustomToggleButton>
+            <CustomToggleButton value="Uniform" className="category">Uniform</CustomToggleButton>
+            <CustomToggleButton value="Vehicles" className="category">Vehicles</CustomToggleButton>
+            <CustomToggleButton value="Cooking" className="category">Cooking</CustomToggleButton>
+            <CustomToggleButton value="Appliances" className="category">Appliances</CustomToggleButton>
+            <CustomToggleButton value="Other" className="category">Other</CustomToggleButton>
         </ToggleButtonGroup>
     </div>
 );
