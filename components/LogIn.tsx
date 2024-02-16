@@ -25,7 +25,7 @@ export default function LogIn() {
 
     return (
         <div className="auth-form">
-            <h1 className="text-3xl mb-4">Log In</h1>
+            <h1 className="text-3xl mb-4">Login</h1>
             {errorMessage && <div className="alert alert-danger text-red-500">{errorMessage}</div>}
             <form onSubmit={handleAuth} className="w-64">
                 <input

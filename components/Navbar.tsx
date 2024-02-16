@@ -47,10 +47,7 @@ export default function Navbar() {
             </Link>
             <div className="space-x-8">
                 {!user ? (
-                    <>
-                        <Link href="/profile" className="hover:text-yellow-300 transition-colors duration-200">Posts</Link>
-                        <Link href="/auth" className="hover:text-yellow-300 transition-colors duration-200">Login</Link>
-                    </>
+                    <Link href="/auth" className="hover:text-yellow-300 transition-colors duration-200">Login</Link>
                 ) : (
                     <>
                         <Link href="/profile" className="hover:text-yellow-300 transition-colors duration-200">Profile</Link>

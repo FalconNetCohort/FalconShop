@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { useRouter } from 'next/router'; // Import useRouter from Next.js
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -7,11 +8,15 @@ export default function ForgotPassword() {
     const [message, setMessage] = useState('');
 
     const auth = getAuth();
+    const router = useRouter(); // Initialize the useRouter object
 
     const sendResetEmail = async () => {
         try {
             await sendPasswordResetEmail(auth, email);
             setMessage('An email has been sent to your email address. Please click the link in that email to reset your password.');
+
+            // After the password reset email is sent, route to login page
+            await router.push('/auth');
         } catch (error: any) {
             console.error("Error sending password reset email:", error.message);
             setErrorMessage(error.message);
