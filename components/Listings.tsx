@@ -78,14 +78,11 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                             {currentUserId === item.createdBy && (
                                 <p className="block mt-2 font-bold text-red-700 mb-0">Your Listing</p>
                             )}
-                            <h2 className="card-title-font mb-3 text-xl text-blue-600 w-full">{item.title}</h2>
-
+                            <h2 className="card-title-font mb-3 text-xl text-blue-600 w-full overflow-wrap break-word word-break break-all">{item.title}</h2>
                             <span className="block mt-2 font-bold text-blue-700">${item.price}</span>
-                            <p className="card-body-font mt-3 text-gray-600">Cadet: {item.cadetName}</p>
-                            <p className="card-body-font mt-1 text-gray-600">Contact: {item.cadetContact}</p>
-                            <p className="card-desc-font opacity-70 mb-3">
-                                {item.description}
-                            </p>
+                            <p className="card-body-font mt-3 text-gray-600 overflow-wrap break-word word-break break-all">Cadet: {item.cadetName}</p>
+                            <p className="card-body-font mt-1 text-gray-600 overflow-wrap break-word word-break break-all">Contact: {item.cadetContact}</p>
+                            <p className="card-desc-font opacity-70 mb-3 overflow-wrap break-word word-break break-all">{item.description}</p>
                             <Image
                                 src={item.imageUrl}
                                 alt=""
@@ -100,7 +97,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             </section>
             :
             <div className="flex justify-center h-screen">
-                <p className="text-center text-2xl text-blue-500">Please sign in to view listings</p>
+                <p className="text-center text-2xl text-blue-500">Please login with AFACADEMY email to view listings</p>
             </div>
     );
 }

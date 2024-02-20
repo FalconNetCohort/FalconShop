@@ -118,21 +118,22 @@ export default function ItemUpload() {
                     type="text"
                     placeholder="Title"
                     value={item.title}
-                    onChange={e => setItem({ ...item, title: e.target.value })}
+                    onChange={e => setItem({...item, title: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
+                    maxLength={50} // max length of 50 characters
                     required
                 />
-                <input
-                    type="text"
+                <textarea
                     placeholder="Description"
                     value={item.description}
-                    onChange={e => setItem({ ...item, description: e.target.value })}
+                    onChange={e => setItem({...item, description: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
+                    maxLength={200} // max length of 200 characters
                 />
                 <select
                     id="category"
                     value={item.category}
-                    onChange={(e) => setItem({ ...item, category: e.target.value })}
+                    onChange={(e) => setItem({...item, category: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                 >
                     <option value="">Select a category</option>
@@ -149,7 +150,7 @@ export default function ItemUpload() {
                     type="number"
                     placeholder="Price"
                     value={item.price}
-                    onChange={e => setItem({ ...item, price: e.target.value })}
+                    onChange={e => setItem({...item, price: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
@@ -157,7 +158,7 @@ export default function ItemUpload() {
                     type="text"
                     placeholder="Cadet Name"
                     value={item.cadetName}
-                    onChange={e => setItem({ ...item, cadetName: e.target.value })}
+                    onChange={e => setItem({...item, cadetName: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
@@ -165,7 +166,7 @@ export default function ItemUpload() {
                     type="text"
                     placeholder="Cadet Contact"
                     value={item.cadetContact}
-                    onChange={e => setItem({ ...item, cadetContact: e.target.value })}
+                    onChange={e => setItem({...item, cadetContact: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
@@ -173,7 +174,7 @@ export default function ItemUpload() {
                     type="number"
                     placeholder="Quantity"
                     value={item.quantity}
-                    onChange={e => setItem({ ...item, quantity: e.target.value })}
+                    onChange={e => setItem({...item, quantity: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
