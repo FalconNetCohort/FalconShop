@@ -6,7 +6,6 @@ import {getDocs} from "@firebase/firestore";
 import {collection} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-
 export interface CadetItem {
     createdBy: any;
     id: string;
@@ -68,37 +67,40 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
         getItems();
     }, [selectedCategories, searchValue, currentUserId]);
 
-
-
     return (
-        <section className="flex flex-col items-center justify-center">
-            <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
+        currentUserId ?
+            <section className="flex flex-col items-center justify-center">
+                <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
 
-                {items.map((item) => (
-                    <div key={item.id}
-                         className="card">
-                        {currentUserId === item.createdBy && (
-                            <p className="block mt-2 font-bold text-red-700 mb-0">Your Listing</p>
-                        )}
-                        <h2 className="card-title-font mb-3 text-xl text-blue-600 w-full">{item.title}</h2>
+                    {items.map((item) => (
+                        <div key={item.id}
+                             className="card">
+                            {currentUserId === item.createdBy && (
+                                <p className="block mt-2 font-bold text-red-700 mb-0">Your Listing</p>
+                            )}
+                            <h2 className="card-title-font mb-3 text-xl text-blue-600 w-full">{item.title}</h2>
 
-                        <span className="block mt-2 font-bold text-blue-700">${item.price}</span>
-                        <p className="card-body-font mt-3 text-gray-600">Cadet: {item.cadetName}</p>
-                        <p className="card-body-font mt-1 text-gray-600">Contact: {item.cadetContact}</p>
-                        <p className="card-desc-font opacity-70 mb-3">
-                            {item.description}
-                        </p>
-                        <Image
-                            src={item.imageUrl}
-                            alt=""
-                            width={150}
-                            height={150}
-                            loader={({src}) => src}
-                        />
-                    </div>
-                ))}
+                            <span className="block mt-2 font-bold text-blue-700">${item.price}</span>
+                            <p className="card-body-font mt-3 text-gray-600">Cadet: {item.cadetName}</p>
+                            <p className="card-body-font mt-1 text-gray-600">Contact: {item.cadetContact}</p>
+                            <p className="card-desc-font opacity-70 mb-3">
+                                {item.description}
+                            </p>
+                            <Image
+                                src={item.imageUrl}
+                                alt=""
+                                width={150}
+                                height={150}
+                                loader={({src}) => src}
+                            />
+                        </div>
+                    ))}
 
+                </div>
+            </section>
+            :
+            <div className="flex justify-center h-screen">
+                <p className="text-center text-2xl text-blue-500">Please sign in to view listings</p>
             </div>
-        </section>
     );
 }
