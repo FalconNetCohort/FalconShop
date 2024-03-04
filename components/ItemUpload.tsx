@@ -20,6 +20,7 @@ export default function ItemUpload() {
     const [image, setImage] = useState<File | null>(null);
     const [uploadStatus, setUploadStatus] = useState<string>('');
     const [currentUser, setCurrentUser] = useState<any>(null); // Store current user
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     useEffect(() => {
         const auth = getAuth();
@@ -57,6 +58,11 @@ export default function ItemUpload() {
         // Check if a category is selected
         if (!item.category) {
             setUploadStatus('Please select a category.');
+            return;
+        }
+
+        if (!acceptedTerms) {
+            setUploadStatus('You must accept the terms and conditions before submitting the form.');
             return;
         }
 
@@ -118,7 +124,7 @@ export default function ItemUpload() {
                     type="text"
                     placeholder="Title"
                     value={item.title}
-                    onChange={e => setItem({ ...item, title: e.target.value })}
+                    onChange={e => setItem({...item, title: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
@@ -126,13 +132,13 @@ export default function ItemUpload() {
                     type="text"
                     placeholder="Description"
                     value={item.description}
-                    onChange={e => setItem({ ...item, description: e.target.value })}
+                    onChange={e => setItem({...item, description: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                 />
                 <select
                     id="category"
                     value={item.category}
-                    onChange={(e) => setItem({ ...item, category: e.target.value })}
+                    onChange={(e) => setItem({...item, category: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                 >
                     <option value="">Select a category</option>
@@ -149,7 +155,7 @@ export default function ItemUpload() {
                     type="number"
                     placeholder="Price"
                     value={item.price}
-                    onChange={e => setItem({ ...item, price: e.target.value })}
+                    onChange={e => setItem({...item, price: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
@@ -157,7 +163,7 @@ export default function ItemUpload() {
                     type="text"
                     placeholder="Cadet Name"
                     value={item.cadetName}
-                    onChange={e => setItem({ ...item, cadetName: e.target.value })}
+                    onChange={e => setItem({...item, cadetName: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
@@ -165,7 +171,7 @@ export default function ItemUpload() {
                     type="text"
                     placeholder="Cadet Contact"
                     value={item.cadetContact}
-                    onChange={e => setItem({ ...item, cadetContact: e.target.value })}
+                    onChange={e => setItem({...item, cadetContact: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
@@ -173,7 +179,7 @@ export default function ItemUpload() {
                     type="number"
                     placeholder="Quantity"
                     value={item.quantity}
-                    onChange={e => setItem({ ...item, quantity: e.target.value })}
+                    onChange={e => setItem({...item, quantity: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
@@ -183,7 +189,15 @@ export default function ItemUpload() {
                     className="my-2 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {uploadStatus && <p className="p-2 border border-gray-300 rounded-md w-full">{uploadStatus}</p>}
-
+                <input
+                    type="checkbox"
+                    id="disclaimer"
+                    checked={acceptedTerms}
+                    onChange={e => setAcceptedTerms(e.target.checked)}
+                />
+                <label htmlFor="disclaimer" className="ml-2">
+                    I understand that "FalconShop does not take responsibility/interfere/assist if issues arise in the transaction."
+                </label>
                 <button
                     type="submit"
                     className="w-full p-2 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
