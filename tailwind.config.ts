@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      overflowWrap: {
+        'anywhere': 'anywhere'
+      },
+
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':

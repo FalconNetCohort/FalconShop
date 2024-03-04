@@ -73,16 +73,15 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                 <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
 
                     {items.map((item) => (
-                        <div key={item.id}
-                             className="card">
+                        <div key={item.id} className="card">
                             {currentUserId === item.createdBy && (
                                 <p className="block mt-2 font-bold text-red-700 mb-0">Your Listing</p>
                             )}
-                            <h2 className="card-title-font mb-3 text-xl text-blue-600 w-full">{item.title}</h2>
-                            <span className="block mt-2 font-bold text-blue-700">${item.price}</span>
-                            <p className="card-body-font mt-3 text-gray-600">Cadet: {item.cadetName}</p>
-                            <p className="card-body-font mt-1 text-gray-600">Contact: {item.cadetContact}</p>
-                            <p className="card-desc-font opacity-70 mb-3">{item.description}</p>
+                            <h2 className="card-title-font mb-3 text-xl w-full overflow-wrap-anywhere break-words">{item.title}</h2>
+                            <span className="block mt-2 font-bold text-blue-700 overflow-wrap-anywhere break-words">${item.price}</span>
+                            <p className="card-body-font mt-3 text-gray-600 overflow-wrap-anywhere break-words">Cadet: {item.cadetName}</p>
+                            <p className="card-body-font mt-1 text-gray-600 overflow-wrap-anywhere break-words">Contact: {item.cadetContact}</p>
+                            <p className="card-desc-font opacity-70 mb-3 overflow-wrap-anywhere break-words">{item.description}</p>
                             <Image
                                 src={item.imageUrl}
                                 alt=""
