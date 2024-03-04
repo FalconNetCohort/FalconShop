@@ -12,6 +12,13 @@ export default function LogIn() {
     const auth = getAuth();
     const router = useRouter();
 
+    useEffect(() => {
+        if (localStorage.getItem('showEmailVerificationMessage')) {
+            setErrorMessage('Please check your email and verify your account before logging in.');
+            localStorage.removeItem('showEmailVerificationMessage');
+        }
+    }, []);
+
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -21,7 +28,7 @@ export default function LogIn() {
                     setErrorMessage("Please verify your email before logging in.");
                     return;
                 } else {
-                    router.push('/');
+                    await router.push('/');
                 }
             }
         } catch (error: any) {

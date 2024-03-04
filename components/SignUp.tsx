@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import {createUserWithEmailAndPassword, getAuth, sendEmailVerification } from 'firebase/auth';
+import {createUserWithEmailAndPassword, getAuth, sendEmailVerification, signOut} from 'firebase/auth';
 import '../firebase.js'; // adjust the path accordingly
 
 
@@ -10,11 +10,9 @@ export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const [verificationMessage, setVerificationMessage] = useState<string | null>(null);
     const auth = getAuth();
     const router = useRouter();
-
-
-
 
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,14 +20,20 @@ export default function SignUp() {
         try {
             if(hasAFAcademy(email)){
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
                 // After creation of the user, send the user a verification email.
                 if(userCredential.user) {
                     await sendEmailVerification(userCredential.user);
-                    await router.push('/');
+                    setVerificationMessage("Account created successfully! Please check your email to verify your account.");
+                    // Sign the user out
+                    await signOut(auth);
+                    // set flag in localStorage
+                    localStorage.setItem('showEmailVerificationMessage', 'true');
+                    await router.push('/auth');  // Redirect to login page after successful account creation
                 }
-
             }
-            if(!hasAFAcademy(email)){
+
+            if (!hasAFAcademy(email)){
                 console.error("Use AF Academy Email");
                 setError("Use AF Academy Email");
             }
@@ -65,6 +69,7 @@ export default function SignUp() {
                     Create FalconShop account
                 </button>
             </form>
+            {verificationMessage && <p className="text-green-500">{verificationMessage}</p>}
         </div>
     );
 }
