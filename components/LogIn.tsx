@@ -15,8 +15,15 @@ export default function LogIn() {
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            router.push('/');
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            if (userCredential.user) {
+                if (!userCredential.user.emailVerified) {
+                    setErrorMessage("Please verify your email before logging in.");
+                    return;
+                } else {
+                    router.push('/');
+                }
+            }
         } catch (error: any) {
             console.error("Error during authentication:", error.message);
             setErrorMessage(error.message);

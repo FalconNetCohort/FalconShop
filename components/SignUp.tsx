@@ -30,8 +30,8 @@ export default function SignUp() {
 
             }
             if(!hasAFAcademy(email)){
-                console.error("Chinese Spy Detected: Use AF Academy Email");
-                setError("Chinese Spy Detected: Use AF Academy Email");
+                console.error("Use AF Academy Email");
+                setError("Use AF Academy Email");
             }
         } catch (error) {
 
