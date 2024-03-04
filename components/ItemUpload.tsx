@@ -126,14 +126,15 @@ export default function ItemUpload() {
                     value={item.title}
                     onChange={e => setItem({...item, title: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
+                    maxLength={50} // max length of 50 characters
                     required
                 />
-                <input
-                    type="text"
+                <textarea
                     placeholder="Description"
                     value={item.description}
                     onChange={e => setItem({...item, description: e.target.value})}
                     className="p-2 border border-gray-300 rounded-md w-full"
+                    maxLength={200} // max length of 200 characters
                 />
                 <select
                     id="category"

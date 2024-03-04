@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
+import {createUserWithEmailAndPassword, getAuth, sendEmailVerification } from 'firebase/auth';
 import '../firebase.js'; // adjust the path accordingly
+
 
 
 export default function SignUp() {
@@ -20,8 +21,13 @@ export default function SignUp() {
 
         try {
             if(hasAFAcademy(email)){
-                await createUserWithEmailAndPassword(auth, email, password);
-                await router.push('/');
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // After creation of the user, send the user a verification email.
+                if(userCredential.user) {
+                    await sendEmailVerification(userCredential.user);
+                    await router.push('/');
+                }
+
             }
             if(!hasAFAcademy(email)){
                 console.error("Chinese Spy Detected: Use AF Academy Email");
@@ -62,6 +68,7 @@ export default function SignUp() {
         </div>
     );
 }
+
 function hasAFAcademy(inputString: String) {
     return inputString.endsWith("@afacademy.af.edu");
 }
