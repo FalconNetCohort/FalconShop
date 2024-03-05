@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import {createUserWithEmailAndPassword, getAuth, sendEmailVerification, signOut} from 'firebase/auth';
 import '../firebase.js'; // adjust the path accordingly
 
-
-
 export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -38,7 +36,6 @@ export default function SignUp() {
                 setError("Use AF Academy Email");
             }
         } catch (error) {
-
             if (error instanceof Error) {
                 console.error("Error during authentication:", error.message);
                 setError(error.message);
@@ -65,6 +62,7 @@ export default function SignUp() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full mb-3 p-2 border rounded shadow-lg"
                 />
+                <p style={{color: 'red', textAlign: 'center'}} className="mt-0 mb-4 p-2">Do not use your Office 365 Microsoft Password!</p>
                 <button type="submit" className="auth-btn">
                     Create FalconShop account
                 </button>

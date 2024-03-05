@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, User } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import '../firebase.js';
 
 export default function LogIn() {
@@ -56,6 +56,8 @@ export default function LogIn() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="mb-2 p-2 border rounded w-64"
                 />
+                <p style={{color: 'red', textAlign: 'center'}} className="mt-0 mb-4 p-2">Do not use your Office 365
+                    Microsoft Password!</p>
                 <button type="submit" className="auth-btn">
                     Log In
                 </button>
