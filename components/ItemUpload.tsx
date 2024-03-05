@@ -117,7 +117,7 @@ export default function ItemUpload() {
                 onSubmit={handleSubmit}
                 className="px-4 py-4 space-y-4 bg-white shadow-md rounded-md w-full"
             >
-                <h1 className="text-2xl font-bold text-center">Add Cadet Item</h1>
+                <h1 className="text-2xl font-bold text-center">Add Item</h1>
 
                 {/* Form Inputs for title, description, price, etc. with 'required' attribute added */}
                 <input
@@ -176,6 +176,7 @@ export default function ItemUpload() {
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
+                <p className="text-xs text-gray-500">* This website is not cleared to store phone numbers.</p>
                 <input
                     type="number"
                     placeholder="Quantity"
