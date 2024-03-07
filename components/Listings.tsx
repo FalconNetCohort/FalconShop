@@ -23,13 +23,10 @@ interface ListingsProps {
     searchValue: string;
 }
 
-type InterestedButtonProps = {
-    item: CadetItem,
-};
+
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
-    const [validImageUrls, setValidImageUrls] = useState<string[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -57,10 +54,8 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                 (searchValue === '' || item.title.toLowerCase().includes(searchValue.toLowerCase()))
             );
 
-            // Sort items to have the current user's items at the top
             filteredItems.sort((a, b) => (a.createdBy === currentUserId ? -1 : b.createdBy === currentUserId ? 1 : 0));
 
-            console.log("Filtered items based on categories and search:", filteredItems);
             setItems(filteredItems);
         }
 
@@ -70,33 +65,31 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     return (
         currentUserId ?
             <section className="flex flex-col items-center justify-center">
-                <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
-
+                <div className="mb-32 grid mx-auto gap-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-9">
                     {items.map((item) => (
-                        <div key={item.id} className="card">
+                        <div key={item.id} className="card text-sm">
                             {currentUserId === item.createdBy && (
-                                <p className="block mt-2 font-bold text-red-700 mb-0">Your Listing</p>
+                                <p className="block mt-1 font-bold text-red-700 mb-0 text-xs">Your Listing</p>
                             )}
-                            <h2 className="card-title-font mb-3 text-xl w-full overflow-wrap-anywhere break-words">{item.title}</h2>
-                            <span className="block mt-2 font-bold text-blue-700 overflow-wrap-anywhere break-words">${item.price}</span>
-                            <p className="card-body-font mt-3 text-gray-600 overflow-wrap-anywhere break-words">Cadet: {item.cadetName}</p>
+                            <h2 className="card-title-font mb-2 text-lg w-full overflow-wrap-anywhere break-words">{item.title}</h2>
+                            <span className="block mt-1 font-bold text-blue-700 overflow-wrap-anywhere break-words">${item.price}</span>
+                            <p className="card-body-font mt-2 text-gray-600 overflow-wrap-anywhere break-words">Cadet: {item.cadetName}</p>
                             <p className="card-body-font mt-1 text-gray-600 overflow-wrap-anywhere break-words">Contact: {item.cadetContact}</p>
-                            <p className="card-desc-font opacity-70 mb-3 overflow-wrap-anywhere break-words">{item.description}</p>
+                            <p className="card-desc-font opacity-70 mb-2 overflow-wrap-anywhere break-words">{item.description}</p>
                             <Image
                                 src={item.imageUrl}
                                 alt=""
-                                width={150}
-                                height={150}
+                                width={60} // Slightly reduced from previous size
+                                height={60} // Slightly reduced from previous size
                                 loader={({src}) => src}
                             />
                         </div>
                     ))}
-
                 </div>
             </section>
             :
             <div className="flex justify-center h-screen">
-                <p className="text-center text-2xl text-blue-500">Please login with AFACADEMY email to view listings</p>
+                <p className="text-center text-lg text-blue-500">Please login with AFACADEMY email to view listings</p>
             </div>
     );
 }
