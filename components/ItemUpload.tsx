@@ -109,7 +109,6 @@ export default function ItemUpload() {
                 }
 
             );
-            await router.push('/'); // Direct the user to the home page.
 
         } else {
             // if no image has been uploaded, use a default image
