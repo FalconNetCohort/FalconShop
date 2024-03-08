@@ -35,13 +35,28 @@ export default function ItemUpload() {
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            setImage(e.target.files[0]);
+            const file = e.target.files[0];
+            const fileType = file.type.split('/')[1];
+            if (fileType !== 'png' && fileType !== 'jpg' && fileType !== 'jpeg' && fileType !== 'webp') {
+                setUploadStatus('File type must be png, jpg, or jpeg.');
+                return;
+            }
+            if (file.size > 2 * 1024 * 1024) {
+                setUploadStatus('File size should not exceed 2MB');
+                return;
+            }
+            setImage(file);
             setUploadStatus('File selected.');
+            setUploadStatus(''); // Clear any previous errors
         }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (uploadStatus) {
+            return;
+        }
 
         // Check if the price is a positive number
         if (!/^\d*\.?\d+$/.test(item.price) || parseFloat(item.price) <= 0) {
@@ -184,8 +199,12 @@ export default function ItemUpload() {
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
+                <label htmlFor="fileUpload" className="my-2 p-2 border border-gray-300 rounded-md w-full">
+                    Upload image (png, jpg, jpeg only, max 2MB)
+                </label>
                 <input
                     type="file"
+                    id="fileUpload"
                     onChange={handleImageChange}
                     className="my-2 p-2 border border-gray-300 rounded-md w-full"
                 />
