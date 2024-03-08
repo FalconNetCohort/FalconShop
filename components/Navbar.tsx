@@ -58,10 +58,10 @@ export default function Navbar() {
                     {!user ? (
                         <Link href="/auth" className="hover:text-yellow-300 transition-colors duration-200">Login</Link>
                     ) : (
-                        <>
+                        <span className="profile-menu">
                             <Link href="/profile" className="hover:text-yellow-300 transition-colors duration-200">Profile/Upload Item</Link>
                             <button onClick={handleLogout} className="rounded-lg bg-red-500 hover:bg-red-600 text-white py-1 px-4 transition-colors duration-200">Logout</button>
-                        </>
+                        </span>
                     )}
                 </div>
             </nav>

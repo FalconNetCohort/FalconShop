@@ -128,5 +128,14 @@ body {
   .auth-form {
     @apply w-full max-w-sm flex flex-col items-center justify-center text-black;
   }
+  .profile-menu {
+    /* remove internals before applying theme */
+    @apply right-0;
+  }
+  .category-menu {
+    /* this is for mobile users */
+    /* remove internals before applying theme */
+    @apply right-0;
+  }
 }
 
