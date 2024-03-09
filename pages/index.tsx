@@ -26,7 +26,7 @@ export default function Index() {
 
     return (
         <RootLayout>
-            <main className="flex min-h-screen flex-col pt-6 bg-gray-100">
+            <main className="flex min-h-screen flex-col pt-4 bg-gray-100 px-8">
             <div>
                 <CategorySelection selectedCategories={selectedCategories}
                                    setSelectedCategories={setSelectedCategories}/>
@@ -34,7 +34,7 @@ export default function Index() {
             <div className="py-1 w-full mx-auto">
                 <SearchBar searchValue={search} setSearchValue={setSearch}/>
             </div>
-            <div className="p-4">
+            <div className="p-4 ">
                 <Listings selectedCategories={selectedCategories} searchValue={search}/>
             </div>
         </main>
