@@ -38,7 +38,7 @@ export default function ItemUpload() {
             const file = e.target.files[0];
             const fileType = file.type.split('/')[1];
             if (fileType !== 'png' && fileType !== 'jpg' && fileType !== 'jpeg' && fileType !== 'webp') {
-                setUploadStatus('File type must be png, jpg, or jpeg.');
+                setUploadStatus('Filetype must be png, jpg, or jpeg.');
                 return;
             }
             if (file.size > 2 * 1024 * 1024) {
@@ -199,9 +199,6 @@ export default function ItemUpload() {
                     className="p-2 border border-gray-300 rounded-md w-full"
                     required
                 />
-                <label htmlFor="fileUpload" className="my-2 p-2 border border-gray-300 rounded-md w-full">
-                    Upload image (png, jpg, jpeg only, max 2MB)
-                </label>
                 <input
                     type="file"
                     id="fileUpload"
@@ -209,6 +206,11 @@ export default function ItemUpload() {
                     className="my-2 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {uploadStatus && <p className="p-2 border border-gray-300 rounded-md w-full">{uploadStatus}</p>}
+
+                <p className="text-xs text-gray-500">
+                    Upload image (png, jpg, jpeg max 2MB)
+                </p>
+
                 <input
                     type="checkbox"
                     id="disclaimer"
@@ -217,7 +219,8 @@ export default function ItemUpload() {
                 />
                 <label htmlFor="disclaimer" className="ml-2">
                     {/* eslint-disable-next-line react/no-unescaped-entities */}
-                    I understand that "FalconShop does not take responsibility/interfere/assist if issues arise in the transaction."
+                    I understand that "FalconShop does not take responsibility/interfere/assist if issues arise in
+                    the transaction."
                 </label>
                 <button
                     type="submit"
