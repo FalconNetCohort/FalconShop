@@ -220,6 +220,7 @@ export default function ItemUpload() {
                 <label htmlFor="disclaimer" className="ml-2">
                     {/* eslint-disable-next-line react/no-unescaped-entities */}
                     I understand that "FalconShop does not take responsibility/interfere/assist if issues arise in
+                    {/* eslint-disable-next-line react/no-unescaped-entities */}
                     the transaction."
                 </label>
                 <button

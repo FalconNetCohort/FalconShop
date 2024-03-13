@@ -39,7 +39,6 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
                             MenuProps={{
                                 anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
                                 transformOrigin: { vertical: 'top', horizontal: 'left' },
-                                getContentAnchorEl: null,
                             }}
                             sx={{ height: 'fit-content', minHeight: '32px', textAlign: 'center' }}
                         >
