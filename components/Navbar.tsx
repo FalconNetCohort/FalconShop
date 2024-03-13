@@ -117,6 +117,16 @@ export default function Navbar() {
                         />
                     </div>
                 </Link>
+                <div className="flex items-center">
+                    <span className="mr-5 font-bold">Supported by</span>
+                    <Image
+                        src="/assets/images/spark.png"
+                        alt="Spark"
+                        width={100}
+                        height={100}
+                        layout="fixed"
+                    />
+                </div>
                 <div className="space-x-8">
                     {!user ? (
                         <Link href="/auth" className="hover:text-yellow-300 transition-colors duration-200">Login</Link>
@@ -124,6 +134,9 @@ export default function Navbar() {
                         <ProfileMenu />
                     )}
                 </div>
+
+                {/** New Image Added Here **/}
+
             </nav>
             <PiiBanner />
         </>

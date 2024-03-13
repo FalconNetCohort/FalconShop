@@ -82,7 +82,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                         <p className="card-desc-font opacity-70 mb-3 overflow-wrap-anywhere break-words">Example</p>
 
                         <Image
-                            src={"https://firebasestorage.googleapis.com/v0/b/falconshop-303c4.appspot.com/o/cadetImages%2FGettyImages-1308797233.webp?alt=media&token=70667e4d-b833-4c20-bad1-0399c5f089b6"}
+                            src={"/assets/images/spark.png"}
                             alt=""
                             width={150}
                             height={150}
