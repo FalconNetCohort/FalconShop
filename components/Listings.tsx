@@ -3,7 +3,7 @@ import Image from 'next/image';
 import {db} from '@/firebase';
 
 import {getDocs} from "@firebase/firestore";
-import {collection} from "firebase/firestore";
+import {collection, query, orderBy, limit} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export interface CadetItem {
@@ -23,9 +23,6 @@ interface ListingsProps {
     searchValue: string;
 }
 
-type InterestedButtonProps = {
-    item: CadetItem,
-};
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
@@ -44,11 +41,18 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             });
 
             const fetchedItems: CadetItem[] = [];
-            const querySnapshot = await getDocs(collection(db, 'cadetItems'));
-            querySnapshot.forEach((docSnapshot) => {
+            const querySnapshot = await getDocs(
+                query(
+                    collection(db, 'cadetItems'),
+                    orderBy('createdBy'),
+                    limit(50)
+                )
+            );
+
+            querySnapshot.forEach((doc) => {
                 fetchedItems.push({
-                    ...docSnapshot.data() as CadetItem,
-                    id: docSnapshot.id,
+                    ...doc.data() as CadetItem,
+                    id: doc.id,
                 });
             });
 
