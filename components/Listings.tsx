@@ -26,7 +26,7 @@ interface ListingsProps {
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
-    const [validImageUrls, setValidImageUrls] = useState<string[]>([]);
+    const [, setValidImageUrls] = useState<string[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
     useEffect(() => {

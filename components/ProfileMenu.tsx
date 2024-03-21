@@ -4,8 +4,6 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
-import {getAuth} from "firebase/auth";
-import router from "next/router";
 
 export default function ProfileMenu() {
     const [anchorEl, setAnchorEl] = useState(null);

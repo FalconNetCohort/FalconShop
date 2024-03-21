@@ -1,5 +1,6 @@
 import { alpha, styled, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import React from "react";
 
 const SearchContainer = styled('div')(({ theme }) => ({
     display: 'flex',

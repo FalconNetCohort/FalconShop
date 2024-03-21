@@ -97,12 +97,6 @@ export default function Navbar() {
         };
     }, []);
 
-    const handleLogout = async () => {
-        const auth = getAuth();
-        await auth.signOut();
-        await router.push('/auth'); // Redirect to '/auth' after logout
-    };
-
     return (
         <>
             <nav className="rounded-b-lg shadow-lg bg-gradient-to-r from-indigo-600 to-blue-500 p-4 font-semibold flex items-center justify-between text-white">
@@ -134,8 +128,6 @@ export default function Navbar() {
                         <ProfileMenu />
                     )}
                 </div>
-
-                {/** New Image Added Here **/}
 
             </nav>
             <PiiBanner />
