@@ -54,6 +54,14 @@ export default function ItemUpload() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        // Check for sign-in status
+        if (!currentUser) {
+            setUploadStatus('You must be signed in to upload an item.');
+            console.log('No Auth');
+            alert('You must be signed in to upload an item.');
+            return;
+        }
+
         if (uploadStatus) {
             return;
         }
