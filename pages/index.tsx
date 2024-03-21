@@ -9,21 +9,6 @@ import {SearchBar} from "@/components/Search";
 export default function Index() {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [search, setSearch] = useState('');
-
-
-    const handleCategoryToggle = (category: string) => {
-        const currentIndex = selectedCategories.indexOf(category);
-        const newSelected = [...selectedCategories];
-
-        if (currentIndex === -1) {
-            newSelected.push(category);
-        } else {
-            newSelected.splice(currentIndex, 1);
-        }
-
-        setSelectedCategories(newSelected);
-    };
-
     return (
         <RootLayout>
             <main className="flex min-h-screen flex-col pt-4 bg-gray-100 px-8">
