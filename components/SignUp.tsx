@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-
 import {createUserWithEmailAndPassword, getAuth, sendEmailVerification, signOut} from 'firebase/auth';
 import '../firebase.js'; // adjust the path accordingly
 
