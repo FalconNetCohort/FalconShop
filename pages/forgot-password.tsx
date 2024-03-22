@@ -9,8 +9,7 @@ export default function ForgotPassword() {
     const [isLoading, setIsLoading] = useState(false);
 
     const auth = getAuth();
-    const router = useRouter();
-
+    useRouter();
     const sendResetEmail = async () => {
         setIsLoading(true);
         try {

@@ -16,19 +16,18 @@ import Button from "@mui/material/Button";
 export default function Profile() {
     const auth = getAuth();
     const user = auth.currentUser;
-    let umail = "jdoe@example.com"
+    let userEmail = "jdoe@example.com"
 
     if(user != null && user.email != null){
-        umail = user.email
+        userEmail = user.email
     }
 
     const handleResetPassword = () => {
         if(user != null && user.email != null){
             sendPasswordResetEmail(auth, user.email)
                 .then(() => {
-                    // Password reset email sent!
                     // Prompt user to check email
-                    console.log('Password reset email sent to', user.email);
+                    console.log('Password reset email sent to', user.email); // Password reset email sent!
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -40,7 +39,7 @@ export default function Profile() {
     };
 
     const [items, setItems] = useState<CadetItem[]>([]);
-    const [validImageUrls, setvalidImageUrls] = useState<string[]>([]);
+    const [, setValidImageURLs] = useState<string[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
     const deleteItem = async (documentId: string) => {
@@ -58,7 +57,7 @@ export default function Profile() {
 
     useEffect(() => {
         (async () => {
-            setvalidImageUrls(await Promise.all(items.map(async (item) => {
+            setValidImageURLs(await Promise.all(items.map(async (item) => {
                 try {
                     const response = await fetch(item.imageUrl, { method: 'HEAD' });
                     return response.ok ? item.imageUrl : '';
@@ -110,7 +109,7 @@ export default function Profile() {
                         <h2 className="text-2xl font-bold mb-4">User Information</h2>
                         <div className="flex items-center">
                             <div>
-                                <p><strong>Email:</strong> {umail} </p>
+                                <p><strong>Email:</strong> {userEmail} </p>
                             </div>
                         </div>
                         <Button
