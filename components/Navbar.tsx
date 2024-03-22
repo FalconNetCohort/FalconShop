@@ -97,26 +97,25 @@ export default function Navbar() {
         };
     }, []);
 
-    const handleLogout = async () => {
-        const auth = getAuth();
-        await auth.signOut();
-        await router.push('/auth'); // Redirect to '/auth' after logout
+    const handleClickFalconShop = () => {
+        if (user?.emailVerified) {
+            router.push('/');
+        }
     };
 
     return (
         <>
             <nav className="rounded-b-lg shadow-lg bg-gradient-to-r from-indigo-600 to-blue-500 p-4 font-semibold flex items-center justify-between text-white">
-                <Link href="/">
-                    <div className="flex items-center space-x-3">
-                        <Image
-                            src="/assets/images/FalconShop_Logo.png"
-                            alt="FalconShop"
-                            width={200}
-                            height={200}
-                            layout="fixed"
-                        />
-                    </div>
-                </Link>
+                <div className="flex items-center space-x-3" onClick={handleClickFalconShop}>
+                    <Image
+                        src="/assets/images/FalconShop_Logo.png"
+                        alt="FalconShop"
+                        width={200}
+                        height={200}
+                        layout="fixed"
+                        className={(user && user.emailVerified) ? "cursor-pointer" : ""}
+                    />
+                </div>
                 <div className="flex items-center">
                     <span className="mr-5 font-bold">Supported by</span>
                     <Image
@@ -134,9 +133,6 @@ export default function Navbar() {
                         <ProfileMenu />
                     )}
                 </div>
-
-                {/** New Image Added Here **/}
-
             </nav>
             <PiiBanner />
         </>
