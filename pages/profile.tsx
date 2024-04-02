@@ -41,6 +41,7 @@ export default function Profile() {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [, setValidImageURLs] = useState<string[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const [isHovered, setIsHovered] = useState(false);
 
     const deleteItem = async (documentId: string) => {
         if (!currentUserId) return; // Ensure there is a logged-in user
@@ -112,13 +113,29 @@ export default function Profile() {
                                 <p><strong>Email:</strong> {userEmail} </p>
                             </div>
                         </div>
-                        <Button
-                            className={"text-white bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded"}
-                            variant="contained"
-                            onClick={handleResetPassword}
-                        >
-                            Reset Password
-                        </Button>
+
+                        <div className="mx-auto flex">
+                            <Button
+                                className={"text-white bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded"}
+                                variant="contained"
+                                onClick={handleResetPassword}
+                            >
+                                Reset Password
+                            </Button>
+
+                            <span className="px-2"/>
+
+                            <Button
+                                className={"text-white bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded"}
+                                variant="contained"
+                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseLeave={() => setIsHovered(false)}
+                                onClick={() => window.open("https://forms.office.com/r/3FJZaMMXZt", "_blank")}
+                            >
+                                {isHovered ? 'Let Us Know!' : 'Feedback?'}
+                            </Button>
+                        </div>
+
                     </section>
 
                     <section className="w-full">
