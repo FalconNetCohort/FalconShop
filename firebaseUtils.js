@@ -13,16 +13,17 @@
 //
 //
 
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc } from "firebase/firestore";
 import { db } from './firebase';
 
 export async function addCadetItem(item, category) {
     try {
-        // Access the Firestore collection based on the provided category
-        const docRef = await addDoc(collection(db, category), item);
+        // Correctly define the path to the category subcollection within "cadetItems"
+        const categoryCollectionRef = collection(db, `cadetItems/${category}`);
+        // Add the item directly to the category subcollection
+        const docRef = await addDoc(categoryCollectionRef, item);
         console.log("Item added successfully with ID:", docRef.id);
     } catch (error) {
         console.error("Error adding item:", error);
     }
 }
-
