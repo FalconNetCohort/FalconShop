@@ -71,6 +71,7 @@ export default function Listings(this: any, { selectedCategories, searchValue }:
         getItems();
     }, [selectedCategories, searchValue, currentUserId]);
 
+    // @ts-ignore
     return (
         currentUserId ?
             <section className="flex flex-col items-center justify-center">
@@ -81,17 +82,13 @@ export default function Listings(this: any, { selectedCategories, searchValue }:
                         items
                     }}
                     hasMore={true}
-                    loader={<h4>Loading...</h4>}
-                    endMessage={
-                        <p style={{textAlign: 'center'}}>
-                            {/* eslint-disable-next-line react/no-unescaped-entities */}
-                            <b>That's all the postings for now!</b>
-                        </p>
+                    loader={<p className="text-gray-500 text-sm">
+                        loading products...</p>
                     }
+                    className={"p-8"}
 
                 >
-                    <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 p-8">
-
+                    <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
 
                         <div className="card">
                             <h2 className="card-title-font mb-3 text-xl w-full overflow-wrap-anywhere break-words">Example</h2>
