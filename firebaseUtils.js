@@ -1,12 +1,28 @@
-import { collection, addDoc } from "firebase/firestore";
-import {db} from './firebase';
+//import { collection, addDoc } from "firebase/firestore";
+// import {db} from './firebase';
+//
+// export async function addCadetItem(item) {
+//     try {
+//         const docRef = await addDoc(collection(db, "cadetItems"), item);
+//         console.log("Item added successfully with ID:", docRef.id);
+//     }
+//     catch (error) {
+//         console.error("Error adding item:", error);
+//     }
+// }
+//
+//
 
-export async function addCadetItem(item) {
+import { collection, addDoc } from "firebase/firestore";
+import { db } from './firebase';
+
+export async function addCadetItem(item, category) {
     try {
-        const docRef = await addDoc(collection(db, "cadetItems"), item);
+        // Access the Firestore collection based on the provided category
+        const docRef = await addDoc(collection(db, category), item);
         console.log("Item added successfully with ID:", docRef.id);
-    }
-    catch (error) {
+    } catch (error) {
         console.error("Error adding item:", error);
     }
 }
+

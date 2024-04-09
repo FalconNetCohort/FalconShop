@@ -112,7 +112,7 @@ export default function ItemUpload() {
                         ...item,
                         imageUrl: imageUrl,
                         createdBy: currentUser.uid
-                    });
+                    }, item.category); // Pass category from the item object
                     setUploadStatus('Upload successful!');
                 }
 
@@ -126,12 +126,10 @@ export default function ItemUpload() {
                 ...item,
                 imageUrl: imageUrl, // Set the imageUrl to your default imageUrl
                 createdBy: currentUser.uid // Set the 'createdBy' field to currentUser.uid
-            });
-            await router.push('/'); // Direct the user to the home page.
-
-
+            }, item.category); // Pass category from the item object
         }
     };
+
 
     return (
         <div className="flex justify-center max-w-screen md:px-16">
