@@ -18,6 +18,7 @@
 # Firebase
 /firebase
 **/firebase.json
+**/.firebase
 **/.firebaserc
 **/firestore.rules
 **/firestore.indexes.json
