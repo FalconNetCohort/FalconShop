@@ -15,7 +15,8 @@ export default function ItemUpload() {
         cadetContact: '',
         imageUrl: '',
         quantity:   '',
-        createdBy: ''
+        createdBy: '',
+        timeCreated: new Date().toISOString()
     });
     const [image, setImage] = useState<File | null>(null);
     const [uploadStatus, setUploadStatus] = useState<string>('');
