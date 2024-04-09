@@ -5,6 +5,7 @@ import {db} from '@/firebase';
 import {getDocs} from "@firebase/firestore";
 import {collection, query, orderBy, limit} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export interface CadetItem {
     createdBy: any;
@@ -24,7 +25,7 @@ interface ListingsProps {
 }
 
 
-export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
+export default function Listings(this: any, { selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [, setValidImageUrls] = useState<string[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -44,8 +45,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             const querySnapshot = await getDocs(
                 query(
                     collection(db, 'cadetItems'),
-                    orderBy('createdBy'),
-                    limit(50)
+                    orderBy('createdBy')
                 )
             );
 
@@ -74,26 +74,43 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     return (
         currentUserId ?
             <section className="flex flex-col items-center justify-center">
-                <div
-                    className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
 
-                    <div className="card">
-                        <h2 className="card-title-font mb-3 text-xl w-full overflow-wrap-anywhere break-words">Example</h2>
-                        <span
-                            className="block mt-2 font-bold text-blue-700 overflow-wrap-anywhere break-words">Example</span>
-                        <p className="card-body-font mt-3 text-gray-600 overflow-wrap-anywhere break-words">Cadet: Example</p>
-                        <p className="card-body-font mt-1 text-gray-600 overflow-wrap-anywhere break-words">Contact: Example</p>
-                        <p className="card-desc-font opacity-70 mb-3 overflow-wrap-anywhere break-words">Example</p>
+                <InfiniteScroll
+                    dataLength={items.length} //This is important field to render the next data
+                    next={() => {
+                        items
+                    }}
+                    hasMore={true}
+                    loader={<h4>Loading...</h4>}
+                    endMessage={
+                        <p style={{textAlign: 'center'}}>
+                            {/* eslint-disable-next-line react/no-unescaped-entities */}
+                            <b>That's all the postings for now!</b>
+                        </p>
+                    }
 
-                        <Image
-                            src={"/assets/images/spark.png"}
-                            alt=""
-                            width={150}
-                            height={150}
-                            loader={({src}) => src}
-                        />
-                    </div>
+                >
+                    <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 p-8">
 
+
+                        <div className="card">
+                            <h2 className="card-title-font mb-3 text-xl w-full overflow-wrap-anywhere break-words">Example</h2>
+                            <span
+                                className="block mt-2 font-bold text-blue-700 overflow-wrap-anywhere break-words">Example</span>
+                            <p className="card-body-font mt-3 text-gray-600 overflow-wrap-anywhere break-words">Cadet:
+                                Example</p>
+                            <p className="card-body-font mt-1 text-gray-600 overflow-wrap-anywhere break-words">Contact:
+                                Example</p>
+                            <p className="card-desc-font opacity-70 mb-3 overflow-wrap-anywhere break-words">Example</p>
+
+                            <Image
+                                src={"/assets/images/spark.png"}
+                                alt=""
+                                width={150}
+                                height={150}
+                                loader={({src}) => src}
+                            />
+                        </div>
 
                         {items.map((item) => (
                             <div key={item.id} className="card">
@@ -115,12 +132,15 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                                 />
                             </div>
                         ))}
-
                     </div>
-            </section>
+                </InfiniteScroll>
+
+
+
+</section>
 :
     <div className="flex justify-center h-screen">
         <p className="text-center text-2xl text-blue-500">Please login with AFACADEMY email to view listings</p>
-    </div>
-);
+            </div>
+    );
 }
