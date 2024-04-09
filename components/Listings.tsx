@@ -3,7 +3,7 @@ import Image from 'next/image';
 import {db} from '@/firebase';
 
 import {getDocs} from "@firebase/firestore";
-import {collection, query, orderBy, limit} from "firebase/firestore";
+import {collection, query, orderBy} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import InfiniteScroll from 'react-infinite-scroll-component';
 
