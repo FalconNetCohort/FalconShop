@@ -6,6 +6,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export interface CadetItem {
     createdBy: any;
+    timeCreated: any; //change to timestamp
     id: string;
     title: string;
     description: string;
@@ -22,7 +23,7 @@ interface ListingsProps {
 }
 
 const buildQuery = (selectedCategories: string[]): QueryConstraint[] => {
-    let constraints: QueryConstraint[] = [orderBy('createdBy')];
+    let constraints: QueryConstraint[] = [orderBy ('timeCreated')];
 
     if (selectedCategories.length > 0) {
         constraints.push(where('category', 'in', selectedCategories));

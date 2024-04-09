@@ -16,7 +16,7 @@ export default function ItemUpload() {
         imageUrl: '',
         quantity:   '',
         createdBy: '',
-        timeCreated: new Date().toISOString()
+        timeCreated: new Date()
     });
     const [image, setImage] = useState<File | null>(null);
     const [uploadStatus, setUploadStatus] = useState<string>('');
