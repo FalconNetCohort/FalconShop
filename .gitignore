@@ -14,7 +14,18 @@
 
 # production
 /build
-.firebase
+
+# Firebase
+/firebase
+**/firebase.json
+**/.firebase
+**/.firebaserc
+**/firestore.rules
+**/firestore.indexes.json
+**/storage.rules
+/.firebase/*
+**/firebase-debug.log
+# Include other Firebase-related files you want to ignore
 
 # misc
 .DS_Store
