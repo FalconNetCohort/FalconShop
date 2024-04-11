@@ -76,11 +76,11 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                 <InfiniteScroll
                     dataLength={items.length} //This is important field to render the next data
                     next={() => {setItems}}
-                    hasMore={true}
+                    hasMore={false}
                     loader={<h4 className="text-gray-500 text-sm mb-4">loading more items...</h4>}
                     endMessage={
                         <p style={{textAlign: 'center'}}>
-                            <b>That's all the items!</b>
+                            <b>You've reached the end!</b>
                         </p>
                     }
                 >
