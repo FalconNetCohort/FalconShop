@@ -6,7 +6,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export interface CadetItem {
     createdBy: any;
-    timeCreated: any; //change to timestamp
+    timeCreated: any;
     id: string;
     title: string;
     description: string;
@@ -23,11 +23,7 @@ interface ListingsProps {
 }
 
 const buildQuery = (selectedCategories: string[]): QueryConstraint[] => {
-    let constraints: QueryConstraint[] = [orderBy ('timeCreated')];
-
-    if (selectedCategories.length > 0) {
-        constraints.push(where('category', 'in', selectedCategories));
-    }
+    let constraints: QueryConstraint[] = [orderBy('createdBy')];
 
     constraints.push(limit(50));
 
@@ -37,6 +33,7 @@ const buildQuery = (selectedCategories: string[]): QueryConstraint[] => {
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
 
     useEffect(() => {
         const auth = getAuth();
@@ -50,24 +47,22 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     }, []);
 
     useEffect(() => {
-        const cacheKey = `cadetItemsCache-${selectedCategories.join('-')}-${searchValue}`;
-        const cachedData = sessionStorage.getItem(cacheKey);
-        if (cachedData) {
-            setItems(JSON.parse(cachedData));
-            return;
-        }
-
         const fetchData = async () => {
             const q = query(collection(db, 'cadetItems'), ...buildQuery(selectedCategories));
             const querySnapshot = await getDocs(q);
 
-            const fetchedItems: CadetItem[] = querySnapshot.docs.map(doc => ({
+            let fetchedItems: CadetItem[] = querySnapshot.docs.map(doc => ({
                 ...doc.data() as CadetItem,
                 id: doc.id,
             }));
 
-            sessionStorage.setItem(cacheKey, JSON.stringify(fetchedItems));
-            setItems(fetchedItems);
+            // Client-side filtering based on category selection and search value
+            const filteredItems = fetchedItems.filter((item: CadetItem) =>
+                (!selectedCategories || selectedCategories.length === 0 || selectedCategories.includes(item.category)) &&
+                (searchValue === '' || item.title.toLowerCase().includes(searchValue.toLowerCase()))
+            );
+
+            setItems(filteredItems);
         };
 
         fetchData();
