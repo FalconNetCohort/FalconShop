@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { db } from '@/firebase';
-import { collection, getDocs, query, where, limit, orderBy, QueryConstraint } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, limit, QueryConstraint } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -26,10 +26,6 @@ interface ListingsProps {
 const buildQuery = (selectedCategories: string[]): QueryConstraint[] => {
     let constraints: QueryConstraint[] = [orderBy('createdBy')];
 
-    if (selectedCategories.length > 0) {
-        constraints.push(where('category', 'in', selectedCategories));
-    }
-
     constraints.push();
 
     return constraints;
@@ -38,6 +34,7 @@ const buildQuery = (selectedCategories: string[]): QueryConstraint[] => {
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
 
     useEffect(() => {
         const auth = getAuth();
@@ -51,9 +48,6 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     }, []);
 
     useEffect(() => {
-        const cacheKey = `cadetItemsCache-${selectedCategories.join('-')}-${searchValue}`;
-        const cachedData = sessionStorage.getItem(cacheKey);
-
         const fetchData = async () => {
             const q = query(collection(db, 'cadetItems'), ...buildQuery(selectedCategories));
             const querySnapshot = await getDocs(q);
@@ -65,24 +59,14 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
 
             // Client-side filtering based on category selection and search value
             const filteredItems = fetchedItems.filter((item: CadetItem) =>
+                (!selectedCategories || selectedCategories.length === 0 || selectedCategories.includes(item.category)) &&
                 (searchValue === '' || item.title.toLowerCase().includes(searchValue.toLowerCase()))
             );
-            
+
             setItems(filteredItems);
-            sessionStorage.setItem(cacheKey, JSON.stringify(fetchedItems));
         };
 
-        if (cachedData) {
-            setItems(JSON.parse(cachedData));
-            console.log('Loaded from cache');
-            console.log('Cached key:', cacheKey);
-            console.log('Cached data:', JSON.parse(cachedData));
-            return;
-        } else {
-            console.log('Loaded from db');
-            console.log('Items:', items);
-            fetchData();
-        }
+        fetchData();
     }, [selectedCategories, searchValue]);
 
     return (
@@ -90,18 +74,19 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             <section className="flex flex-col items-center justify-center">
 
                 <InfiniteScroll
-                    dataLength={items.length}
+                    dataLength={items.length} //This is important field to render the next data
                     next={() => {setItems}}
-                    hasMore={false}
-                    loader={<h4 className="text-gray-500 text-sm mb-4">loading more items...</h4>}
+                    hasMore={true}
+                    loader={<h4 style={{textAlign: 'center'}} className="text-sm text-gray-500">You've reached the end</h4>}
                     endMessage={
                         <p style={{textAlign: 'center'}}>
-                            <b className="text-gray-500 text-sm mb-6">You{`'`}ve reached the end!</b>
+                            <b>Yay! You have seen it all</b>
                         </p>
                     }
-                    className={"p-8"}
+                    className="p-8"
                 >
-                    <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
+                    <div
+                        className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
                         <div className="card">
                             <h2 className="card-title-font mb-3 text-xl w-full overflow-wrap-anywhere break-words">Example</h2>
                             <span
@@ -143,8 +128,6 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                         ))}
                     </div>
                 </InfiniteScroll>
-
-
             </section>
             :
             <div className="flex justify-center h-screen">
