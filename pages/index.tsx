@@ -5,7 +5,6 @@ import '../firebase';
 import CategorySelection from '../components/CategorySelection';
 import {SearchBar} from "@/components/Search";
 
-
 export default function Index() {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [search, setSearch] = useState('');

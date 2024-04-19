@@ -20,7 +20,7 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
                                                                  selectedCategories,
                                                                  setSelectedCategories,
                                                              }) => {
-    const categories =['Books/Study', 'Clothing/Shoes', 'Electronics', 'Uniform', 'Vehicles', 'Cooking', 'Appliances', 'Other'];
+    const categories = ['Appliances', 'Clothing', 'Electronics', 'Other', 'Study', 'Uniform', 'Vehicles'];
     const isMobileView = useMediaQuery('(max-width:1020px)');
 
     return (
