@@ -50,14 +50,11 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     useEffect(() => {
         const db = getDatabase();
         const itemsRef = ref(db, 'cadetItems');
-        let dbQuery = query(itemsRef, orderByChild('timeCreated'));
 
-        onValue(dbQuery, (snapshot) => {
+        onValue(itemsRef, (snapshot) => {
             const data = snapshot.val();
-            console.log('Raw data:', data); // Check the raw data
 
             if (!data) {
-                console.log('No data available');
                 setItems([]);
                 return;
             }
@@ -66,36 +63,22 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             for (let category in data) {
                 if (selectedCategories.length === 0 || selectedCategories.includes(category)) {
                     for (let userId in data[category]) {
-                        // Assuming data[category][userId] is an object, not an array
                         Object.entries(data[category][userId] as Record<string, CadetItem>).forEach(([key, item]) => {
-                            const newItem: CadetItem = {
-                                ...item,
-                                id: key,  // Use the Firebase-generated key as the item id
-                            };
-                            fetchedItems = insertInSortedList(fetchedItems, newItem);
+                            // Include item if searchValue is empty or if the item title includes the searchValue
+                            if (!searchValue || item.title.toLowerCase().includes(searchValue.toLowerCase())) {
+                                fetchedItems.push({ ...item, id: key });
+                            }
                         });
-
                     }
                 }
-
             }
 
-            console.log('Selected categories:', selectedCategories); // Check the selected categories
-            console.log('Search value:', searchValue); // Check the search value
-            console.log('Fetched items:', fetchedItems); // Check the fetched items after filtering
+            fetchedItems.sort((a, b) => b.timeCreated - a.timeCreated);
 
-            if (fetchedItems.length === 0) {
-                console.log('No items match the filters');
-            } else {
-                fetchedItems.sort((a, b) => b.timeCreated - a.timeCreated);
-                setItems(fetchedItems);
-            }
+            setItems(fetchedItems);
         });
 
-        // Dependency array should include functions or values used inside the effect
-    }, [selectedCategories, searchValue, setCurrentUserId]);
-
-
+    }, [selectedCategories, searchValue]);
 
 
     return (
