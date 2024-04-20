@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import router from "next/router.js";
 import { addCadetItem } from '@/firebaseUtils';
 import { getDownloadURL, ref as storageRef, uploadBytesResumable } from "firebase/storage";
-import { storage } from '@/firebase';
+import {db, storage} from '@/firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {push, ref} from "firebase/database";
+
 
 export default function ItemUpload() {
     const [item, setItem] = useState({
+        id: '',
         title: '',
         description: '',
         category: '',
@@ -16,7 +19,7 @@ export default function ItemUpload() {
         imageUrl: '',
         quantity:   '',
         createdBy: '',
-        timeCreated: new Date()
+        timeCreated: Date.now()
     });
     const [image, setImage] = useState<File | null>(null);
     const [uploadStatus, setUploadStatus] = useState<string>('');
@@ -54,6 +57,7 @@ export default function ItemUpload() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const newItemRef = push(ref(db, 'cadetItems'));
 
         if (uploadStatus) {
             return;
@@ -111,8 +115,10 @@ export default function ItemUpload() {
                     imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
                     await addCadetItem({
                         ...item,
+                        id: newItemRef.key,
                         imageUrl: imageUrl,
-                        createdBy: currentUser.uid
+                        createdBy: currentUser.uid,
+                        timeCreated: Date.now()
                     });
                     setUploadStatus('Upload successful!');
                 }
@@ -125,8 +131,10 @@ export default function ItemUpload() {
 
             await addCadetItem({
                 ...item,
+                id: newItemRef.key,
                 imageUrl: imageUrl, // Set the imageUrl to your default imageUrl
-                createdBy: currentUser.uid // Set the 'createdBy' field to currentUser.uid
+                createdBy: currentUser.uid, // Set the 'createdBy' field to currentUser.uid
+                timeCreated: Date.now()
             });
             await router.push('/'); // Direct the user to the home page.
 
@@ -166,12 +174,11 @@ export default function ItemUpload() {
                     className="p-2 border border-gray-300 rounded-md w-full"
                 >
                     <option value="">Select a category</option>
-                    <option value="Books/Study">Books/Study</option>
-                    <option value="Clothing/Shoes">Clothing/Shoes</option>
+                    <option value="Study">Study</option>
+                    <option value="Clothing">Clothing</option>
                     <option value="Electronics">Electronics</option>
                     <option value="Uniform">Uniform</option>
                     <option value="Vehicles">Vehicles</option>
-                    <option value="Cooking">Cooking</option>
                     <option value="Appliances">Appliances</option>
                     <option value="Other">Other</option>
                 </select>

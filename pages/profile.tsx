@@ -4,12 +4,9 @@ import '../firebase';
 import ItemUpload from "@/components/ItemUpload";
 import {getAuth, onAuthStateChanged, sendPasswordResetEmail} from "firebase/auth";
 import Image from "next/image";
-import {getDocs} from "@firebase/firestore";
-import {collection} from "firebase/firestore";
-import {db} from "@/firebase";
-import {CadetItem} from "@/components/Listings";
-import { deleteDoc, doc } from "@firebase/firestore";
+import {CadetItem, insertInSortedList} from "@/components/Listings";
 import Button from "@mui/material/Button";
+import {getDatabase, onValue, ref, remove} from "firebase/database";
 
 
 
@@ -43,17 +40,24 @@ export default function Profile() {
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [isHovered, setIsHovered] = useState(false);
 
-    const deleteItem = async (documentId: string) => {
-        if (!currentUserId) return; // Ensure there is a logged-in user
+    const deleteItem = async (item: CadetItem) => {
+        if (!currentUserId) return;
+
+        const { id: itemId, category } = item; // Destructure to get the itemId and the category from the item
 
         try {
-            await deleteDoc(doc(db, 'cadetItems', documentId)); // Delete the item
-            setItems(items.filter(item => item.id !== documentId)); // Update state
+            const db = getDatabase();
+            const itemRef = ref(db, `cadetItems/${category}/${currentUserId}/${itemId}`);
+            console.log(`Deleting item at path: cadetItems/${category}/${currentUserId}/${itemId}`);
+
+            await remove(itemRef);
+            console.log("Item deleted successfully");
+            setItems(prevItems => prevItems.filter(item => item.id !== itemId));
         } catch (error) {
             console.error("Error deleting item: ", error);
-
         }
     };
+
 
 
     useEffect(() => {
@@ -79,27 +83,40 @@ export default function Profile() {
     }, []);
 
     useEffect(() => {
-        const getItems = async () => {
-            const fetchedItems: CadetItem[] = [];
-            const querySnapshot = await getDocs(collection(db, 'cadetItems'));
-            querySnapshot.forEach((docSnapshot) => {
-                fetchedItems.push({
-                    ...docSnapshot.data() as CadetItem,
-                    id: docSnapshot.id,
+        const fetchItems = async () => {
+            if (currentUserId) {
+                console.log(`Fetching items for user: ${currentUserId}`);
+                const db = getDatabase();
+                const itemsRef = ref(db, 'cadetItems');
+                let fetchedItems: CadetItem[] = [];
+
+                onValue(itemsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        for (let category in data) {
+                            for (let userId in data[category]) {
+                                if (userId !== currentUserId) continue;
+                                Object.values(data[category][userId] as Record<string, CadetItem>).forEach((item: CadetItem) => {
+                                    const newItem: CadetItem ={
+                                        ...item,
+                                        id: item.id,
+                                    };
+                                    fetchedItems = insertInSortedList(fetchedItems, newItem);
+                                });
+                            }
+                        }
+                    }
+
+                    console.log(`Fetched items: ${JSON.stringify(fetchedItems)}`);
+                    setItems(fetchedItems);
+
+                }, (error) => {
+                    console.error(`An error occurred: ${error}`);
                 });
-            });
+            }
+        };
 
-            // Filter items by the current user ID
-            const userItems = fetchedItems.filter(item => item.createdBy === currentUserId);
-
-            console.log("Filtered items for current user:", userItems);
-            setItems(userItems);
-        }
-
-        // Fetch items only if there is a logged-in user
-        if (currentUserId) {
-            getItems().then(r => console.log("Items fetched"));
-        }
+        fetchItems();
     }, [currentUserId]);
 
     return (
@@ -170,7 +187,7 @@ export default function Profile() {
                                     />
                                     <>
                                         <button
-                                            onClick={() => deleteItem(item.id)}
+                                            onClick={() => deleteItem(item)}
                                             className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                         >
                                             Delete

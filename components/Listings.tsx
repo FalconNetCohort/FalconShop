@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import {getDatabase, ref, onValue, query, orderByChild, orderByKey} from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 export interface CadetItem {
     createdBy: any;
-    timeCreated: any;
+    timeCreated: number;
     id: string;
     title: string;
     description: string;
@@ -22,13 +21,14 @@ interface ListingsProps {
     searchValue: string;
 }
 
-// const buildQuery = (selectedCategories: string[]): QueryConstraint[] => {
-//     let constraints: QueryConstraint[] = [orderBy('createdBy')];
-//
-//     constraints.push();
-//
-//     return constraints;
-// };
+export function insertInSortedList(sortedList: CadetItem[], newItem: CadetItem) {
+    const index = sortedList.findIndex(item => item.timeCreated < newItem.timeCreated);
+    if (index === -1) {
+        return [...sortedList, newItem]
+    } else {
+        return [...sortedList.slice(0, index), newItem, ...sortedList.slice(index)]
+    }
+}
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
@@ -49,48 +49,57 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     useEffect(() => {
         const db = getDatabase();
         const itemsRef = ref(db, 'cadetItems');
-        let dbQuery = query(itemsRef, selectedCategories.length > 0 ? orderByChild('category') : orderByKey());
+        let dbQuery = query(itemsRef, orderByChild('timeCreated'));
 
-        const fetchData = async () => {
-            onValue(dbQuery, (snapshot) => {
-                const data = snapshot.val();
-                let fetchedItems = [];
+        onValue(dbQuery, (snapshot) => {
+            const data = snapshot.val();
+            console.log('Raw data:', data); // Check the raw data
 
-                for(let id in data) {
-                    fetchedItems.push({
-                        ...data[id],
-                        id: id
-                    });
+            if (!data) {
+                console.log('No data available');
+                setItems([]);
+                return;
+            }
+
+            let fetchedItems: CadetItem[] = [];
+            for (let category in data) {
+                if (selectedCategories.length === 0 || selectedCategories.includes(category)) {
+                    for (let userId in data[category]) {
+                        // Assuming data[category][userId] is an object, not an array
+                        Object.entries(data[category][userId] as Record<string, CadetItem>).forEach(([key, item]) => {
+                            const newItem: CadetItem = {
+                                ...item,
+                                id: key,  // Use the Firebase-generated key as the item id
+                            };
+                            fetchedItems = insertInSortedList(fetchedItems, newItem);
+                        });
+
+                    }
                 }
 
-                const filteredItems = fetchedItems.filter((item) =>
-                    selectedCategories.includes(item.category) &&
-                    item.title.toLowerCase().includes(searchValue.toLowerCase())
-                );
+            }
 
-                setItems(filteredItems);
-            });
-        };
+            console.log('Selected categories:', selectedCategories); // Check the selected categories
+            console.log('Search value:', searchValue); // Check the search value
+            console.log('Fetched items:', fetchedItems); // Check the fetched items after filtering
 
-        fetchData();
-    }, [selectedCategories, searchValue]);
+            if (fetchedItems.length === 0) {
+                console.log('No items match the filters');
+            } else {
+                fetchedItems.sort((a, b) => b.timeCreated - a.timeCreated);
+                setItems(fetchedItems);
+            }
+        });
+
+        // Dependency array should include functions or values used inside the effect
+    }, [selectedCategories, searchValue, setCurrentUserId]);
+
+
+
 
     return (
         currentUserId ?
             <section className="flex flex-col items-center justify-center">
-
-                <InfiniteScroll
-                    dataLength={items.length} //This is important field to render the next data
-                    next={() => {setItems}}
-                    hasMore={true}
-                    loader={<h4 style={{textAlign: 'center'}} className="text-sm text-gray-500">You've reached the end</h4>}
-                    endMessage={
-                        <p style={{textAlign: 'center'}}>
-                            <b>Yay! You have seen it all</b>
-                        </p>
-                    }
-                    className="p-8"
-                >
                     <div
                         className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
                         <div className="card">
@@ -133,7 +142,6 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                             </div>
                         ))}
                     </div>
-                </InfiniteScroll>
             </section>
             :
             <div className="flex justify-center h-screen">
