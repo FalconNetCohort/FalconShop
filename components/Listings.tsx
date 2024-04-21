@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { db } from '@/firebase';
-import { collection, getDocs, query, orderBy, limit, QueryConstraint } from "firebase/firestore";
+import {getDatabase, ref, onValue, query, orderByChild, orderByKey} from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export interface CadetItem {
     createdBy: any;
-    timeCreated: any;
+    timeCreated: number;
     id: string;
     title: string;
     description: string;
@@ -23,13 +22,14 @@ interface ListingsProps {
     searchValue: string;
 }
 
-const buildQuery = (selectedCategories: string[]): QueryConstraint[] => {
-    let constraints: QueryConstraint[] = [orderBy('createdBy')];
-
-    constraints.push();
-
-    return constraints;
-};
+export function insertInSortedList(sortedList: CadetItem[], newItem: CadetItem) {
+    const index = sortedList.findIndex(item => item.timeCreated < newItem.timeCreated);
+    if (index === -1) {
+        return [...sortedList, newItem]
+    } else {
+        return [...sortedList.slice(0, index), newItem, ...sortedList.slice(index)]
+    }
+}
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
@@ -48,43 +48,42 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const q = query(collection(db, 'cadetItems'), ...buildQuery(selectedCategories));
-            const querySnapshot = await getDocs(q);
+        const db = getDatabase();
+        const itemsRef = ref(db, 'cadetItems');
 
-            let fetchedItems: CadetItem[] = querySnapshot.docs.map(doc => ({
-                ...doc.data() as CadetItem,
-                id: doc.id,
-            }));
+        onValue(itemsRef, (snapshot) => {
+            const data = snapshot.val();
 
-            // Client-side filtering based on category selection and search value
-            const filteredItems = fetchedItems.filter((item: CadetItem) =>
-                (!selectedCategories || selectedCategories.length === 0 || selectedCategories.includes(item.category)) &&
-                (searchValue === '' || item.title.toLowerCase().includes(searchValue.toLowerCase()))
-            );
+            if (!data) {
+                setItems([]);
+                return;
+            }
 
-            setItems(filteredItems);
-        };
+            let fetchedItems: CadetItem[] = [];
+            for (let category in data) {
+                if (selectedCategories.length === 0 || selectedCategories.includes(category)) {
+                    for (let userId in data[category]) {
+                        Object.entries(data[category][userId] as Record<string, CadetItem>).forEach(([key, item]) => {
+                            // Include item if searchValue is empty or if the item title includes the searchValue
+                            if (!searchValue || item.title.toLowerCase().includes(searchValue.toLowerCase())) {
+                                fetchedItems.push({ ...item, id: key });
+                            }
+                        });
+                    }
+                }
+            }
 
-        fetchData();
+            fetchedItems.sort((a, b) => b.timeCreated - a.timeCreated);
+
+            setItems(fetchedItems);
+        });
+
     }, [selectedCategories, searchValue]);
+
 
     return (
         currentUserId ?
             <section className="flex flex-col items-center justify-center">
-
-                <InfiniteScroll
-                    dataLength={items.length} //This is important field to render the next data
-                    next={() => {setItems}}
-                    hasMore={true}
-                    loader={<h4 style={{textAlign: 'center'}} className="text-sm text-gray-500">You've reached the end</h4>}
-                    endMessage={
-                        <p style={{textAlign: 'center'}}>
-                            <b>Yay! You have seen it all</b>
-                        </p>
-                    }
-                    className="p-8"
-                >
                     <div
                         className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
                         <div className="card">
@@ -127,7 +126,6 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                             </div>
                         ))}
                     </div>
-                </InfiniteScroll>
             </section>
             :
             <div className="flex justify-center h-screen">
