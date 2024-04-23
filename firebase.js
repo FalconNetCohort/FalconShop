@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
-import {getFirestore} from 'firebase/firestore';
+import {getFirestore} from 'firebase/firestore'; // remove after migrate
+import { getDatabase } from "firebase/database";
 
 
 const firebaseConfig = {
@@ -14,6 +15,8 @@ const firebaseConfig = {
     measurementId: "G-K8CME54MV1"
 };
 
-export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+export const app= initializeApp(firebaseConfig);
+export const firestore= getFirestore(app);
+export const storage= getStorage(app);
+
+export const db= getDatabase(app);
