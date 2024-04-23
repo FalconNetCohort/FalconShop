@@ -237,7 +237,7 @@ export default function ItemUpload() {
                     {/* eslint-disable-next-line react/no-unescaped-entities */}
                     I understand that "FalconShop does not take responsibility/interfere/assist if issues arise in
                     {/* eslint-disable-next-line react/no-unescaped-entities */}
-                    the transaction."
+                     the transaction."
                 </label>
                 <button
                     type="submit"
