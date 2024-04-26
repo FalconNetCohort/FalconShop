@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import {getDatabase, ref, onValue, query, orderByChild, orderByKey} from "firebase/database";
+import {getDatabase, ref, onValue} from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 export interface CadetItem {
     createdBy: any;
