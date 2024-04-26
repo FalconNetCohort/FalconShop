@@ -7,7 +7,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {push, ref} from "firebase/database";
 
 
-export default function ItemUpload() {
+interface ItemUploadProps {
+    handleRefresh: () => void;
+}
+
+export default function ItemUpload({handleRefresh}: ItemUploadProps) {
     const [item, setItem] = useState({
         id: '',
         title: '',
@@ -36,6 +40,13 @@ export default function ItemUpload() {
             }
         });
     }, []);
+
+    const updateItem = () => {
+        // ! The actual code for uploading or updating a item may be more complex
+        // After finish updating the item call handleRefresh function
+        // to refresh the main Profile page
+        handleRefresh();
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -242,6 +253,7 @@ export default function ItemUpload() {
                 <button
                     type="submit"
                     className="w-full p-2 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
+                    onClick={updateItem}
                 >
                     Add Item
                 </button>
