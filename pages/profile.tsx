@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import RootLayout from '@/components/RootLayout';
 import '../firebase';
 import ItemUpload from "@/components/ItemUpload";
+import ItemUpdate from "@/components/ItemUpdate";
 import {getAuth, onAuthStateChanged, sendPasswordResetEmail} from "firebase/auth";
 import Image from "next/image";
 import {CadetItem, insertInSortedList} from "@/components/Listings";
@@ -18,6 +19,15 @@ export default function Profile() {
     if(user != null && user.email != null){
         userEmail = user.email
     }
+
+    useEffect(() => {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setCurrentUserId(user.uid); // Set the current user ID
+            }
+        });
+    }, []);
 
     const handleResetPassword = () => {
         if(user != null && user.email != null){
@@ -38,8 +48,51 @@ export default function Profile() {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [, setValidImageURLs] = useState<string[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-    const [isHovered, setIsHovered] = useState(false);
+    const [buttonText, setButtonText] = useState('Feedback?');
+    const [isUploadVisible, setIsUploadVisible] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState<Record<string, boolean>>({});
+    const [itemToEdit, setItemToEdit] = useState<CadetItem | null>(null);
 
+    const fetchItems = async () => {
+        if (currentUserId) {
+            console.log(`Fetching items for user: ${currentUserId}`);
+            const db = getDatabase();
+            const itemsRef = ref(db, 'cadetItems');
+            let fetchedItems: CadetItem[] = [];
+
+            onValue(itemsRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    for (let category in data) {
+                        for (let userId in data[category]) {
+                            if (userId !== currentUserId) continue;
+                            Object.values(data[category][userId] as Record<string, CadetItem>).forEach((item: CadetItem) => {
+                                const newItem: CadetItem ={
+                                    ...item,
+                                    id: item.id,
+                                };
+                                fetchedItems = insertInSortedList(fetchedItems, newItem);
+                            });
+                        }
+                    }
+                }
+
+                console.log(`Fetched items: ${JSON.stringify(fetchedItems)}`);
+                setItems(fetchedItems);
+
+            }, (error) => {
+                console.error(`An error occurred: ${error}`);
+            });
+        }
+    };
+
+    useEffect(() => {
+        fetchItems();
+    }, [currentUserId]);
+
+    const toggleUploadVisibility = () => {
+        setIsUploadVisible(prevIsUploadVisible => !prevIsUploadVisible);
+    };
     const deleteItem = async (item: CadetItem) => {
         if (!currentUserId) return;
 
@@ -59,10 +112,8 @@ export default function Profile() {
     };
 
     const editItem = async (item: CadetItem) => {
-        // TODO: Implement edit item functionality
-
-        const { id: itemId, category } = item; // Destructure to get the itemId and the category from the item
-
+        setItemToEdit(item);
+        toggleUploadVisibility();
     }
 
 
@@ -80,56 +131,15 @@ export default function Profile() {
         })();
     }, [items]);
 
-    useEffect(() => {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setCurrentUserId(user.uid); // Set the current user ID
-            }
-        });
-    }, []);
-
-    useEffect(() => {
-        const fetchItems = async () => {
-            if (currentUserId) {
-                console.log(`Fetching items for user: ${currentUserId}`);
-                const db = getDatabase();
-                const itemsRef = ref(db, 'cadetItems');
-                let fetchedItems: CadetItem[] = [];
-
-                onValue(itemsRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        for (let category in data) {
-                            for (let userId in data[category]) {
-                                if (userId !== currentUserId) continue;
-                                Object.values(data[category][userId] as Record<string, CadetItem>).forEach((item: CadetItem) => {
-                                    const newItem: CadetItem ={
-                                        ...item,
-                                        id: item.id,
-                                    };
-                                    fetchedItems = insertInSortedList(fetchedItems, newItem);
-                                });
-                            }
-                        }
-                    }
-
-                    console.log(`Fetched items: ${JSON.stringify(fetchedItems)}`);
-                    setItems(fetchedItems);
-
-                }, (error) => {
-                    console.error(`An error occurred: ${error}`);
-                });
-            }
-        };
-
-        fetchItems();
-    }, [currentUserId]);
+    const handleRefresh = () => {
+        window.location.reload();
+    };
 
     return (
         <RootLayout>
-            <main className="flex min-h-screen flex-col items-center md:p-24 p-8 bg-gray-100">
+            <main className="flex min-h-screen flex-col md:p-24 p-8 bg-gray-100">
                 <div className="z-10 items-center justify-between text-lg lg:center">
+
                     <section className="mb-8">
                         <h2 className="text-2xl font-bold mb-4">User Information</h2>
                         <div className="flex items-center">
@@ -149,28 +159,45 @@ export default function Profile() {
 
                             <span className="px-2"/>
 
-                            <Button
-                                className={"text-white bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded"}
-                                variant="contained"
-                                onMouseEnter={() => setIsHovered(true)}
-                                onMouseLeave={() => setIsHovered(false)}
-                                onClick={() => window.open("https://forms.office.com/r/3FJZaMMXZt", "_blank")}
-                            >
-                                {isHovered ? 'Let Us Know!' : 'Feedback?'}
-                                {/*Add time transition */}
-                            </Button>
+
+                                <Button
+                                    className="transition-width ease-in-out w-40 text-white bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded overflow-hidden"
+                                    variant="contained"
+                                    onMouseEnter={() => setButtonText('Let Us Know!')}
+                                    onMouseLeave={() => setButtonText('Feedback?')}
+                                    onClick={() => window.open("https://forms.office.com/r/3FJZaMMXZt", "_blank")}
+                                >
+                                <span className="inline-block">
+                                    {buttonText}
+                                </span>
+                                </Button>
                         </div>
 
                     </section>
 
-                    <section className="w-full">
-                        <h2 className="text-2xl font-bold mb-4">Upload a Product</h2>
-                        <ItemUpload/>
-                    </section>
-
                     <section className="pt-12">
                         <h2 className="text-2xl font-bold mb-4">Your Listings</h2>
-                        <div className="mb-32 grid mx-auto gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
+
+                        <button
+                            onClick={toggleUploadVisibility}
+                            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Make a Post!
+                        </button>
+
+                        <section className="w-full mb-6 mt-3">
+                            {isUploadVisible && (
+                                itemToEdit
+                                    ? <ItemUpdate handleRefresh={handleRefresh} item={itemToEdit} onUpdated={() => {
+                                        setItemToEdit(null);
+                                        toggleUploadVisibility();
+                                    }}/>
+                                    : <ItemUpload handleRefresh={handleRefresh}/>
+                            )}
+                        </section>
+
+                        <div
+                            className="mb-32 grid mx-auto gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
 
                             {items.map((item) => (
                                 <div key={item.id}
@@ -193,14 +220,27 @@ export default function Profile() {
                                         height={400}
                                         loader={({src}) => src}
                                     />
-                                    <>
+                                    <span className="flex justify-between">
                                         <button
-                                            onClick={() => deleteItem(item)}
-                                            className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                            onClick={() => {
+                                                if (confirmDelete[item.id]) {
+                                                    deleteItem(item); // delete as normal
+                                                    setConfirmDelete({...confirmDelete, [item.id]: false}); // reset delete confirmation state
+                                                } else {
+                                                    setConfirmDelete({...confirmDelete, [item.id]: true}); // initiate delete confirmation
+                                                }
+                                            }}
+                                            className="mt-2 mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                         >
-                                            Delete
+                                            {confirmDelete[item.id] ? <span className="text-sm">Are you sure?</span> : "Delete"}
                                         </button>
-                                    </>
+                                        <button
+                                            onClick={() => editItem(item)}
+                                            className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                        >
+                                            Edit
+                                        </button>
+                                    </span>
                                 </div>
                             ))}
                         </div>
