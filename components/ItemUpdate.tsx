@@ -14,9 +14,6 @@ export default function ItemUpdate({ handleRefresh, item, onUpdated }: ItemUploa
 
 
     const updateItem = () => {
-        // ! The actual code for uploading or updating a item may be more complex
-        // After finish updating the item call handleRefresh function
-        // to refresh the main Profile page
         handleRefresh();
     }
 

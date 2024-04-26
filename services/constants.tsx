@@ -1,13 +1,14 @@
-export interface Item {
+export interface CadetItem {
+    createdBy: any;
+    timeCreated: number;
+    id: string;
     title: string;
     description: string;
     category: string;
-    price: number;
+    price: string;
     cadetName: string;
     cadetContact: string;
-    imageUrl: string | null;
-    quantity: number;
-    createdBy: string;
+    imageUrl: string;
 }
 
 

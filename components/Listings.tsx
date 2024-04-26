@@ -2,19 +2,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import {getDatabase, ref, onValue} from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-export interface CadetItem {
-    createdBy: any;
-    timeCreated: number;
-    id: string;
-    title: string;
-    description: string;
-    category: string;
-    price: string;
-    cadetName: string;
-    cadetContact: string;
-    imageUrl: string;
-}
+import {CadetItem} from "@/services/constants";
 
 interface ListingsProps {
     selectedCategories: string[];

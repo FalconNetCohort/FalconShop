@@ -5,15 +5,22 @@ import ItemUpload from "@/components/ItemUpload";
 import ItemUpdate from "@/components/ItemUpdate";
 import {getAuth, onAuthStateChanged, sendPasswordResetEmail} from "firebase/auth";
 import Image from "next/image";
-import {CadetItem, insertInSortedList} from "@/components/Listings";
+import {insertInSortedList} from "@/components/Listings";
+import {CadetItem} from "@/services/constants";
 import Button from "@mui/material/Button";
 import {getDatabase, onValue, ref, remove} from "firebase/database";
-
-
 
 export default function Profile() {
     const auth = getAuth();
     const user = auth.currentUser;
+    const [items, setItems] = useState<CadetItem[]>([]);
+    const [, setValidImageURLs] = useState<string[]>([]);
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const [buttonText, setButtonText] = useState('Feedback?');
+    const [isUploadVisible, setIsUploadVisible] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState<Record<string, boolean>>({});
+    const [itemToEdit, setItemToEdit] = useState<CadetItem | null>(null);
+
     let userEmail = "jdoe@example.com"
 
     if(user != null && user.email != null){
@@ -44,14 +51,6 @@ export default function Profile() {
                 });
         }
     };
-
-    const [items, setItems] = useState<CadetItem[]>([]);
-    const [, setValidImageURLs] = useState<string[]>([]);
-    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-    const [buttonText, setButtonText] = useState('Feedback?');
-    const [isUploadVisible, setIsUploadVisible] = useState(false);
-    const [confirmDelete, setConfirmDelete] = useState<Record<string, boolean>>({});
-    const [itemToEdit, setItemToEdit] = useState<CadetItem | null>(null);
 
     const fetchItems = async () => {
         if (currentUserId) {
@@ -115,8 +114,6 @@ export default function Profile() {
         setItemToEdit(item);
         toggleUploadVisibility();
     }
-
-
 
     useEffect(() => {
         (async () => {
