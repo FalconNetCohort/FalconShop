@@ -1,6 +1,42 @@
 {
   "rules": {
     ".read": "true",
-    ".write": "true"
+    "cadetItems": {
+      "Appliances":{
+        "$uid":{
+          ".write": "auth.uid === $uid"
+        }
+      },
+      "Clothing":{
+        "$uid":{
+          ".write": "auth.uid === $uid"
+        }
+      },
+      "Electronics":{
+        "$uid":{
+          ".write": "auth.uid === $uid"
+        }
+      },
+      "Other":{
+        "$uid":{
+          ".write": "auth.uid === $uid"
+        }
+      },
+      "Study":{
+        "$uid":{
+          ".write": "auth.uid === $uid"
+        }
+      },
+      "Uniform":{
+        "$uid":{
+          ".write": "auth.uid === $uid"
+        }
+      },
+      "Vehicles":{
+        "$uid":{
+          ".write": "auth.uid === $uid"
+        }
+      }
+    }
   }
 }
