@@ -58,6 +58,13 @@ export default function Profile() {
         }
     };
 
+    const editItem = async (item: CadetItem) => {
+        // TODO: Implement edit item functionality
+
+        const { id: itemId, category } = item; // Destructure to get the itemId and the category from the item
+
+    }
+
 
 
     useEffect(() => {
@@ -150,6 +157,7 @@ export default function Profile() {
                                 onClick={() => window.open("https://forms.office.com/r/3FJZaMMXZt", "_blank")}
                             >
                                 {isHovered ? 'Let Us Know!' : 'Feedback?'}
+                                {/*Add time transition */}
                             </Button>
                         </div>
 
