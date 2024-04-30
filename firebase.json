@@ -3,21 +3,14 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "public": "public",
+    "source": ".",
     "ignore": [
       "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+      "**/.*"
     ],
     "frameworksBackend": {
       "region": "us-central1"
-    },
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/maintenance.html"
-      }
-    ]
+    }
   },
   "storage": {
     "rules": "storage.rules"

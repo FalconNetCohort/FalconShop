@@ -10,6 +10,7 @@ import {CadetItem} from "@/services/constants";
 import Button from "@mui/material/Button";
 import {getDatabase, onValue, ref, remove} from "firebase/database";
 
+
 export default function Profile() {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -189,7 +190,7 @@ export default function Profile() {
                                         setItemToEdit(null);
                                         toggleUploadVisibility();
                                     }}/>
-                                    : <ItemUpload handleRefresh={handleRefresh}/>
+                                    : <ItemUpload/>
                             )}
                         </section>
 
