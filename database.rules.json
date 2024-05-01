@@ -1,40 +1,40 @@
 {
   "rules": {
-    ".read": "true",
+    ".read": "auth != null",
     "cadetItems": {
-      "Appliances":{
-        "$uid":{
-          ".write": "auth.uid === $uid"
+      "Appliances": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
         }
       },
-      "Clothing":{
-        "$uid":{
-          ".write": "auth.uid === $uid"
+      "Clothing": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
         }
       },
-      "Electronics":{
-        "$uid":{
-          ".write": "auth.uid === $uid"
+      "Electronics": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
         }
       },
-      "Other":{
-        "$uid":{
-          ".write": "auth.uid === $uid"
+      "Other": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
         }
       },
-      "Study":{
-        "$uid":{
-          ".write": "auth.uid === $uid"
+      "Study": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
         }
       },
-      "Uniform":{
-        "$uid":{
-          ".write": "auth.uid === $uid"
+      "Uniform": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
         }
       },
-      "Vehicles":{
-        "$uid":{
-          ".write": "auth.uid === $uid"
+      "Vehicles": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
         }
       }
     }
