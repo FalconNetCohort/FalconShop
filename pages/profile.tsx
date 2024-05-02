@@ -226,6 +226,11 @@ export default function Profile() {
                                                     setConfirmDelete({...confirmDelete, [item.id]: false}); // reset delete confirmation state
                                                 } else {
                                                     setConfirmDelete({...confirmDelete, [item.id]: true}); // initiate delete confirmation
+                                                    if (isUploadVisible) {
+                                                        toggleUploadVisibility();
+                                                        setItemToEdit(null);
+                                                        console.log("Toggled visibility and cleared edit form appropriately.");
+                                                    }
                                                 }
                                             }}
                                             className="mt-2 mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
