@@ -157,18 +157,6 @@ export default function Profile() {
 
                             <span className="px-2"/>
 
-
-                                <Button
-                                    className="transition-width ease-in-out w-40 text-white bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded overflow-hidden"
-                                    variant="contained"
-                                    onMouseEnter={() => setButtonText('Let Us Know!')}
-                                    onMouseLeave={() => setButtonText('Feedback?')}
-                                    onClick={() => window.open("https://forms.office.com/r/3FJZaMMXZt", "_blank")}
-                                >
-                                <span className="inline-block">
-                                    {buttonText}
-                                </span>
-                                </Button>
                         </div>
 
                     </section>

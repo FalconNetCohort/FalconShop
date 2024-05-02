@@ -2,39 +2,71 @@ import React, { useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Link from "next/link";
+import {useRouter} from "next/router";
+import {getAuth} from "firebase/auth";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function ProfileMenu() {
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const router = useRouter();
 
-    const handleProfileMenuOpen = (event: any) => {
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleProfileMenuClose = () => {
+    const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleProfile = () => {
+        router.push('/profile'); // Navigate to profile on click
+        handleClose();
+    };
+
+    const handleLogout = async () => {
+        const auth = getAuth();
+        await auth.signOut();
+        await router.push('/auth'); // Redirect to '/auth' after logout
+        handleClose();
+    };
+
+    const handleFeedback = () => {
+        router.push('https://forms.office.com/r/3FJZaMMXZt'); // Navigate to feedback on click
+        handleClose();
     };
 
     return (
         <div>
             <IconButton
-                edge='end'
-                aria-label='open menu for current user'
-                aria-haspopup='true'
-                aria-controls='profile-menu'
-                onClick={handleProfileMenuOpen}>
-                <AccountCircle />
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+            >
+                <MenuIcon />
             </IconButton>
-
             <Menu
-                id='profile-menu'
+                id="menu-appbar"
                 anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
                 keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleProfileMenuClose}>
-                <MenuItem onClick={handleProfileMenuClose}><Link href="/profile"/>Profile</MenuItem>
-                <MenuItem onClick={handleProfileMenuClose}>Logout</MenuItem>
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={handleProfile}>My Account</MenuItem>
+                <MenuItem onClick={handleFeedback}>Feedback</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </div>
     );
