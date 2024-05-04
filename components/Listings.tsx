@@ -99,7 +99,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                                 )}
                                 <h2 className="card-title-font mb-3 text-xl w-full overflow-wrap-anywhere break-words">{item.title}</h2>
                                 <span
-                                    className="block mt-2 font-bold text-blue-700 overflow-wrap-anywhere break-words">${item.price}</span>
+                                    className="block mt-2 font-bold text-blue-700 overflow-wrap-anywhere break-words">{item.price === '0' ? 'Free' : `$${item.price}`}</span>
                                 <p className="card-body-font mt-3 text-gray-600 overflow-wrap-anywhere break-words">Cadet: {item.cadetName}</p>
                                 <p className="card-body-font mt-1 text-gray-600 overflow-wrap-anywhere break-words">Contact: {item.cadetContact}</p>
                                 <p className="card-desc-font opacity-70 mb-3 overflow-wrap-anywhere break-words">{item.description}</p>

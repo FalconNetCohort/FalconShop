@@ -71,9 +71,9 @@ export default function ItemUpload() {
             return;
         }
 
-        // Check if the price is a positive number
-        if (!/^\d*\.?\d+$/.test(item.price) || parseFloat(item.price) <= 0) {
-            setUploadStatus('Please enter a valid positive number for the price.');
+        // Check if the price is a positive number or zero
+        if (!/^\d*\.?\d+$/.test(item.price) || parseFloat(item.price) < 0) {
+            setUploadStatus('Please enter a valid positive number or zero for the price.');
             return;
         }
 
