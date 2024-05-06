@@ -42,11 +42,11 @@ export default function ItemUpload() {
             const file = e.target.files[0];
             const fileType = file.type.split('/')[1];
             if (fileType !== 'png' && fileType !== 'jpg' && fileType !== 'jpeg' && fileType !== 'webp') {
-                setUploadStatus('Filetype must be png, jpg, or jpeg.');
+                setUploadStatus('Filetype must be png, jpg, jpeg, or webp.');
                 return;
             }
-            if (file.size > 2 * 1024 * 1024) {
-                setUploadStatus('File size should not exceed 2MB');
+            if (file.size > 4 * 1024 * 1024) {
+                setUploadStatus('File size should not exceed 4MB');
                 return;
             }
             setImage(file);
@@ -109,7 +109,7 @@ export default function ItemUpload() {
                 },
                 (error) => {
                     console.error(error);
-                    setUploadStatus('An error occurred while uploading.');
+                    setUploadStatus('An error occurred while uploading the image.');
                 },
                 async () => {
                     imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
