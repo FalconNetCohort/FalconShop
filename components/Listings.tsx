@@ -18,6 +18,9 @@ export function insertInSortedList(sortedList: CadetItem[], newItem: CadetItem) 
     }
 }
 
+
+
+
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);

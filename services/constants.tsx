@@ -1,5 +1,5 @@
 export interface CadetItem {
-    createdBy: any;
+    createdBy: string;
     timeCreated: number;
     id: string;
     title: string;
