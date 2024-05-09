@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "npx next dev",
-    "build": "firebase deploy",
+    "build": "next build",
     "start": "npx next start",
-    "lint": "npx next lint"
+    "lint": "npx next lint",
+    "deploy": "firebase deploy"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
