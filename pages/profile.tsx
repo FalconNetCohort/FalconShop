@@ -17,7 +17,6 @@ export default function Profile() {
     const [items, setItems] = useState<CadetItem[]>([]);
     const [, setValidImageURLs] = useState<string[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-    const [buttonText, setButtonText] = useState('Feedback?');
     const [isUploadVisible, setIsUploadVisible] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState<Record<string, boolean>>({});
     const [itemToEdit, setItemToEdit] = useState<CadetItem | null>(null);
