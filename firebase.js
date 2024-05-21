@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
-import {getFirestore} from 'firebase/firestore'; // remove after migrate
 import { getDatabase } from "firebase/database";
 
 
