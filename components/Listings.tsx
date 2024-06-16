@@ -4,6 +4,7 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { CadetItem } from "@/services/constants";
 import { Modal, Box, Typography, Button } from '@mui/material';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 interface ListingsProps {
     selectedCategories: string[];
@@ -46,8 +47,8 @@ const ListingModal: React.FC<ListingModalProps> = ({ item, onClose }) => {
                         <Image
                             src={item.imageUrl}
                             alt={item.title}
-                            width={175}
-                            height={175}
+                            width={150}
+                            height={150}
                             loader={({ src }) => src}
                             className="object-cover rounded"
                         />
@@ -66,9 +67,12 @@ const ListingModal: React.FC<ListingModalProps> = ({ item, onClose }) => {
 };
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
-    const [items, setItems] = useState<CadetItem[]>([]);
+    const [allItems, setAllItems] = useState<CadetItem[]>([]);
+    const [displayedItems, setDisplayedItems] = useState<CadetItem[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [selectedItem, setSelectedItem] = useState<CadetItem | null>(null);
+    const [hasMore, setHasMore] = useState(true);
+    const itemsPerPage = 25;
 
     useEffect(() => {
         const auth = getAuth();
@@ -89,7 +93,9 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             const data = snapshot.val();
 
             if (!data) {
-                setItems([]);
+                setAllItems([]);
+                setDisplayedItems([]);
+                setHasMore(false);
                 return;
             }
 
@@ -108,10 +114,26 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
 
             fetchedItems.sort((a, b) => b.timeCreated - a.timeCreated);
 
-            setItems(fetchedItems);
+            setAllItems(fetchedItems);
+            setDisplayedItems(fetchedItems.slice(0, itemsPerPage));
+            setHasMore(fetchedItems.length > itemsPerPage);
         });
 
     }, [selectedCategories, searchValue]);
+
+    const fetchMoreData = () => {
+        if (displayedItems.length >= allItems.length) {
+            setHasMore(false);
+            return;
+        }
+
+        setTimeout(() => {
+            setDisplayedItems(prevItems => [
+                ...prevItems,
+                ...allItems.slice(prevItems.length, prevItems.length + itemsPerPage)
+            ]);
+        }, 1500);
+    };
 
     const handleListingClick = (item: CadetItem) => {
         setSelectedItem(item);
@@ -124,8 +146,15 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     return (
         currentUserId ?
             <section className="flex flex-col items-center justify-center">
-                <div className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5">
-                    {items.map((item) => (
+                <InfiniteScroll
+                    dataLength={displayedItems.length}
+                    next={fetchMoreData}
+                    hasMore={hasMore}
+                    loader={<h4>Loading...</h4>}
+                    endMessage={<p style={{ textAlign: 'center' }}>You have seen it all</p>}
+                    className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5"
+                >
+                    {displayedItems.map((item) => (
                         <div key={item.id} className="card relative" onClick={() => handleListingClick(item)}>
                             {currentUserId === item.createdBy && (
                                 <p className="block mt-2 font-bold text-red-700 mb-0">Your Listing</p>
@@ -147,7 +176,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                             </div>
                         </div>
                     ))}
-                </div>
+                </InfiniteScroll>
                 {selectedItem && <ListingModal item={selectedItem} onClose={handleCloseModal} />}
             </section>
             :
