@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -72,20 +72,9 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [selectedItem, setSelectedItem] = useState<CadetItem | null>(null);
     const [hasMore, setHasMore] = useState(true);
-    const itemsPerPage = 25;
+    const itemsPerPage = 10;
 
-    useEffect(() => {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setCurrentUserId(user.uid);
-            } else {
-                setCurrentUserId(null);
-            }
-        });
-    }, []);
-
-    useEffect(() => {
+    const fetchItems = useCallback(() => {
         const db = getDatabase();
         const itemsRef = ref(db, 'cadetItems');
 
@@ -118,8 +107,22 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             setDisplayedItems(fetchedItems.slice(0, itemsPerPage));
             setHasMore(fetchedItems.length > itemsPerPage);
         });
-
     }, [selectedCategories, searchValue]);
+
+    useEffect(() => {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setCurrentUserId(user.uid);
+            } else {
+                setCurrentUserId(null);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        fetchItems();
+    }, [fetchItems]);
 
     const fetchMoreData = () => {
         if (displayedItems.length >= allItems.length) {
