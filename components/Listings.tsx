@@ -188,5 +188,3 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             </div>
     );
 }
-
-// test
