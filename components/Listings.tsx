@@ -163,7 +163,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                                     layout="responsive"
                                     width={150}
                                     height={150}
-                                    unoptimized={false}  // Disable Next.js optimization since you are optimizing in the API
+                                    unoptimized={true}  // Disable Next.js optimization
                                     style={{
                                         maxHeight: '3.5rem',
                                         objectFit: 'cover'
@@ -188,7 +188,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                         onPageChange={handlePageClick}
                         containerClassName={"flex justify-center space-x-2 mt-4 mb-16"}  // Use flexbox and spacing
                         pageClassName={"inline-block px-3 py-1 border rounded"}     // Individual page styling
-                        pageLinkClassName={"text-blue-500"}                        // Link color for page numbers
+                        pageLinkClassName={"text-black"}                        // Link color for page numbers
                         activeClassName={"bg-blue-500 text-white"}                 // Active page styling
                         previousClassName={"inline-block px-3 py-1 border rounded"}  // Styling for "Previous" button
                         nextClassName={"inline-block px-3 py-1 border rounded"}      // Styling for "Next" button
