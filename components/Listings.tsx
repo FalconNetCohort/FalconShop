@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { CadetItem } from "@/services/constants";
 import { Modal, Box, Typography, Button } from '@mui/material';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import ReactPaginate from 'react-paginate';
 
 interface ListingsProps {
     selectedCategories: string[];
@@ -14,15 +14,6 @@ interface ListingsProps {
 interface ListingModalProps {
     item: CadetItem | null;
     onClose: () => void;
-}
-
-export function insertInSortedList(sortedList: CadetItem[], newItem: CadetItem) {
-    const index = sortedList.findIndex(item => item.timeCreated < newItem.timeCreated);
-    if (index === -1) {
-        return [...sortedList, newItem];
-    } else {
-        return [...sortedList.slice(0, index), newItem, ...sortedList.slice(index)];
-    }
 }
 
 const modalStyle = {
@@ -68,11 +59,10 @@ const ListingModal: React.FC<ListingModalProps> = ({ item, onClose }) => {
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [allItems, setAllItems] = useState<CadetItem[]>([]);
-    const [displayedItems, setDisplayedItems] = useState<CadetItem[]>([]);
-    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState(0);
     const [selectedItem, setSelectedItem] = useState<CadetItem | null>(null);
-    const [hasMore, setHasMore] = useState(true);
-    const itemsPerPage = 25;
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const itemsPerPage = 27;
 
     const fetchItems = useCallback(() => {
         const db = getDatabase();
@@ -83,8 +73,6 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
 
             if (!data) {
                 setAllItems([]);
-                setDisplayedItems([]);
-                setHasMore(false);
                 return;
             }
 
@@ -102,10 +90,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
             }
 
             fetchedItems.sort((a, b) => b.timeCreated - a.timeCreated);
-
             setAllItems(fetchedItems);
-            setDisplayedItems(fetchedItems.slice(0, itemsPerPage));
-            setHasMore(fetchedItems.length > itemsPerPage);
         });
     }, [selectedCategories, searchValue]);
 
@@ -124,18 +109,13 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
         fetchItems();
     }, [fetchItems]);
 
-    const fetchMoreData = () => {
-        if (displayedItems.length >= allItems.length) {
-            setHasMore(false);
-            return;
-        }
+    useEffect(() => {
+        setCurrentPage(0); // Reset page number when categories or search value change
+    }, [selectedCategories, searchValue]);
 
-        setTimeout(() => {
-            setDisplayedItems(prevItems => [
-                ...prevItems,
-                ...allItems.slice(prevItems.length, prevItems.length + itemsPerPage)
-            ]);
-        }, 1500);
+    const handlePageClick = (data: { selected: number }) => {
+        setCurrentPage(data.selected);
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of page
     };
 
     const handleListingClick = (item: CadetItem) => {
@@ -146,17 +126,13 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
         setSelectedItem(null);
     };
 
+    const offset = currentPage * itemsPerPage;
+    const displayedItems = allItems.slice(offset, offset + itemsPerPage);
+
     return (
         currentUserId ?
             <section className="flex flex-col items-center justify-center">
-                <InfiniteScroll
-                    dataLength={displayedItems.length}
-                    next={fetchMoreData}
-                    hasMore={hasMore}
-                    loader={<h4>Loading...</h4>}
-                    endMessage={<p style={{ textAlign: 'center' }}>You have seen it all</p>}
-                    className="mb-32 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5"
-                >
+                <div className="mb-8 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5">
                     {displayedItems.map((item) => (
                         <div key={item.id} className="card relative" onClick={() => handleListingClick(item)}>
                             {currentUserId === item.createdBy && (
@@ -179,8 +155,28 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                             </div>
                         </div>
                     ))}
-                </InfiniteScroll>
+                </div>
                 {selectedItem && <ListingModal item={selectedItem} onClose={handleCloseModal} />}
+                <div>
+                    <ReactPaginate
+                        previousLabel={"Previous"}
+                        nextLabel={"Next"}
+                        breakLabel={"..."}
+                        pageCount={Math.ceil(allItems.length / itemsPerPage)}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageClick}
+                        containerClassName={"flex justify-center space-x-2 mt-4 mb-16"}  // Use flexbox and spacing
+                        pageClassName={"inline-block px-3 py-1 border rounded"}     // Individual page styling
+                        pageLinkClassName={"text-blue-500"}                        // Link color for page numbers
+                        activeClassName={"bg-blue-500 text-white"}                 // Active page styling
+                        previousClassName={"inline-block px-3 py-1 border rounded"}  // Styling for "Previous" button
+                        nextClassName={"inline-block px-3 py-1 border rounded"}      // Styling for "Next" button
+                        breakClassName={"inline-block px-3 py-1 border rounded"}     // Styling for the "..." break
+                        disabledClassName={"text-gray-400 cursor-not-allowed"}       // Disabled state styling
+                        forcePage={currentPage} // Force page number to update when categories or search value change
+                    />
+                </div>
             </section>
             :
             <div className="flex justify-center h-screen">
