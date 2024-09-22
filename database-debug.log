@@ -1,0 +1,8 @@
+02:09:33.972 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+02:09:34.068 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:50000
+02:09:44.671 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO com.firebase.core.namespace.NamespaceActor - falconshop-303c4-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 93ms, init: 0ms
+02:09:49.638 [NamespaceSystem-blocking-namespace-operation-dispatcher-9] INFO com.firebase.core.namespace.StateManager - Namespace falconshop-303c4-default-rtdb status Active to Active
+02:10:24.493 [Thread-0] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
+02:10:24.498 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO com.firebase.core.namespace.Terminator$Terminator - 1 actors left to terminate: falconshop-303c4-default-rtdb
+02:10:24.501 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO com.firebase.core.namespace.NamespaceActor - stopped namespace actor for falconshop-303c4-default-rtdb
+02:10:24.503 [Thread-0] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.

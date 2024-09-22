@@ -16,13 +16,13 @@
     "next": "^14.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-infinite-scroll-component": "^6.1.0",
-    "sharp": "^0.32.1",
+    "react-paginate": "^8.2.0",
+    "sharp": "^0.32 || ^0.33",
     "firebase-frameworks": "^0.11.0",
     "firebase-functions": "^4.5.0"
   },
   "main": "server.js",
   "engines": {
-    "node": "18"
+    "node": "20"
   }
 }
