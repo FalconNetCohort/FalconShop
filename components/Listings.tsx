@@ -145,7 +145,8 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     return (
         currentUserId ?
             <section className="flex flex-col items-center justify-center">
-                <div className="mb-8 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5">
+                <div
+                    className="mb-8 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5">
                     {displayedItems.map((item) => (
                         <div key={item.id} className="card relative" onClick={() => handleListingClick(item)}>
                             {currentUserId === item.createdBy && (
@@ -157,19 +158,25 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                             </span>
                             <div className="absolute bottom-0 right-0 m-2">
                                 <Image
-                                    src={item.imageUrl}
+                                    src={item.imageUrl}  // Pass the URL-encoded path
                                     alt={item.title}
-                                    width={40}
-                                    height={40}
-                                    loader={({ src }) => src}
-                                    className="object-cover rounded-full"
-                                    loading="lazy"
+                                    layout="responsive"
+                                    width={150}
+                                    height={150}
+                                    unoptimized={false}  // Disable Next.js optimization since you are optimizing in the API
+                                    style={{
+                                        maxHeight: '3.5rem',
+                                        objectFit: 'cover'
+                                    }}
+                                    className="rounded"
+                                    quality={4}
                                 />
+
                             </div>
                         </div>
                     ))}
                 </div>
-                {selectedItem && <ListingModal item={selectedItem} onClose={handleCloseModal} />}
+                {selectedItem && <ListingModal item={selectedItem} onClose={handleCloseModal}/>}
                 <div>
                     <ReactPaginate
                         previousLabel={"Previous"}
