@@ -28,6 +28,7 @@ const modalStyle = {
     p: 4,
 };
 
+
 const ListingModal: React.FC<ListingModalProps> = ({ item, onClose }) => {
     return (
         <Modal open={!!item} onClose={onClose}>
@@ -55,6 +56,18 @@ const ListingModal: React.FC<ListingModalProps> = ({ item, onClose }) => {
             </Box>
         </Modal>
     );
+};
+
+export const insertInSortedList = (list: CadetItem[], newItem: CadetItem): CadetItem[] => {
+    const index = list.findIndex(item => new Date(newItem.timeCreated).getTime() < new Date(item.timeCreated).getTime());
+
+    if (index === -1) {
+        // If the newItem has the latest timeCreated, append it to the end
+        return [...list, newItem];
+    }
+
+    // Insert the newItem at the correct index based on timeCreated
+    return [...list.slice(0, index), newItem, ...list.slice(index)];
 };
 
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
