@@ -4,11 +4,12 @@ import '../firebase';
 import ItemUpload from "@/components/ItemUpload";
 import ItemUpdate from "@/components/ItemUpdate";
 import {getAuth, onAuthStateChanged, sendPasswordResetEmail} from "firebase/auth";
-import Image from "next/image";
-import {insertInSortedList} from "@/components/Listings";
+import {insertInSortedList, getTitleSize} from "@/components/Listings";
 import {CadetItem} from "@/services/constants";
 import Button from "@mui/material/Button";
 import {getDatabase, onValue, ref, remove} from "firebase/database";
+import { ListingModal } from "@/components/Modal";
+import ReactPaginate from "react-paginate";
 
 
 export default function Profile() {
@@ -20,6 +21,8 @@ export default function Profile() {
     const [isUploadVisible, setIsUploadVisible] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState<Record<string, boolean>>({});
     const [itemToEdit, setItemToEdit] = useState<CadetItem | null>(null);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [selectedItem, setSelectedItem] = useState<CadetItem | null>(null);
 
     let userEmail = "jdoe@example.com"
 
@@ -132,11 +135,23 @@ export default function Profile() {
         window.location.reload();
     };
 
+    const handlePageClick = (data: { selected: number }) => {
+        setCurrentPage(data.selected);
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of page
+    };
+
+    const handleListingClick = (item: CadetItem) => {
+        setSelectedItem(item);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedItem(null);
+    };
+
     return (
         <RootLayout>
-            <main className="flex min-h-screen flex-col md:p-24 p-8 bg-gray-100">
+            <main className="flex min-h-screen flex-col md:p-24 p-8 bg-neutral-100">
                 <div className="z-10 items-center justify-between text-lg lg:center">
-
                     <section className="mb-8">
                         <h2 className="text-2xl font-bold mb-4">User Information</h2>
                         <div className="flex items-center">
@@ -153,9 +168,7 @@ export default function Profile() {
                             >
                                 Reset Password
                             </Button>
-
                             <span className="px-2"/>
-
                         </div>
 
                     </section>
@@ -182,32 +195,43 @@ export default function Profile() {
                         </section>
 
                         <div
-                            className="mb-32 grid mx-auto gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl w-full">
+                            className="mb-8 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5">
 
                             {items.map((item) => (
-                                <div key={item.id}
-                                     className="card">
-                                    {currentUserId === item.createdBy && (
-                                        <p className="block font-bold text-red-700 mb-0"> Your Listing </p>
-                                    )}
-                                    <h2 className="card-title-font mb-3 text-xl text-blue-600">{item.title}</h2>
+                                <div key={item.id} className="card relative overflow-hidden bg-cover bg-center"
+                                     style={{backgroundImage: `url(${item.imageUrl})`}}
+                                     onClick={() => handleListingClick(item)}>
+                                    {/* Blurred Background */}
+                                    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
 
-                                    <span className="block mt-2 font-bold text-blue-700">Price: ${item.price}</span>
-                                    <p className="card-body-font mt-3">Cadet: {item.cadetName}</p>
-                                    <p className="card-body-font my-1">Contact: {item.cadetContact}</p>
-                                    <p className="card-desc-font mb-3">
-                                        {item.description}
-                                    </p>
-                                    <Image
-                                        src={item.imageUrl}
-                                        alt=""
-                                        width={600}
-                                        height={400}
-                                        loader={({src}) => src}
-                                    />
-                                    <span className="flex justify-between">
+                                    <div className="relative z-10 p-4">
+                                        {currentUserId === item.createdBy && (
+                                            <p className="block mt-2 font-bold text-red-700 mb-0 text-[10px] sm:text-lg">Your
+                                                Listing
+                                            </p>
+                                        )}
+                                        {/* Dynamically adjusting title size based on length */}
+                                        <h2 className={`mb-3 font-bold text-white w-full overflow-wrap-anywhere break-words ${getTitleSize(item.title)} md:text-lg`}>
+                                            {item.title}
+                                        </h2>
+                                        {/* Updated Price with brighter color and bold */}
+                                        <span
+                                            className="block mt-2 font-bold text-blue-400 text-xs sm:text-sm md:text-base overflow-wrap-anywhere break-words">
+                                            {item.price === '0' ? 'Free' : `$${item.price}`}
+                                        </span>
+                                        <span
+                                            className={`block mt-2 font-bold text-blue-400 text-[0.65rem] md:text-lg overflow-wrap-anywhere break-words`}>
+                                            {new Date(item.timeCreated).toLocaleDateString('en-US', {
+                                                month: 'long',
+                                                day: 'numeric',
+                                                timeZone: 'UTC'  // Ensures UTC is used
+                                            })}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between relative z-20">
                                         <button
-                                            onClick={() => {
+                                            onClick={(event) => {
+                                                event.stopPropagation(); // Prevent modal from opening
                                                 if (confirmDelete[item.id]) {
                                                     deleteItem(item); // delete as normal
                                                     setConfirmDelete({...confirmDelete, [item.id]: false}); // reset delete confirmation state
@@ -216,24 +240,31 @@ export default function Profile() {
                                                     if (isUploadVisible) {
                                                         toggleUploadVisibility();
                                                         setItemToEdit(null);
-                                                        console.log("Toggled visibility and cleared edit form appropriately.");
                                                     }
                                                 }
                                             }}
-                                            className="mt-2 mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                            className="mt-2 mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded sm:py-2 sm:px-4 text-sm sm:text-base"
                                         >
-                                            {confirmDelete[item.id] ? <span className="text-sm">Are you sure?</span> : "Delete"}
+                                            {confirmDelete[item.id] ?
+                                                <span className="text-sm">Are you sure?</span> : "Delete"}
                                         </button>
                                         <button
-                                            onClick={() => editItem(item)}
-                                            className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            onClick={(event) => {
+                                                event.stopPropagation(); // Prevent modal from opening
+                                                editItem(item);
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            }}
+                                            className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded sm:py-2 sm:px-4 text-sm sm:text-base"
                                         >
                                             Edit
                                         </button>
-                                    </span>
+                                    </div>
+
+
                                 </div>
                             ))}
                         </div>
+                        {selectedItem && <ListingModal item={selectedItem} onClose={handleCloseModal}/>}
                     </section>
                 </div>
             </main>
