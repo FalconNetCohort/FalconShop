@@ -1,63 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { CadetItem } from "@/services/constants";
-import { Modal, Box, Typography, Button } from '@mui/material';
+import {ListingModal} from "@/components/Modal";
 import ReactPaginate from 'react-paginate';
 
 interface ListingsProps {
     selectedCategories: string[];
     searchValue: string;
 }
-
-interface ListingModalProps {
-    item: CadetItem | null;
-    onClose: () => void;
-}
-
-const modalStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 500,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-
-
-const ListingModal: React.FC<ListingModalProps> = ({ item, onClose }) => {
-    return (
-        <Modal open={!!item} onClose={onClose}>
-            <Box sx={modalStyle}>
-                <Button style={{ float: 'right' }} onClick={onClose}>X</Button>
-                {item && (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Image
-                            src={item.imageUrl}
-                            alt={item.title}
-                            width={150}
-                            height={150}
-                            loader={({ src }) => src}
-                            className="object-cover rounded"
-                        />
-                        <Box sx={{ ml: 3 }}>
-                            <Typography variant="h6" component="h2">{item.title}</Typography>
-                            <Typography sx={{ mt: 2 }}>{item.price === '0' ? 'Free' : `$${item.price}`}</Typography>
-                            <Typography sx={{ mt: 2 }}>Cadet: {item.cadetName}</Typography>
-                            <Typography sx={{ mt: 2 }}>Contact: {item.cadetContact}</Typography>
-                            <Typography sx={{ mt: 2 }}>{item.description}</Typography>
-                        </Box>
-                    </Box>
-                )}
-            </Box>
-        </Modal>
-    );
-};
-
 export const insertInSortedList = (list: CadetItem[], newItem: CadetItem): CadetItem[] => {
     const index = list.findIndex(item => new Date(newItem.timeCreated).getTime() < new Date(item.timeCreated).getTime());
 
@@ -139,6 +90,21 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
         setSelectedItem(null);
     };
 
+    // Helper function to determine text size based on title length
+    const getTitleSize = (title: string) => {
+        const length = title.length;
+
+        if (length <= 15) {
+            return 'text-[0.9rem]';  // For shorter titles
+        } else if (length <= 30) {
+            return 'text-[0.7rem]';  // For medium-length titles
+        } else if (length <= 40) {
+            return 'text-[0.65rem]';
+        } else {
+            return 'text-[0.6rem]';
+        }
+    };
+
     const offset = currentPage * itemsPerPage;
     const displayedItems = allItems.slice(offset, offset + itemsPerPage);
 
@@ -148,32 +114,38 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
                 <div
                     className="mb-8 grid mx-auto gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5">
                     {displayedItems.map((item) => (
-                        <div key={item.id} className="card relative" onClick={() => handleListingClick(item)}>
-                            {currentUserId === item.createdBy && (
-                                <p className="block mt-2 font-bold text-red-700 mb-0">Your Listing</p>
-                            )}
-                            <h2 className="card-title-font mb-3 text-xl w-full overflow-wrap-anywhere break-words">{item.title}</h2>
-                            <span className="block mt-2 font-bold text-blue-700 overflow-wrap-anywhere break-words">
-                                {item.price === '0' ? 'Free' : `$${item.price}`}
-                            </span>
-                            <div className="absolute bottom-0 right-0 m-2">
-                                <Image
-                                    src={item.imageUrl}  // Pass the URL-encoded path
-                                    alt={item.title}
-                                    layout="responsive"
-                                    width={150}
-                                    height={150}
-                                    unoptimized={true}  // Disable Next.js optimization
-                                    style={{
-                                        maxHeight: '3.5rem',
-                                        objectFit: 'cover'
-                                    }}
-                                    className="rounded"
-                                    quality={4}
-                                />
 
+                        <div key={item.id} className="card relative overflow-hidden bg-cover bg-center"
+                             style={{backgroundImage: `url(${item.imageUrl})`}}
+                             onClick={() => handleListingClick(item)}>
+                            {/* Blurred Background */}
+                            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
+
+                            <div className="relative z-10 p-4">
+                                {currentUserId === item.createdBy && (
+                                    <p className="block mt-2 font-bold text-red-700 mb-0 text-[10px] sm:text-lg">Your Listing</p>
+                                )}
+                                {/* Dynamically adjusting title size based on length */}
+                                <h2 className={`mb-3 font-bold text-white w-full overflow-wrap-anywhere break-words ${getTitleSize(item.title)} md:text-lg`}>
+                                    {item.title}
+                                </h2>
+                                {/* Updated Price with brighter color and bold */}
+                                <span
+                                    className="block mt-2 font-bold text-blue-400 text-xs sm:text-sm md:text-base overflow-wrap-anywhere break-words">
+                                    {item.price === '0' ? 'Free' : `$${item.price}`}
+                                </span>
+                                <span
+                                    className={`block mt-2 font-bold text-blue-400 text-[0.65rem] md:text-lg overflow-wrap-anywhere break-words`}>
+                                    {new Date(item.timeCreated).toLocaleDateString('en-US', {
+                                        month: 'long',
+                                        day: 'numeric',
+                                        timeZone: 'UTC'  // Ensures UTC is used
+                                    })}
+                                </span>
                             </div>
                         </div>
+
+
                     ))}
                 </div>
                 {selectedItem && <ListingModal item={selectedItem} onClose={handleCloseModal}/>}

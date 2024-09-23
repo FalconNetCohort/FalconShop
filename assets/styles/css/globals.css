@@ -39,45 +39,23 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: #f7f9fc; /* fallback for older browsers without gradient support */
   background-image: linear-gradient(
-    to bottom,
-    transparent,
-    rgb(var(--background-end-rgb))
+          to bottom,
+          transparent,
+          rgb(var(--background-end-rgb))
   );
   margin: 0;
   padding: 0;
-}
-
-.card-title-font {
-  font-family: 'Myriad Pro', "sans-serif";
-  font-style: normal;
-  font-size: 1.5rem;
-  font-weight: 700;
-
-}
-
-.card-body-font {
-  font-family: 'Myriad Pro', "sans-serif";
-  font-size: 1.15rem;
-  font-weight: 400;
-}
-
-.card-desc-font {
-  font-family: 'Myriad Pro', "sans-serif";
-  font-size: 1rem;
-  font-weight: 350;
 }
 
 .theme {
   font-family: 'Myriad Pro', "sans-serif";
   color: #ffffff;
   background-color: var(--theme_main_color);
-
 }
 
 .navbar-font {
   font-family: 'Myriad Pro', "sans-serif";
   font-size: 1.15rem;
-
 }
 
 .button {
@@ -91,21 +69,6 @@ body {
     overflow-x: auto;
   }
 }
-
-/* For screens smaller than 600px wide */
-@media (max-width: 600px) {
-  .card-title-font {
-    font-size: 1.5rem;
-  }
-}
-
-/* For screens smaller than 400px wide */
-@media (max-width: 400px) {
-    .card-title-font {
-        font-size: 1.25em;
-    }
-}
-
 
 @layer components {
   .auth-global {
@@ -129,4 +92,3 @@ body {
     @apply w-full max-w-sm flex flex-col items-center justify-center text-black;
   }
 }
-
