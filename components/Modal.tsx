@@ -16,8 +16,9 @@ const modalStyle = {
     width: '85%',
     maxWidth: '500px',
     maxHeight: '80vh', // Ensure modal height doesn't exceed viewport
-    bgcolor: 'background.paper',
+    bgcolor: 'transparent',
     border: '2px solid #000',
+    borderRadius: 3,
     boxShadow: 24,
     overflowY: 'auto', // Allow scrolling when content overflows
     p: 4,
@@ -25,8 +26,8 @@ const modalStyle = {
 
 export const ListingModal: React.FC<ListingModalProps> = ({ item, onClose }) => {
     return (
-        <Modal open={!!item} onClose={onClose}>
-            <Box sx={modalStyle} className="p-2 sm:p-4 relative">
+        <Modal open={!!item} onClose={onClose} className={"backdrop-blur-md text-white"}>
+            <Box sx={modalStyle} className={"p-2 sm:p-4 relative backdrop-brightness-50"}>
                 {/* X Button - Moved higher and farther away */}
                 <Button
                     onClick={onClose}
