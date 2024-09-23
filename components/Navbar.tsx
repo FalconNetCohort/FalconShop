@@ -27,7 +27,7 @@ export default function Navbar() {
     return (
         <>
             <nav
-                className="rounded-b-lg shadow-lg bg-gradient-to-r from-indigo-600 to-blue-500 p-4 font-semibold flex items-center justify-between text-white">
+                className="shadow-lg bg-gradient-to-r from-indigo-600 to-blue-500 p-4 font-semibold flex items-center justify-between text-white">
                 <div className="flex items-center space-x-3" onClick={handleClickFalconShop}>
                     <Image
                         src="/assets/images/FalconShop_Logo.png"

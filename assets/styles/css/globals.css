@@ -72,10 +72,10 @@ body {
 
 @layer components {
   .auth-global {
-    @apply text-black bg-gray-100 flex flex-col items-center justify-center min-h-screen font-MyriadPro font-semibold;
+    @apply text-black bg-neutral-100 flex flex-col items-center justify-center min-h-screen font-MyriadPro font-semibold;
   }
   .scale-global {
-    @apply text-black bg-gray-100 flex flex-col items-center justify-center min-h-screen font-MyriadPro font-semibold;
+    @apply text-black bg-neutral-100 flex flex-col items-center justify-center min-h-screen font-MyriadPro font-semibold;
   }
   .card {
     @apply border rounded-lg bg-neutral-800/30 border-gray-400 hover:border-blue-500 hover:bg-blue-200 p-6 shadow-md hover:shadow-xl transform transition-all duration-300 hover:scale-105;

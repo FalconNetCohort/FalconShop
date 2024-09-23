@@ -10,7 +10,7 @@ export default function Index() {
     const [search, setSearch] = useState('');
     return (
         <RootLayout>
-            <main className="flex min-h-screen flex-col pt-4 bg-gray-100 px-8">
+            <main className="flex min-h-screen flex-col pt-4 bg-neutral-100 px-8">
             <div>
                 <CategorySelection selectedCategories={selectedCategories}
                                    setSelectedCategories={setSelectedCategories}/>

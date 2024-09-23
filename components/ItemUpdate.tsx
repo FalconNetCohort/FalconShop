@@ -126,7 +126,7 @@ export default function ItemUpdate({ handleRefresh, item, onUpdated }: ItemUploa
 
             <button
                 type="submit"
-                className="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
+                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
                 onClick={updateItem}
             >
                 Update

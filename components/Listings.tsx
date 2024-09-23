@@ -21,6 +21,21 @@ export const insertInSortedList = (list: CadetItem[], newItem: CadetItem): Cadet
     return [...list.slice(0, index), newItem, ...list.slice(index)];
 };
 
+// Helper function to determine text size based on title length
+export const getTitleSize = (title: string) => {
+    const length = title.length;
+
+    if (length <= 15) {
+        return 'text-[0.9rem]';  // For shorter titles
+    } else if (length <= 30) {
+        return 'text-[0.7rem]';  // For medium-length titles
+    } else if (length <= 40) {
+        return 'text-[0.65rem]';
+    } else {
+        return 'text-[0.6rem]';
+    }
+};
+
 export default function Listings({ selectedCategories, searchValue }: ListingsProps) {
     const [allItems, setAllItems] = useState<CadetItem[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
@@ -88,21 +103,6 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
 
     const handleCloseModal = () => {
         setSelectedItem(null);
-    };
-
-    // Helper function to determine text size based on title length
-    const getTitleSize = (title: string) => {
-        const length = title.length;
-
-        if (length <= 15) {
-            return 'text-[0.9rem]';  // For shorter titles
-        } else if (length <= 30) {
-            return 'text-[0.7rem]';  // For medium-length titles
-        } else if (length <= 40) {
-            return 'text-[0.65rem]';
-        } else {
-            return 'text-[0.6rem]';
-        }
     };
 
     const offset = currentPage * itemsPerPage;
