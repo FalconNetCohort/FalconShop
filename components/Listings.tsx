@@ -41,7 +41,7 @@ export default function Listings({ selectedCategories, searchValue }: ListingsPr
     const [currentPage, setCurrentPage] = useState(0);
     const [selectedItem, setSelectedItem] = useState<CadetItem | null>(null);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-    const itemsPerPage = 27;
+    const itemsPerPage = 30;
 
     const fetchItems = useCallback(() => {
         const db = getDatabase();
