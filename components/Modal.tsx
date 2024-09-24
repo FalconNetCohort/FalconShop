@@ -35,7 +35,8 @@ export const ListingModal: React.FC<ListingModalProps> = ({ item, onClose }) => 
                         position: 'absolute',
                         top: '-5px',    // Move the button further up
                         right: '-20px',  // Move the button further to the right
-                        zIndex: 10
+                        zIndex: 10,
+                        color: 'white',
                     }}
                 >
                     X
