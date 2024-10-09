@@ -32,7 +32,7 @@ jobs:
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FALCONSHOP_303C4 }}
-          channelId: pr-${{ github.event.number }}
+          channelId: pr-${{ github.run_id }}
           projectId: falconshop-303c4
         env:
           FIREBASE_CLI_EXPERIMENTS: webframeworks
