@@ -41,20 +41,20 @@ export default function LogIn() {
         <div className="auth-form">
             <h1 className="text-3xl mb-4">Login</h1>
             {errorMessage && <div className="alert alert-danger text-red-500">{errorMessage}</div>}
-            <form onSubmit={handleAuth} className="w-64">
+            <form onSubmit={handleAuth} className="w-92">
                 <input
                     type="email"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="mb-2 p-2 border rounded w-64"
+                    className="mb-2 p-2 border rounded w-full"
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="mb-2 p-2 border rounded w-64"
+                    className="mb-2 p-2 border rounded w-full"
                 />
                 <p style={{color: 'red', textAlign: 'center'}} className="mt-0 mb-4 p-2">Do not use your Office 365
                     Microsoft Password!</p>
