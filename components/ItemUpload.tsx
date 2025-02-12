@@ -234,10 +234,7 @@ export default function ItemUpload() {
                     onChange={e => setAcceptedTerms(e.target.checked)}
                 />
                 <label htmlFor="disclaimer" className="ml-2">
-                    {/* eslint-disable-next-line react/no-unescaped-entities */}
-                    I understand that "FalconShop does not take responsibility/interfere/assist if issues arise in
-                    {/* eslint-disable-next-line react/no-unescaped-entities */}
-                    the transaction."
+                    I understand that &quot;FalconShop does not take responsibility/interfere/assist if issues arise in the transaction.&quot;
                 </label>
                 <button
                     type="submit"
